@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo_classes.Documentation" table="documentation">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="caseInfo" class="pojo_classes.CaseInfo" fetch="select">
+            <column name="case_info_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerations" class="pojo_classes.Enumerations" fetch="select">
+            <column name="type" length="15" not-null="true" />
+        </many-to-one>
+        <property name="storagePath" type="string">
+            <column name="storage_path" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

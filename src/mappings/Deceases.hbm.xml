@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo_classes.Deceases" table="deceases">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="enumerations" class="pojo_classes.Enumerations" fetch="select">
+            <column name="type" length="15" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="45" not-null="true" />
+        </property>
+        <property name="symptoms" type="string">
+            <column name="symptoms" length="300" />
+        </property>
+        <set name="deceaseTreatmentLinks" table="decease_treatment_link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="decease_id" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.DeceaseTreatmentLink" />
+        </set>
+    </class>
+</hibernate-mapping>

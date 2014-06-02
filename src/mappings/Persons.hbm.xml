@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo_classes.Persons" table="persons">
+        <id name="socialNumber" type="string">
+            <column name="social_number" length="45" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="enumerationsByJobTitle" class="pojo_classes.Enumerations" fetch="select">
+            <column name="job_title" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsByTitle" class="pojo_classes.Enumerations" fetch="select">
+            <column name="title" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsByRole" class="pojo_classes.Enumerations" fetch="select">
+            <column name="role" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsBySex" class="pojo_classes.Enumerations" fetch="select">
+            <column name="sex" length="15" not-null="true" />
+        </many-to-one>
+        <property name="firstName" type="string">
+            <column name="first_name" length="45" not-null="true" />
+        </property>
+        <property name="middleName" type="string">
+            <column name="middle_name" length="45" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="45" not-null="true" />
+        </property>
+        <property name="birthDate" type="date">
+            <column name="birth_date" length="0" not-null="true" />
+        </property>
+        <set name="personOrganizationLinks" table="person_organization_link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="person" length="45" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.PersonOrganizationLink" />
+        </set>
+        <set name="medicalCaseses" table="medical_cases" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="patient_info" length="45" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.MedicalCases" />
+        </set>
+        <set name="personContactLinks" table="person_contact_link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="person_id" length="45" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.PersonContactLink" />
+        </set>
+        <set name="touristVisits" table="tourist_visit" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="person" length="45" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.TouristVisit" />
+        </set>
+        <set name="caseInfos" table="case_info" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="physician" length="45" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.CaseInfo" />
+        </set>
+    </class>
+</hibernate-mapping>

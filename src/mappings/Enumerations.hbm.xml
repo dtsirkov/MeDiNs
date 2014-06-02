@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo_classes.Enumerations" table="enumerations">
+        <id name="code" type="string">
+            <column name="code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="enumerationTypes" class="pojo_classes.EnumerationTypes" fetch="select">
+            <column name="enumeration_type" length="15" not-null="true" />
+        </many-to-one>
+        <set name="personsesForTitle" table="persons" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="title" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Persons" />
+        </set>
+        <set name="deceaseses" table="deceases" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" />
+            </key>
+            <one-to-many class="pojo_classes.Deceases" />
+        </set>
+        <set name="contactsesForPrefered" table="contacts" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="prefered" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Contacts" />
+        </set>
+        <set name="medicalCasesesForStatus2" table="medical_cases" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="status_2" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.MedicalCases" />
+        </set>
+        <set name="personsesForRole" table="persons" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="role" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Persons" />
+        </set>
+        <set name="personsesForSex" table="persons" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sex" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Persons" />
+        </set>
+        <set name="enumerationLabelses" table="enumeration_labels" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.EnumerationLabels" />
+        </set>
+        <set name="contactsesForActive" table="contacts" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="active" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Contacts" />
+        </set>
+        <set name="documentations" table="documentation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Documentation" />
+        </set>
+        <set name="organizationses" table="organizations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Organizations" />
+        </set>
+        <set name="personsesForJobTitle" table="persons" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="job_title" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Persons" />
+        </set>
+        <set name="contactsesForType" table="contacts" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.Contacts" />
+        </set>
+        <set name="treatmentses" table="treatments" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" />
+            </key>
+            <one-to-many class="pojo_classes.Treatments" />
+        </set>
+        <set name="medicalCasesesForStatus1" table="medical_cases" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="status_1" length="15" not-null="true" />
+            </key>
+            <one-to-many class="pojo_classes.MedicalCases" />
+        </set>
+        <set name="medicamentses" table="medicaments" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="type" length="15" />
+            </key>
+            <one-to-many class="pojo_classes.Medicaments" />
+        </set>
+    </class>
+</hibernate-mapping>
