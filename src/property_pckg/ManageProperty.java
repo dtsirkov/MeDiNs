@@ -6,11 +6,15 @@ import java.util.Properties;
 public class ManageProperty {
 
 	public static final String getExceptionDtl(String propertyName){
-		return ManageProperty.getProperty(propertyName, "exception_dtl.properties");
+		return ManageProperty.getProperty(propertyName, "exception.properties");
 	}
 	
 	public static final String getLabelDtl(String propertyName){
 		return ManageProperty.getProperty(propertyName, "label.properties");
+	}
+	
+	public static final String getButtonDtl(String propertyName){
+		return ManageProperty.getProperty(propertyName, "button.properties");
 	}
 
 	public static final String getProperty(String propertyName, String fileName)

@@ -9,4 +9,96 @@
   @include reindeer;
 
   /* Insert your theme rules here */
+  
+  .flexwrap {
+    background: blue;
+    color: white;
+
+    .title {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 30px;
+        padding: 5px;
+    }
+    
+    .itembox {
+        white-space: normal;
+        vertical-align: top;
+    }
+    
+    .itembox.v-label {padding: 5px}
+	}
+    
+	.flexwrap[width-range~="0-499px"] {
+	    .itembox {width: 100%}
+	}
+    
+	.flexwrap[width-range~="500px-"] {
+	    .itembox {width: 50%}
+	}
+	
+	/* For the title bar and black border around the view */
+	.v-verticallayout-personcreate {
+	    background: black;
+	}
+	
+	/* Padding to create a border around the view */
+	.v-verticallayout-personcreate .v-verticallayout-margin {
+	    padding: 3px;
+	}
+	
+	/* The main title */
+	.personcreate .v-label-title {
+	    font-size: 24pt;
+	    color: white;
+	    line-height:36pt;
+	    background: black;
+	}   
+	
+	.personcreate .v-label-titlecomment {
+	    font-size: 12pt;
+	    color: white;
+	    line-height:36pt;
+	    background: black;
+	}   
+	
+	
+	/* The horizontal area */
+	.personcreate .v-horizontallayout .v-horizontallayout-spacing-on {
+	    background: gray;
+	    padding-left: 1px;
+	}
+	
+	/* The menu tree panel */
+	.personcreate .v-panel-caption-menucontainer,
+	.personcreate .v-panel-caption-detailspanel {
+	    padding: 3px;
+	    color: white;
+	    background: gray;
+	    font-size: 12pt;
+	    line-height: 35pt;
+	    height: 44px;
+	}
+	
+	/* The details caption. */
+	.personcreate .v-panel-caption-detailspanel {
+	    font-size: 18pt;
+	}
+	
+	/* The details text. */
+	.personcreate .v-panel .v-label {
+	    font-size: 24pt;
+	    color: gray;
+	    line-height: 36pt;
+	    background: white;
+	}
+	
+	.personcreate .treecontainer, .personcreate .v-panel, .personcreate .v-caption {
+	    background: white;
+	}
+	
+	.personcreate .v-horizontallayout-spacing-on {
+	    padding-left: 4px;
+	}
+  
 }
