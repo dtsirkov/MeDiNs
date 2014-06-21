@@ -97,10 +97,17 @@ public class MedinsUI extends UI {
 		final Label location = new Label("I don't know! Tell me!");
 		location.setSizeUndefined(); 
 		detailsbox.addComponent(location);
-		*/
+		
 		final PersonForm personForm = new PersonForm(request);
 		personForm.setSizeUndefined(); 
 		detailsbox.addComponent(personForm);
+		detailslayout.addComponent(detailsbox);
+		detailslayout.setComponentAlignment(detailsbox, Alignment.TOP_CENTER);
+		*/
+		
+		final ContactForm contactForm = new ContactForm(request);
+		contactForm.setSizeUndefined(); 
+		detailsbox.addComponent(contactForm);
 		detailslayout.addComponent(detailsbox);
 		detailslayout.setComponentAlignment(detailsbox, Alignment.TOP_CENTER);
 		

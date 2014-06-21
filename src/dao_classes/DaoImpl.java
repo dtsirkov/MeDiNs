@@ -54,7 +54,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			session.persist(transientInstance);
 			trans.commit();
 		} catch (RuntimeException re) {
-			log.error("persist failed", re);
+			log.error("Persist failed!", re);
 			throw re;
 		}
 	}
@@ -68,7 +68,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			trans.commit();
 			log.info("attach successful");
 		} catch (RuntimeException re) {
-			log.error("attach failed", re);
+			log.error("Attach failed!", re);
 			throw re;
 		}
 	}
@@ -94,7 +94,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			trans.commit();
 			log.info("delete successful");
 		} catch (RuntimeException re) {
-			log.error("delete failed", re);
+			log.error("Delete failed!", re);
 			throw re;
 		}
 	}
@@ -109,7 +109,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			log.info("merge successful");
 			return result;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+			log.error("Merge failed!", re);
 			throw re;
 		}
 	}
@@ -128,7 +128,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			}
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
+			log.error("Find by Id failed!", re);
 			throw re;
 		}
 	}
@@ -145,7 +145,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			trans.commit();
 			return results;
 		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
+			log.error("Find by example failed!", re);
 			throw re;
 		}
 	}
@@ -170,43 +170,50 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			trans.commit();
 			return results;
 		} catch (RuntimeException re) {
-			log.error("find by criteria failed", re);
+			log.error("Find by criteria failed!", re);
 			throw re;
 		}
 	}
 
 	public Map<Enumerations, String> getEnumeration(String type, String language){
 
-		EnumerationTypes enumerationType = (EnumerationTypes)findById("EnumerationTypes", type);
-
-		Map<Object, List<Object>> hmEnumeration = new HashMap<Object, List<Object>>();
-
-		List<Object> enumerationTypeLs = new ArrayList<Object>();
-
-		enumerationTypeLs.add(enumerationType);
-
-		hmEnumeration.put("enumerationTypes", enumerationTypeLs);
-
-		List<Object> enumerationLs = findByExample(new Enumerations(), hmEnumeration);
-
-		EnumerationLabels enumerationLabel = new EnumerationLabels();
-
-		enumerationLabel.setLanguage(language);
-
-		Map<Object, List<Object>> hmEnumerationLabel = new HashMap<Object, List<Object>>();
-
-		hmEnumerationLabel.put("enumerations", enumerationLs);
-
-		List<Object> labelLs = findByExample(enumerationLabel, hmEnumerationLabel);
-
 		Map<Enumerations, String> hmEnumerationEnumerationLabel = new HashMap<Enumerations, String>();
 
-		for(Object enumeration : enumerationLs){
-			String label = ((EnumerationLabels)labelLs.get(enumerationLs.indexOf(enumeration))).getLabel();
-			hmEnumerationEnumerationLabel.put((Enumerations)enumeration, label);
+		try{
+
+			EnumerationTypes enumerationType = (EnumerationTypes)findById("EnumerationTypes", type);
+
+			Map<Object, List<Object>> hmEnumeration = new HashMap<Object, List<Object>>();
+
+			List<Object> enumerationTypeLs = new ArrayList<Object>();
+
+			enumerationTypeLs.add(enumerationType);
+
+			hmEnumeration.put("enumerationTypes", enumerationTypeLs);
+
+			List<Object> enumerationLs = findByExample(new Enumerations(), hmEnumeration);
+
+			EnumerationLabels enumerationLabel = new EnumerationLabels();
+
+			enumerationLabel.setLanguage(language);
+
+			Map<Object, List<Object>> hmEnumerationLabel = new HashMap<Object, List<Object>>();
+
+			hmEnumerationLabel.put("enumerations", enumerationLs);
+
+			List<Object> labelLs = findByExample(enumerationLabel, hmEnumerationLabel);
+
+			for(Object enumeration : enumerationLs){
+				String label = ((EnumerationLabels)labelLs.get(enumerationLs.indexOf(enumeration))).getLabel();
+				hmEnumerationEnumerationLabel.put((Enumerations)enumeration, label);
+			} 
+
+		} catch (RuntimeException re) {
+			log.error("Method getEnumarataion/2 of class DaoImpl failed!", re);	
 		}
 
-		return hmEnumerationEnumerationLabel; 
+		return hmEnumerationEnumerationLabel;
+
 	}
 
 	public String getClassName(Object object){
