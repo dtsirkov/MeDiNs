@@ -1,7 +1,11 @@
 package web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.annotation.WebServlet;
 
+import pojo_classes.Enumerations;
 import property_pckg.ManageProperty;
 
 import com.vaadin.annotations.Theme;
@@ -13,7 +17,10 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -21,8 +28,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-
-//mnogo e smotan tozi github
+import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 @Theme("medins")
@@ -88,36 +94,33 @@ public class MedinsUI extends UI {
 		detailspanel.setContent(detailslayout);
 
 		// Put some stuff in the Details view.
-		VerticalLayout detailsbox = new VerticalLayout();
+		final VerticalLayout detailsbox = new VerticalLayout();
 		detailsbox.setSizeUndefined();
-		/*
-		final Label question = new Label("Where is the cat?");
-		question.setSizeUndefined(); 
-		detailsbox.addComponent(question);
-		final Label location = new Label("I don't know! Tell me!");
-		location.setSizeUndefined(); 
-		detailsbox.addComponent(location);
+
+		final Label startActivity = new Label(ManageProperty.getLabelDtl("startActivity" + "_" + language));
+		startActivity.setSizeUndefined(); 
+		detailsbox.addComponent(startActivity);
+		detailslayout.addComponent(detailsbox);
+		detailslayout.setComponentAlignment(detailsbox, Alignment.MIDDLE_CENTER);
 		
+		final Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
+		noStepSelected.setSizeUndefined(); 
+
+		/*
 		final PersonForm personForm = new PersonForm(request);
 		personForm.setSizeUndefined(); 
 		detailsbox.addComponent(personForm);
 		detailslayout.addComponent(detailsbox);
 		detailslayout.setComponentAlignment(detailsbox, Alignment.TOP_CENTER);
-		*/
-		
-		final ContactForm contactForm = new ContactForm(request);
-		contactForm.setSizeUndefined(); 
-		detailsbox.addComponent(contactForm);
-		detailslayout.addComponent(detailsbox);
-		detailslayout.setComponentAlignment(detailsbox, Alignment.TOP_CENTER);
-		
+		 */
+
 		VerticalLayout buttonsLayout = new VerticalLayout();
-		Button nextButton = new Button(ManageProperty.getButtonDtl("nextButton" + "_" + language));
+		final Button nextButton = new Button(ManageProperty.getButtonDtl("nextButton" + "_" + language));
 		nextButton.setSizeUndefined();
 		buttonsLayout.addComponent(nextButton);
 		detailslayout.addComponent(buttonsLayout);
-		detailslayout.setComponentAlignment(buttonsLayout, Alignment.TOP_CENTER);
-
+		detailslayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
+		
 		// Let the details panel take as much space as possible and
 		// have the selection tree to be as small as possible
 		horlayout.setExpandRatio(detailspanel, 1);
@@ -126,12 +129,26 @@ public class MedinsUI extends UI {
 		//////////////////////////////////////////////////////
 		//Put in the application data and handle the UI logic
 
-		final Object[][] stepCategoryArray = new Object[][] {
-				new Object[] {ManageProperty.getLabelDtl("requiredSteps" + "_" + language),
-						ManageProperty.getLabelDtl("personCreateMain" + "_" + language)},
+		// manage STEPS
+		final HashMap <String, CustomComponent> stepsHM = new HashMap<String, CustomComponent>();
+		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), new PersonForm(request));
+		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), new ContactForm(request));
 
-						new Object[] {ManageProperty.getLabelDtl("optionalSteps" + "_" + language),   
-						ManageProperty.getLabelDtl("noOptionalSteps" + "_" + language)}
+		final Object [] stepsArray = stepsHM.keySet().toArray();
+		final Object [] requiredStepsArray = new Object[stepsArray.length + 1];
+		requiredStepsArray[0] = ManageProperty.getLabelDtl("requiredSteps" + "_" + language);				
+		for(int i = stepsArray.length - 1; i >= 0; i--){
+			requiredStepsArray[stepsArray.length - i] = stepsArray[i];
+		}
+
+		final Object [] optionalStepsArray = new Object[] {
+				ManageProperty.getLabelDtl("optionalSteps" + "_" + language),   
+				ManageProperty.getLabelDtl("noOptionalSteps" + "_" + language)
+		};
+
+		final Object[][] stepCategoryArray = new Object[][] {
+				requiredStepsArray,
+				optionalStepsArray
 		};
 
 		//Add step categories as root items in the tree.
@@ -153,7 +170,7 @@ public class MedinsUI extends UI {
 					// Set it to be a child.
 					menu.setParent(step, stepList);
 
-					// Make the moons look like leaves.
+					// Make the steps look like leaves.
 					menu.setChildrenAllowed(step, false);
 				}
 
@@ -161,12 +178,52 @@ public class MedinsUI extends UI {
 				//menu.expandItemsRecursively(stepList);
 			}
 		}
+		
+		final int stepsHMSize = stepsHM.size();	
+		nextButton.addClickListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+			@Override		
+			public void buttonClick(ClickEvent event) {
+				Component currentComponent = detailsbox.getComponent(0);
+				String currentStep;
+				String nextStep;
+				int stepPosition = 0;
+				int curentPosition = 0;
+				for (Map.Entry<String, CustomComponent> entry : stepsHM.entrySet()) {		
+					if (currentComponent.equals(entry.getValue())) {
+						currentStep = entry.getKey();
+						stepPosition = curentPosition;
+					}
+					curentPosition = curentPosition + 1;
+				}
+				if (stepPosition < stepsHMSize - 1){
+					nextStep = (String)stepsArray[stepPosition + 1];
+					detailsbox.removeComponent(currentComponent);
+					detailsbox.addComponent(stepsHM.get(nextStep));
+				}else{
+					nextStep = (String)stepsArray[stepsHMSize - 1];
+					detailsbox.removeComponent(currentComponent);
+					detailsbox.addComponent(stepsHM.get(nextStep));
+					nextButton.setCaption("Validate");
+				}
+			}
+		});
 
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				if (event.getProperty() != null &&
-						event.getProperty().getValue() != null) {
-					//location.setValue("The cat is in " + event.getProperty().getValue());
+						event.getProperty().getValue() != null){
+
+					detailsbox.removeComponent(detailsbox.getComponent(0));
+
+					String value = event.getProperty().getValue().toString();
+					CustomComponent customComponent = stepsHM.get(value);	
+					if(customComponent != null){
+						customComponent.setSizeUndefined(); 
+						detailsbox.addComponent(customComponent);
+					}else{
+						detailsbox.addComponent(noStepSelected);
+					}
 				}
 			}
 		});
