@@ -1,8 +1,10 @@
 package web;
 
+import java.util.List;
 import java.util.Map;
 
 import pojo_classes.Contacts;
+import pojo_classes.EnumerationTypes;
 import pojo_classes.Enumerations;
 import property_pckg.ManageProperty;
 
@@ -88,6 +90,58 @@ public class ContactForm extends CustomComponent {
 		activeCB.addItems(contactActiveEnum.values().toArray());	
 		preferedCB.addItems(contactPreferedEnum.values().toArray());
 
+		//set initial values
+		contact.setAddress("");
+		contact.setCity("");
+		contact.setCountry("");
+		contact.setZip("");
+		contact.setEmail("");
+		contact.setPhone("");
+		contact.setMobile("");
+
+		String codeValue = "yes";
+		String label = "";
+		for (Map.Entry<Enumerations, String> entry : contactActiveEnum.entrySet()) {		
+			if (codeValue.equals(entry.getKey().getCode())) {
+				label = (String)entry.getValue();
+				contact.setEnumerationsByActive(entry.getKey());
+			}		
+		}
+		activeCB.select(label);
+
+		/*
+		String value = "Yes";
+		Enumerations enumeration = new Enumerations();
+		for (Map.Entry<Enumerations, String> entry : contactActiveEnum.entrySet()) {		
+			if (value.equals(entry.getValue())) {
+				enumeration = (Enumerations)entry.getKey();
+			}		
+		}		
+
+		EnumerationTypes enumType = new EnumerationTypes();
+		enumType = (EnumerationTypes)dao.findById("EnumerationTypes", "yes no");
+		Enumerations enumeration = new Enumerations();
+		enumeration.setCode("yes");
+		//enumeration.setEnumerationTypes(enumType);
+		List<Object> foundEnumLs = dao.findByExample(enumeration);	
+		contact.setEnumerationsByActive((Enumerations)foundEnumLs.get(0));
+		 */
+
+
+
+		//bind data
+		addressTF.setValue(contact.getAddress());
+		zipCodeTF.setValue(contact.getZip());
+		cityTF.setValue(contact.getCity());
+		countryCB.setValue(contact.getCountry());
+		phoneTF.setValue(contact.getPhone());
+		mobileTF.setValue(contact.getMobile());
+		emailTF.setValue(contact.getEmail());
+		typeCB.setValue(contact.getEnumerationsByType());
+		preferedCB.setValue(contact.getEnumerationsByPrefered());
+		activeCB.setValue(contact.getEnumerationsByActive());
+
+
 		//add listeners
 		addressTF.addValueChangeListener(
 				new Property.ValueChangeListener() {
@@ -166,7 +220,7 @@ public class ContactForm extends CustomComponent {
 						contact.setEnumerationsByType(enumeration);
 					}
 				});
-		
+
 		/*
 		activeCB.addValueChangeListener(
 				new Property.ValueChangeListener() {
@@ -182,17 +236,7 @@ public class ContactForm extends CustomComponent {
 						contact.setEnumerationsByActive(enumeration);
 					}
 				});
-		*/
-		
-		String codeValue = "yes";
-		String label = "";
-		for (Map.Entry<Enumerations, String> entry : contactActiveEnum.entrySet()) {		
-			if (codeValue.equals(entry.getKey().getCode())) {
-				label = (String)entry.getValue();
-			}		
-		}
-		activeCB.select(label);
-		
+		 */
 
 		preferedCB.addValueChangeListener(
 				new Property.ValueChangeListener() {

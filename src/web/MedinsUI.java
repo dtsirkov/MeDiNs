@@ -77,8 +77,9 @@ public class MedinsUI extends UI {
 		horlayout.addComponent(menuContainer);
 
 		// A menu tree, fill it later.
-		Tree menu = new Tree();
+		final Tree menu = new Tree();
 		menu.setSizeUndefined();
+		menu.setImmediate(true);
 		menuContainer.setContent(menu);
 
 		// A panel for the main view area on the right side
@@ -102,7 +103,7 @@ public class MedinsUI extends UI {
 		detailsbox.addComponent(startActivity);
 		detailslayout.addComponent(detailsbox);
 		detailslayout.setComponentAlignment(detailsbox, Alignment.MIDDLE_CENTER);
-		
+
 		final Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
 		noStepSelected.setSizeUndefined(); 
 
@@ -120,7 +121,7 @@ public class MedinsUI extends UI {
 		buttonsLayout.addComponent(nextButton);
 		detailslayout.addComponent(buttonsLayout);
 		detailslayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
-		
+
 		// Let the details panel take as much space as possible and
 		// have the selection tree to be as small as possible
 		horlayout.setExpandRatio(detailspanel, 1);
@@ -134,11 +135,16 @@ public class MedinsUI extends UI {
 		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), new PersonForm(request));
 		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), new ContactForm(request));
 
-		final Object [] stepsArray = stepsHM.keySet().toArray();
-		final Object [] requiredStepsArray = new Object[stepsArray.length + 1];
-		requiredStepsArray[0] = ManageProperty.getLabelDtl("requiredSteps" + "_" + language);				
-		for(int i = stepsArray.length - 1; i >= 0; i--){
-			requiredStepsArray[stepsArray.length - i] = stepsArray[i];
+		Object [] tmpStepsArray = stepsHM.keySet().toArray();
+		final Object [] stepsArray = new Object [tmpStepsArray.length];
+		for(int i = 0; i < tmpStepsArray.length; i++){
+			stepsArray[tmpStepsArray.length - i - 1] = tmpStepsArray[i];
+		}
+
+		final Object [] requiredStepsArray = new Object[stepsArray.length + 1];	
+		requiredStepsArray[0] = ManageProperty.getLabelDtl("requiredSteps" + "_" + language);
+		for(int i = 0; i < stepsArray.length; i++){
+			requiredStepsArray[i+1] = stepsArray[i];
 		}
 
 		final Object [] optionalStepsArray = new Object[] {
@@ -178,20 +184,18 @@ public class MedinsUI extends UI {
 				//menu.expandItemsRecursively(stepList);
 			}
 		}
-		
+
 		final int stepsHMSize = stepsHM.size();	
 		nextButton.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 			@Override		
 			public void buttonClick(ClickEvent event) {
 				Component currentComponent = detailsbox.getComponent(0);
-				String currentStep;
 				String nextStep;
 				int stepPosition = 0;
 				int curentPosition = 0;
 				for (Map.Entry<String, CustomComponent> entry : stepsHM.entrySet()) {		
 					if (currentComponent.equals(entry.getValue())) {
-						currentStep = entry.getKey();
 						stepPosition = curentPosition;
 					}
 					curentPosition = curentPosition + 1;
@@ -206,6 +210,7 @@ public class MedinsUI extends UI {
 					detailsbox.addComponent(stepsHM.get(nextStep));
 					nextButton.setCaption("Validate");
 				}
+				menu.select(nextStep);
 			}
 		});
 
@@ -221,6 +226,12 @@ public class MedinsUI extends UI {
 					if(customComponent != null){
 						customComponent.setSizeUndefined(); 
 						detailsbox.addComponent(customComponent);
+						if(value.equals(stepsArray[stepsArray.length - 1]))
+						{
+							nextButton.setCaption("Validate");
+						}else{
+							nextButton.setCaption("Next");
+						}
 					}else{
 						detailsbox.addComponent(noStepSelected);
 					}

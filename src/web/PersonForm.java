@@ -87,6 +87,23 @@ public class PersonForm extends CustomComponent {
 		personSexCB.addItems(personSexEnum.values().toArray());		
 		personRoleCB.addItems(personRoleEnum.values().toArray());	
 		personJobTitleCB.addItems(personJobTitleEnum.values().toArray());
+		
+		//set initial values
+		person.setSocialNumber("");
+		person.setFirstName("");
+		person.setMiddleName("");
+		person.setLastName("");
+		
+		//bind data
+		personSocialNumberTF.setValue(person.getSocialNumber());
+		personFirstNameTF.setValue(person.getFirstName());
+		persomMiddleNameTF.setValue(person.getMiddleName());
+		personLastNameTF.setValue(person.getLastName());
+		personBirthDatePDF.setValue(person.getBirthDate());
+		personSexCB.setValue(person.getEnumerationsBySex());
+		personJobTitleCB.setValue(person.getEnumerationsByJobTitle());
+		personRoleCB.setValue(person.getEnumerationsByRole());
+		personTitleCB.setValue(person.getEnumerationsByTitle());
 
 		//add listeners
 		personSocialNumberTF.addValueChangeListener(
