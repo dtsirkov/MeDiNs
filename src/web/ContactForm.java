@@ -283,7 +283,7 @@ public class ContactForm extends CustomComponent {
 
 		// common part: create formLayout
 		formLayout = new FormLayout();
-		formLayout.setImmediate(false);
+		formLayout.setImmediate(true);
 		formLayout.setSizeUndefined();
 		//formLayout.addStyleName("flexwrap");
 

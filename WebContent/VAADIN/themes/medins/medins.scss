@@ -100,5 +100,21 @@
 	.personcreate .v-horizontallayout-spacing-on {
 	    padding-left: 4px;
 	}
+	
+	/* For buttons layout   padding-top: 20px;background: gray; */
+	.v-horizontallayout-buttonspace.v-horizontallayout > .v-spacing {
+		background: gray;    
+	    width: 200px;    
+	}
+
+	
+	/* define margins */
+	.mymargins.v-margin-left   {padding-left:   10px;}
+	.mymargins.v-margin-right  {padding-right:  20px;}
+	.mymargins.v-margin-top    {padding-top:    20px;}
+	.mymargins.v-margin-bottom {padding-bottom: 100px;}
+	
+	.v-formlayout-captioncell { text-align: left;}
+	.v-formlayout-row {padding-bottom:100px;}
   
 }

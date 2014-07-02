@@ -12,8 +12,10 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.server.Sizeable;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -21,6 +23,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -42,7 +45,7 @@ public class MedinsUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 
-		String language = request.getLocale().getLanguage();
+		final String language = request.getLocale().getLanguage();
 
 		// Create the root layout (VerticalLayout is actually the default).
 		VerticalLayout root = new VerticalLayout();
@@ -90,9 +93,11 @@ public class MedinsUI extends UI {
 		horlayout.addComponent(detailspanel);
 
 		// Have a vertical layout in the Details panel.
-		VerticalLayout detailslayout = new VerticalLayout();
+		final VerticalLayout detailslayout = new VerticalLayout();
+		detailslayout.setImmediate(true);
 		detailslayout.setSizeFull();
 		detailspanel.setContent(detailslayout);
+
 
 		// Put some stuff in the Details view.
 		final VerticalLayout detailsbox = new VerticalLayout();
@@ -104,8 +109,16 @@ public class MedinsUI extends UI {
 		detailslayout.addComponent(detailsbox);
 		detailslayout.setComponentAlignment(detailsbox, Alignment.MIDDLE_CENTER);
 
+		/*
 		final Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
 		noStepSelected.setSizeUndefined(); 
+
+
+		final Label startActivity = new Label(ManageProperty.getLabelDtl("startActivity" + "_" + language));
+		startActivity.setSizeUndefined(); 
+		detailslayout.addComponent(startActivity);
+		detailslayout.setComponentAlignment(startActivity, Alignment.MIDDLE_CENTER);
+		 */
 
 		/*
 		final PersonForm personForm = new PersonForm(request);
@@ -115,12 +128,29 @@ public class MedinsUI extends UI {
 		detailslayout.setComponentAlignment(detailsbox, Alignment.TOP_CENTER);
 		 */
 
-		VerticalLayout buttonsLayout = new VerticalLayout();
+		//final GridLayout buttonsLayout = new GridLayout(2, 1);
+		final HorizontalLayout buttonsLayout = new HorizontalLayout();
+		//buttonsLayout.setSizeFull();
+		buttonsLayout.setSpacing(true);
+		buttonsLayout.setImmediate(true);
+		//buttonsLayout.setWidth("100%");
+		//buttonsLayout.setStyleName("buttonspace");
+
+		final Button prevButton = new Button(ManageProperty.getButtonDtl("prevButton" + "_" + language));
 		final Button nextButton = new Button(ManageProperty.getButtonDtl("nextButton" + "_" + language));
-		nextButton.setSizeUndefined();
+		//prevButton.setSizeUndefined();
+		//nextButton.setSizeUndefined();
+		buttonsLayout.addComponent(prevButton);
 		buttonsLayout.addComponent(nextButton);
-		detailslayout.addComponent(buttonsLayout);
-		detailslayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
+
+		//buttonsLayout.setComponentAlignment(buttonsLayout.getComponent(0, 0), Alignment.MIDDLE_CENTER);
+		//buttonsLayout.setComponentAlignment(buttonsLayout.getComponent(1, 0), Alignment.MIDDLE_CENTER);
+
+		//buttonPrevLayout.setComponentAlignment(prevButton, Alignment.MIDDLE_CENTER);
+		//buttonNextLayout.setComponentAlignment(nextButton, Alignment.MIDDLE_CENTER);
+
+		//detailslayout.addComponent(buttonsLayout);
+		//detailslayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_CENTER);
 
 		// Let the details panel take as much space as possible and
 		// have the selection tree to be as small as possible
@@ -185,6 +215,8 @@ public class MedinsUI extends UI {
 			}
 		}
 
+
+		//manage nextButton
 		final int stepsHMSize = stepsHM.size();	
 		nextButton.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
@@ -202,38 +234,75 @@ public class MedinsUI extends UI {
 				}
 				if (stepPosition < stepsHMSize - 1){
 					nextStep = (String)stepsArray[stepPosition + 1];
-					detailsbox.removeComponent(currentComponent);
-					detailsbox.addComponent(stepsHM.get(nextStep));
 				}else{
 					nextStep = (String)stepsArray[stepsHMSize - 1];
-					detailsbox.removeComponent(currentComponent);
-					detailsbox.addComponent(stepsHM.get(nextStep));
-					nextButton.setCaption("Validate");
 				}
-				menu.select(nextStep);
+				//for(int i = 0; i < detailslayout.getComponentCount() - 1; i++){
+				//	detailslayout.removeComponent(detailslayout.getComponent(i));
+				//}
+				//detailslayout.addComponent(stepsHM.get(nextStep));
+				//detailslayout.addComponent(buttonsLayout);
+				//nextButton.setCaption(ManageProperty.getButtonDtl("validateButton" + "_" + language));
+				menu.select(nextStep);	
 			}
 		});
 
+		//manage prevButton 
+		prevButton.addClickListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+			@Override		
+			public void buttonClick(ClickEvent event) {
+				Component currentComponent = detailsbox.getComponent(0);
+				String prevStep;
+				int stepPosition = 0;
+				int curentPosition = 0;
+				for (Map.Entry<String, CustomComponent> entry : stepsHM.entrySet()) {		
+					if (currentComponent.equals(entry.getValue())) {
+						stepPosition = curentPosition;
+					}
+					curentPosition = curentPosition + 1;
+				}
+				if (stepPosition - 1 > 0){
+					prevStep = (String)stepsArray[stepPosition - 1];
+				}else{
+					prevStep = (String)stepsArray[0];
+				}
+				//for(int i = 0; i < detailslayout.getComponentCount() - 1; i++){
+				//	detailslayout.removeComponent(detailslayout.getComponent(i));
+				//}
+				//detailslayout.addComponent(stepsHM.get(prevStep));
+				//detailslayout.addComponent(buttonsLayout);
+				menu.select(prevStep);
+			}
+		});
+
+		//select an item from menu
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				if (event.getProperty() != null &&
 						event.getProperty().getValue() != null){
+					
+					detailsbox.removeAllComponents();
 
-					detailsbox.removeComponent(detailsbox.getComponent(0));
-
-					String value = event.getProperty().getValue().toString();
+					String value = event.getProperty().getValue().toString();					
 					CustomComponent customComponent = stepsHM.get(value);	
+
 					if(customComponent != null){
 						customComponent.setSizeUndefined(); 
 						detailsbox.addComponent(customComponent);
+						//detailsbox.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);
+						detailsbox.setMargin(new MarginInfo(true, false, true, false));
 						if(value.equals(stepsArray[stepsArray.length - 1]))
 						{
-							nextButton.setCaption("Validate");
+							nextButton.setCaption(ManageProperty.getButtonDtl("nextButton" + "_" + language));
 						}else{
-							nextButton.setCaption("Next");
-						}
+							nextButton.setCaption(ManageProperty.getButtonDtl("nextButton" + "_" + language));
+						}				
+						detailsbox.addComponent(buttonsLayout);
+						buttonsLayout.setMargin(new MarginInfo(true, false, true, false));
+						detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
 					}else{
-						detailsbox.addComponent(noStepSelected);
+						detailsbox.addComponent(new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language)));
 					}
 				}
 			}
