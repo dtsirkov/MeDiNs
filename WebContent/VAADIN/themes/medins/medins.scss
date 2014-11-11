@@ -54,15 +54,22 @@
 	    color: white;
 	    line-height:36pt;
 	    background: black;
-	}   
+	}     
 	
-	.personcreate .v-label-titlecomment {
-	    font-size: 12pt;
-	    color: white;
-	    line-height:36pt;
-	    background: black;
-	}   
+	/* The details text. */
+	.stepTitle{
+	    font-size: 24pt;
+	    color: gray;
+	    line-height: 36pt;
+	    background: white;
+	}
 	
+	.validationCompenentTitle{
+		font-size: 16pt;
+	    color: black;
+	    line-height: 36pt;
+	    background: white;
+	}
 	
 	/* The horizontal area */
 	.personcreate .v-horizontallayout .v-horizontallayout-spacing-on {
@@ -86,14 +93,6 @@
 	    font-size: 18pt;
 	}
 	
-	/* The details text. */
-	.personcreate .v-panel .v-label {
-	    font-size: 24pt;
-	    color: gray;
-	    line-height: 36pt;
-	    background: white;
-	}
-	
 	.personcreate .treecontainer, .personcreate .v-panel, .personcreate .v-caption {
 	    background: white;
 	}
@@ -105,11 +104,13 @@
 	.v-formlayout-captioncell { text-align: left;}
 	.v-formlayout-row {padding-bottom:100px;}
 	
-	.v-label-stepTitle {
-	    font-size: 24pt;
-	    color: white;
-	    line-height:36pt;
-	    background: black;
+	.v-panel-content-validation_panel {
+		background-color:yellow;
+		text-align: right;
+	}
+	
+	.v-textarea-validation_textarea{
+		background-color:yellow; !important;
 	}
   
 }

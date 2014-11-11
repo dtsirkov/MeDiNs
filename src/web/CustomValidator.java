@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import property_pckg.ManageProperty;
 
 import com.vaadin.data.Validator;
+import com.vaadin.data.Validator.EmptyValueException;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractComponentContainer;
@@ -27,7 +28,7 @@ class CustomValidator implements java.io.Serializable{
 		this.setLanguage(language);
 	}
 
-	//vslidate social number
+	//validate social number
 	protected final Validator getOnlyDigitsValidator(final String propertyName){
 		class MyValidator implements Validator {
 			private static final long serialVersionUID = -8281962473854901819L;
@@ -52,17 +53,40 @@ class CustomValidator implements java.io.Serializable{
 		return new MyValidator();
 	}
 
+	protected final Validator getRequiredValidator(final String propertyName){
+		class MyValidator implements Validator {
+			private static final long serialVersionUID = -8281962473854901819L;
+			@Override
+			public void validate(Object value) throws InvalidValueException {				
+				if (!isValid(value))
+					throw new InvalidValueException(ManageProperty.getExceptionDtl(propertyName));
+			}
 
-	protected final static boolean validate(CustomComponent customComponent) {
+			public boolean isValid(Object value) {
+				boolean isValid = false;  			 
+				if(value != null){  
+					isValid = true;  
+				}  
+				return isValid;  
+			}
+		}
+		return new MyValidator();
+	}
+
+	protected final boolean validate(CustomComponent customComponent) {
 		boolean result = true;
 		Iterator<Component> customComponentIterator = customComponent.iterator();
 		while(customComponentIterator.hasNext()){
+			String property = "EmptyValueException" + "_" + this.getLanguage();
+			String label = ManageProperty.getExceptionDtl(property);
 			Component component = customComponentIterator.next();
 			if (component instanceof AbstractField) {
 				try {
 					((AbstractField) component).validate();
 				} catch (Exception e) {
-					((AbstractComponent)component).setComponentError(new UserError(e.getMessage()));
+					if (e instanceof EmptyValueException){
+						((AbstractComponent)component).setComponentError(new UserError(label));
+					}
 					result = false;
 				}
 			} else if (component instanceof AbstractComponentContainer) {
@@ -73,17 +97,21 @@ class CustomValidator implements java.io.Serializable{
 		}
 		return result;
 	}
-	
-	protected final static boolean validate(AbstractComponentContainer customComponent) {
+
+	protected final boolean validate(AbstractComponentContainer abstractComponentContainer) {
 		boolean result = true;
-		Iterator<Component> customComponentIterator = customComponent.iterator();
-		while(customComponentIterator.hasNext()){
-			Component component = customComponentIterator.next();
+		Iterator<Component> containerIterator = abstractComponentContainer.iterator();
+		while(containerIterator.hasNext()){
+			String property = "EmptyValueException" + "_" + this.getLanguage();
+			String label = ManageProperty.getExceptionDtl(property);
+			Component component = containerIterator.next();
 			if (component instanceof AbstractField) {
 				try {
 					((AbstractField) component).validate();
 				} catch (Exception e) {
-					((AbstractComponent)component).setComponentError(new UserError(e.getMessage()));
+					if (e instanceof EmptyValueException){
+						((AbstractComponent)component).setComponentError(new UserError(label));
+					}
 					result = false;
 				}
 			} else if (component instanceof AbstractComponentContainer) {

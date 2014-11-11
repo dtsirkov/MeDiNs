@@ -47,6 +47,7 @@ public class MedinsUI extends UI {
 	protected void init(VaadinRequest request) {
 
 		final String language = request.getLocale().getLanguage();
+		final CustomValidator customValidator = new CustomValidator(language);
 
 		// Create the root layout (VerticalLayout is actually the default).
 		VerticalLayout root = new VerticalLayout();
@@ -106,6 +107,7 @@ public class MedinsUI extends UI {
 		detailsbox.setMargin(new MarginInfo(true, false, true, false));
 
 		final Label startActivity = new Label(ManageProperty.getLabelDtl("startActivity" + "_" + language));
+		startActivity.addStyleName("stepTitle");
 		startActivity.setSizeUndefined(); 
 		detailsbox.addComponent(startActivity);
 		detailslayout.addComponent(detailsbox);
@@ -134,6 +136,7 @@ public class MedinsUI extends UI {
 
 		final Button prevButton = new Button(ManageProperty.getButtonDtl("prevButton" + "_" + language));
 		final Button nextButton = new Button(ManageProperty.getButtonDtl("nextButton" + "_" + language));
+		final Button validateButton = new Button(ManageProperty.getButtonDtl("validateButton" + "_" + language));
 		buttonsLayout.addComponent(prevButton);
 		buttonsLayout.addComponent(nextButton);
 
@@ -147,8 +150,12 @@ public class MedinsUI extends UI {
 
 		// manage STEPS
 		final HashMap <String, CustomComponent> stepsHM = new HashMap<String, CustomComponent>();
-		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), new PersonForm(request));
-		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), new ContactForm(request));
+		final PersonForm personForm = new PersonForm(request);
+		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), personForm);
+		final ContactForm contactForm = new ContactForm(request);
+		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), contactForm);
+		final ValidationForm validateForm = new ValidationForm(language);
+		stepsHM.put(ManageProperty.getLabelDtl("stepValidate" + "_" + language), validateForm);
 
 		Object [] tmpStepsArray = stepsHM.keySet().toArray();
 		final Object [] stepsArray = new Object [tmpStepsArray.length];
@@ -171,6 +178,14 @@ public class MedinsUI extends UI {
 				requiredStepsArray,
 				optionalStepsArray
 		};
+
+		/*
+		CustomComponent customComponent = new CustomComponent();
+		for(int i = 0; i < tmpStepsArray.length - 1; i++){
+			customComponent = stepsHM.get(stepsArray[i]);
+			validateFrom.addLayout(customComponent);
+		}
+		 */
 
 		//Add step categories as root items in the tree.
 		for (int i = 0; i < stepCategoryArray.length; i++) {
@@ -218,7 +233,7 @@ public class MedinsUI extends UI {
 								stepPosition = i;
 							}
 						}
-						isValid = CustomValidator.validate(currentComponent);
+						isValid = customValidator.validate(currentComponent);
 					}
 				}
 				if (stepPosition < stepsHMSize - 1 && isValid){
@@ -252,6 +267,8 @@ public class MedinsUI extends UI {
 				}else{
 					prevStep = (String)stepsArray[0];
 				}
+				CustomComponent prevComponent = stepsHM.get(prevStep);
+				prevComponent.setComponentError(null);
 				menu.select(prevStep);
 			}
 		});
@@ -259,15 +276,30 @@ public class MedinsUI extends UI {
 		//select an item from menu
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
+				CustomComponent tmpCustomComponent;
+				
 				if (event.getProperty() != null &&
 						event.getProperty().getValue() != null){
 
 					detailsbox.removeAllComponents();
 
 					String value = event.getProperty().getValue().toString();					
-					CustomComponent customComponent = stepsHM.get(value);	
+					tmpCustomComponent = stepsHM.get(value);	
 
-					if(customComponent != null){
+					if(tmpCustomComponent != null){
+						CustomComponent customComponent;
+						
+						buttonsLayout.removeAllComponents();
+						
+						if(value.equals(stepsArray[stepsArray.length - 1]))
+						{
+							customComponent = new ValidationForm(stepsHM, language);
+							buttonsLayout.addComponent(validateButton);
+						}else{
+							customComponent = tmpCustomComponent;
+							buttonsLayout.addComponent(prevButton);
+							buttonsLayout.addComponent(nextButton);	
+						}
 
 						//add stepTitleLayout
 						stepTitle.setValue(value);					
@@ -283,12 +315,6 @@ public class MedinsUI extends UI {
 						detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
 						//add buttonsLayout 
-						if(value.equals(stepsArray[stepsArray.length - 1]))
-						{
-							nextButton.setCaption(ManageProperty.getButtonDtl("nextButton" + "_" + language));
-						}else{
-							nextButton.setCaption(ManageProperty.getButtonDtl("nextButton" + "_" + language));
-						}				
 						detailsbox.addComponent(buttonsLayout);
 						detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
 					}else{
