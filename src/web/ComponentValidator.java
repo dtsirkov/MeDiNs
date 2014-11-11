@@ -16,7 +16,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CustomComponent;
 
-class CustomValidator implements java.io.Serializable{
+class ComponentValidator implements java.io.Serializable{
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ class CustomValidator implements java.io.Serializable{
 	private static final long serialVersionUID = 2270732896484883778L;
 	private String language;
 
-	public CustomValidator(String language){
+	public ComponentValidator(String language){
 		this.setLanguage(language);
 	}
 

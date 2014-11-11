@@ -34,6 +34,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
+import dao_classes.DaoImpl;
+import dao_classes.DaoIntrfc;
+
 @SuppressWarnings("serial")
 @Theme("medins")
 public class MedinsUI extends UI {
@@ -47,7 +50,7 @@ public class MedinsUI extends UI {
 	protected void init(VaadinRequest request) {
 
 		final String language = request.getLocale().getLanguage();
-		final CustomValidator customValidator = new CustomValidator(language);
+		final ComponentValidator customValidator = new ComponentValidator(language);
 
 		// Create the root layout (VerticalLayout is actually the default).
 		VerticalLayout root = new VerticalLayout();
@@ -148,13 +151,16 @@ public class MedinsUI extends UI {
 		//////////////////////////////////////////////////////
 		//Put in the application data and handle the UI logic
 
+		DaoIntrfc dao = new DaoImpl();
+		request.setAttribute("dao", dao);
+		
 		// manage STEPS
 		final HashMap <String, CustomComponent> stepsHM = new HashMap<String, CustomComponent>();
 		final PersonForm personForm = new PersonForm(request);
 		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), personForm);
 		final ContactForm contactForm = new ContactForm(request);
 		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), contactForm);
-		final ValidationForm validateForm = new ValidationForm(language);
+		final ValidationForm validateForm = new ValidationForm();
 		stepsHM.put(ManageProperty.getLabelDtl("stepValidate" + "_" + language), validateForm);
 
 		Object [] tmpStepsArray = stepsHM.keySet().toArray();
@@ -318,7 +324,9 @@ public class MedinsUI extends UI {
 						detailsbox.addComponent(buttonsLayout);
 						detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
 					}else{
-						detailsbox.addComponent(new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language)));
+						Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
+						noStepSelected.addStyleName("stepTitle");
+						detailsbox.addComponent(noStepSelected);
 					}
 				}
 			}
