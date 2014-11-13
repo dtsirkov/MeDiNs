@@ -153,127 +153,109 @@ public class MedinsUI extends UI {
 
 		DaoIntrfc dao = new DaoImpl();
 		request.setAttribute("dao", dao);
-		
-		// manage STEPS
-		final HashMap <String, CustomComponent> stepsHM = new HashMap<String, CustomComponent>();
-		final PersonForm personForm = new PersonForm(request);
-		stepsHM.put(ManageProperty.getLabelDtl("stepCreatePerson" + "_" + language), personForm);
-		final ContactForm contactForm = new ContactForm(request);
-		stepsHM.put(ManageProperty.getLabelDtl("stepCreateContact" + "_" + language), contactForm);
-		final ValidationForm validateForm = new ValidationForm();
-		stepsHM.put(ManageProperty.getLabelDtl("stepValidate" + "_" + language), validateForm);
 
-		Object [] tmpStepsArray = stepsHM.keySet().toArray();
-		final Object [] stepsArray = new Object [tmpStepsArray.length];
-		for(int i = 0; i < tmpStepsArray.length; i++){
-			stepsArray[tmpStepsArray.length - i - 1] = tmpStepsArray[i];
-		}
+		// create STEPS
+		final PersonForm personForm = new PersonForm(request, "stepCreatePerson");
+		final ContactForm contactForm = new ContactForm(request, "stepCreateContact");
+		final ValidationForm validateForm = new ValidationForm(request, "stepValidate");
 
-		final Object [] requiredStepsArray = new Object[stepsArray.length + 1];	
-		requiredStepsArray[0] = ManageProperty.getLabelDtl("requiredSteps" + "_" + language);
-		for(int i = 0; i < stepsArray.length; i++){
-			requiredStepsArray[i+1] = stepsArray[i];
-		}
-
-		final Object [] optionalStepsArray = new Object[] {
-				ManageProperty.getLabelDtl("optionalSteps" + "_" + language),   
-				ManageProperty.getLabelDtl("noOptionalSteps" + "_" + language)
+		//put steps in Array
+		final CustomComponent[] requiredSteps = {
+				personForm, 
+				contactForm, 
+				validateForm
 		};
+		final CustomComponent[] optionalSteps = {};
 
-		final Object[][] stepCategoryArray = new Object[][] {
-				requiredStepsArray,
-				optionalStepsArray
-		};
-
-		/*
-		CustomComponent customComponent = new CustomComponent();
-		for(int i = 0; i < tmpStepsArray.length - 1; i++){
-			customComponent = stepsHM.get(stepsArray[i]);
-			validateFrom.addLayout(customComponent);
+		final Object [] requiredStepsDisplay = new Object[requiredSteps.length + 1];	
+		requiredStepsDisplay[0] = new Form(request, "requiredSteps");
+		for(int i = 0; i < requiredSteps.length; i++){
+			requiredStepsDisplay[i+1] = requiredSteps[i];
 		}
-		 */
+		final Object [] optionalStepsDisplay;
+		if(optionalSteps.length == 0){
+			optionalStepsDisplay = new Object[2];
+			optionalStepsDisplay[0] = new Form(request, "optionalSteps");
+			optionalStepsDisplay[1] = new Form(request, "noOptionalSteps");
+		}else{
+			optionalStepsDisplay = new Object[optionalSteps.length + 1];
+			optionalStepsDisplay[0] = new Form(request, "optionalSteps");
+			for(int i = 0; i < optionalSteps.length; i++){
+				optionalStepsDisplay[i+1] = optionalSteps[i];
+			}
+		}
+
+		final Object[][] stepCategory = new Object[][] {
+				requiredStepsDisplay,
+				optionalStepsDisplay
+		};
 
 		//Add step categories as root items in the tree.
-		for (int i = 0; i < stepCategoryArray.length; i++) {
-			final String stepList = (String) (stepCategoryArray[i][0]);
+		for (int i = 0; i < stepCategory.length; i++) {
+			String stepList = ((Form) stepCategory[i][0]).getLabel();
 			menu.addItem(stepList);
-
-			if (stepCategoryArray[i].length == 1) {
+			if (stepCategory[i].length == 1) {
 				// The stepList has no steps so make it a leaf.
 				menu.setChildrenAllowed(stepList, false);
 			} else {
 				// Add children (step) under the stepList.
-				for (int j = 1; j < stepCategoryArray[i].length; j++) {
-					final String step = (String) stepCategoryArray[i][j];
-
+				for (int j = 1; j < stepCategory[i].length; j++) {
+					final String step = ((Form) stepCategory[i][j]).getLabel();
 					// Add the item as a regular item.
 					menu.addItem(step);
-
 					// Set it to be a child.
 					menu.setParent(step, stepList);
-
 					// Make the steps look like leaves.
 					menu.setChildrenAllowed(step, false);
 				}
-
 				// Expand the subtree.
 				//menu.expandItemsRecursively(stepList);
 			}
 		}
 
-
 		//manage nextButton
-		final int stepsHMSize = stepsHM.size();	
-		nextButton.addClickListener(new Button.ClickListener() {
-			@Override		
+		nextButton.addClickListener(new Button.ClickListener() {	
 			public void buttonClick(ClickEvent event) {
 				CustomComponent currentComponent = (CustomComponent)customComponentLayout.getComponent(0);
 				String nextStep;
 				int stepPosition = 0;
 				boolean isValid = false;
-				for (Map.Entry<String, CustomComponent> entry : stepsHM.entrySet()) {	
-					if (currentComponent.equals(entry.getValue())) {
-						String currentStep = entry.getKey();
-						for(int i = 0; i < stepsArray.length; i++){
-							if(stepsArray[i].equals(currentStep)){
-								stepPosition = i;
-							}
-						}
+				for (int i = 0; i < requiredSteps.length; i++) {	
+					if (currentComponent.equals(requiredSteps[i])) {
+						stepPosition = i;
 						isValid = customValidator.validate(currentComponent);
 					}
 				}
-				if (stepPosition < stepsHMSize - 1 && isValid){
-					nextStep = (String)stepsArray[stepPosition + 1];
+				int nextStepPosition;
+				if (stepPosition < requiredSteps.length - 1 && isValid){
+					nextStepPosition = stepPosition + 1;
 				}else{
-					nextStep = (String)stepsArray[stepPosition];
+					nextStepPosition = stepPosition;
 				}
+				nextStep = ((Form)requiredSteps[nextStepPosition]).getLabel();
 				menu.select(nextStep);	
 			}
 		});
 
 		//manage prevButton 
 		prevButton.addClickListener(new Button.ClickListener() {
-			@Override		
 			public void buttonClick(ClickEvent event) {
 				Component currentComponent = customComponentLayout.getComponent(0);
 				String prevStep;
 				int stepPosition = 0;
-				for (Map.Entry<String, CustomComponent> entry : stepsHM.entrySet()) {	
-					if (currentComponent.equals(entry.getValue())) {
-						String currentStep = entry.getKey();
-						for(int i = 0; i < stepsArray.length; i++){
-							if(stepsArray[i].equals(currentStep)){
-								stepPosition = i;
-							}
-						}
+				for (int i = 0; i < requiredSteps.length; i++) {	
+					if (currentComponent.equals(requiredSteps[i])) {
+						stepPosition = i;
 					}
 				}
+				int prevStepPosition = 0;
 				if (stepPosition - 1 > 0){
-					prevStep = (String)stepsArray[stepPosition - 1];
+					prevStepPosition = stepPosition - 1;
 				}else{
-					prevStep = (String)stepsArray[0];
+					prevStepPosition = 0;
 				}
-				CustomComponent prevComponent = stepsHM.get(prevStep);
+				prevStep = ((Form)requiredSteps[prevStepPosition]).getLabel();
+				CustomComponent prevComponent = requiredSteps[prevStepPosition];
 				prevComponent.setComponentError(null);
 				menu.select(prevStep);
 			}
@@ -282,51 +264,61 @@ public class MedinsUI extends UI {
 		//select an item from menu
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
-				CustomComponent tmpCustomComponent;
-				
+				CustomComponent tmpCustomComponent, customComponent, validationForm;
 				if (event.getProperty() != null &&
 						event.getProperty().getValue() != null){
 
 					detailsbox.removeAllComponents();
 
-					String value = event.getProperty().getValue().toString();					
-					tmpCustomComponent = stepsHM.get(value);	
-
-					if(tmpCustomComponent != null){
-						CustomComponent customComponent;
+					String value = event.getProperty().getValue().toString();	
+					
+					if (((Form)stepCategory[0][0]).getLabel().equals(value) || ((Form)stepCategory[1][0]).getLabel().equals(value)){
 						
-						buttonsLayout.removeAllComponents();
-						
-						if(value.equals(stepsArray[stepsArray.length - 1]))
-						{
-							customComponent = new ValidationForm(stepsHM, language);
-							buttonsLayout.addComponent(validateButton);
-						}else{
-							customComponent = tmpCustomComponent;
-							buttonsLayout.addComponent(prevButton);
-							buttonsLayout.addComponent(nextButton);	
-						}
-
-						//add stepTitleLayout
-						stepTitle.setValue(value);					
-						detailsbox.addComponent(stepTitleLayout);
-						detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
-
-						//add customComponentLayout
-						customComponent.setSizeUndefined();
-						customComponentLayout.removeAllComponents();
-						customComponentLayout.addComponent(customComponent);
-						customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
-						detailsbox.addComponent(customComponentLayout);
-						detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
-
-						//add buttonsLayout 
-						detailsbox.addComponent(buttonsLayout);
-						detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
-					}else{
 						Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
 						noStepSelected.addStyleName("stepTitle");
 						detailsbox.addComponent(noStepSelected);
+						
+					}else{
+						String stepLabel;
+						for(int i = 0;  i < requiredSteps.length; i++){
+							stepLabel = ((Form)requiredSteps[i]).getLabel();
+							if (stepLabel.equals(value)) {
+								tmpCustomComponent = requiredSteps[i];
+
+								buttonsLayout.removeAllComponents();
+
+								//this is the last step in the requiredSteps array
+								validationForm  = requiredSteps[requiredSteps.length - 1];
+								stepLabel = ((Form)validationForm).getLabel();
+								if(value.equals(stepLabel))
+								{	
+									((Form)validationForm).setObjectArray(requiredSteps);
+									customComponent = new ValidationForm((ValidationForm)validationForm);
+									buttonsLayout.addComponent(validateButton);
+								}else{
+									customComponent = tmpCustomComponent;
+									buttonsLayout.addComponent(prevButton);
+									buttonsLayout.addComponent(nextButton);	
+								}
+
+								//add stepTitleLayout
+								stepTitle.setValue(value);					
+								detailsbox.addComponent(stepTitleLayout);
+								detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
+
+								//add customComponentLayout
+								customComponent.setSizeUndefined();
+								customComponentLayout.removeAllComponents();
+								customComponentLayout.addComponent(customComponent);
+								customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
+								detailsbox.addComponent(customComponentLayout);
+								detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
+
+								//add buttonsLayout 
+								detailsbox.addComponent(buttonsLayout);
+								detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+							}
+						}	
 					}
 				}
 			}

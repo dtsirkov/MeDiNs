@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import property_pckg.ManageProperty;
+
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
@@ -20,52 +23,43 @@ import com.vaadin.ui.Layout;
 public class ValidationForm extends Form{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public ValidationForm(){}
 
-	public ValidationForm(HashMap<String, CustomComponent> stepsHM, String language) {
+	public ValidationForm(VaadinRequest request, String label){
+		super(request, label);
+	}
 
-		this.setLanguage(language);
-		
+	public ValidationForm(ValidationForm validationForm) {
+
+		super(validationForm);
 		this.setLayout(new VerticalLayout());
-
-		buildFormLayout(stepsHM);
-
+		this.buildFormLayout(validationForm.getObjectArray());
 		setCompositionRoot(this.getLayout());
 
 	}
 
-	private void buildFormLayout(HashMap<String, CustomComponent> stepsHM) {
+	private void buildFormLayout(Object[] objectArray) {
 
 		VerticalLayout verticalLayout = (VerticalLayout)this.getLayout();
 		verticalLayout.setImmediate(true);
 		verticalLayout.setSizeUndefined();
 		
-		Object [] tmpStepsArray = stepsHM.keySet().toArray();
-		Object [] stepsArray = new Object [tmpStepsArray.length];
-		for(int i = 0; i < tmpStepsArray.length; i++){
-			stepsArray[tmpStepsArray.length - i - 1] = tmpStepsArray[i];
-		}
-
-		String validationComponentTitle;
-		CustomComponent stepComponent;
-		for(int i = 0; i < stepsArray.length - 1; i++){
-			validationComponentTitle = (String)stepsArray[i];
-			stepComponent = (CustomComponent)stepsHM.get(validationComponentTitle);
-			addValidationComponent(stepComponent, validationComponentTitle);
+		for(int i = 0; i < objectArray.length - 1; i++){
+			addValidationComponent(objectArray[i]);
 		}
 
 	}
 
-	public void addValidationComponent(CustomComponent stepComponent, String validationComponentTitle){
+	public void addValidationComponent(Object object){
 
-		Layout componentLayout = ((CustomComponentIntrfc)stepComponent).getLayout();
+		Layout componentLayout = ((CustomComponentIntrfc)object).getLayout();
 
 		int componentCount = componentLayout.getComponentCount();
 		GridLayout grid = new GridLayout(1, componentCount + 1);
 		grid.setWidth("400px");
 
-		Label title = new Label(validationComponentTitle);
+		Label title = new Label(((Form)object).getLabel());
 		title.setStyleName("validationCompenentTitle");
 		title.setSizeUndefined();
 		grid.addComponent(title);
@@ -77,7 +71,7 @@ public class ValidationForm extends Form{
 		String caption, value;
 		Label captionLabel, valueLabel;
 		TextArea area;
-		
+
 		BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 		Graphics graphics = bufferedImage.getGraphics();
 		FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());

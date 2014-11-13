@@ -36,34 +36,27 @@ public class PersonForm extends Form{
 	private TextField persomMiddleNameTF;
 	private TextField personFirstNameTF;
 
-	public PersonForm(VaadinRequest request) {
-		
-		this.setDao((DaoIntrfc)request.getAttribute("dao"));
-		
-		String language = request.getLocale().getLanguage();
-		this.setLanguage(language);
-		
+	public PersonForm(VaadinRequest request, String label) {
+
+		super(request, label);
+
 		final Persons person = new Persons();	
 		Object[] objectArray = {person};
 		this.setObjectArray(objectArray);
-		
-		FormLayout formLayout = new FormLayout();
-		this.setLayout(formLayout);
-		
-		ComponentValidator componentValidator = new ComponentValidator(language);
-		this.setComponentValidator(componentValidator);
-		
+		this.setLayout(new FormLayout());
+		this.setComponentValidator(new ComponentValidator(this.getLanguage()));
+
 		buildFormLayout();
-		setCompositionRoot(formLayout);
-		
+		setCompositionRoot(this.getLayout());
+
 		//get access to DB
 		DaoIntrfc dao = this.getDao();
 
 		//get enumerations 
-		final Map<Enumerations, String> personTitleEnum = dao.getEnumeration("person title", language);
-		final Map<Enumerations, String> personSexEnum = dao.getEnumeration("person sex", language);
-		final Map<Enumerations, String> personRoleEnum = dao.getEnumeration("person role", language);
-		final Map<Enumerations, String> personJobTitleEnum = dao.getEnumeration("job title", language);
+		final Map<Enumerations, String> personTitleEnum = dao.getEnumeration("person title", this.getLanguage());
+		final Map<Enumerations, String> personSexEnum = dao.getEnumeration("person sex", this.getLanguage());
+		final Map<Enumerations, String> personRoleEnum = dao.getEnumeration("person role", this.getLanguage());
+		final Map<Enumerations, String> personJobTitleEnum = dao.getEnumeration("job title", this.getLanguage());
 
 		//add values in combo boxes
 		personTitleCB.addItems(personTitleEnum.values().toArray());		
@@ -232,7 +225,7 @@ public class PersonForm extends Form{
 	}
 
 	private Layout buildFormLayout() {	
-		
+
 		FormLayout formLayout = (FormLayout)this.getLayout();
 		ComponentValidator componentValidator = this.getComponentValidator();
 		String language = this.getLanguage();

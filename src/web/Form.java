@@ -1,6 +1,10 @@
 package web;
 
 import java.util.Iterator;
+
+import property_pckg.ManageProperty;
+
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
@@ -23,9 +27,17 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	private DaoIntrfc dao;
 	//language of the form
 	private String language;
+	//title/step of the form
+	private String label;
 	
 
 	public Form(){}
+	
+	public Form(VaadinRequest request, String title){
+		this.setDao((DaoIntrfc)request.getAttribute("dao"));
+		this.setLanguage(request.getLocale().getLanguage());	
+		this.setLabel(ManageProperty.getLabelDtl(title + "_" + this.getLanguage()));
+	}
 	
 	public Form(Object[] objectArray, Layout layout, ComponentValidator componentValidator){
 		this.setObjectArray(objectArray);
@@ -39,6 +51,8 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.setComponentValidator(form.getComponentValidator());
 		this.setValidated(this.isValidated());
 		this.setDao(this.getDao());
+		this.setLanguage(this.getLanguage());
+		this.setLabel(this.getLabel());
 	}
 
 	public Object[] getObjectArray(){
@@ -91,6 +105,14 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public void setReadOnly(boolean readOnly) {
