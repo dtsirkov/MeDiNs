@@ -8,6 +8,9 @@ import java.util.Iterator;
 
 import property_pckg.ManageProperty;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ReadOnlyStatusChangeEvent;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
@@ -16,6 +19,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Layout;
@@ -90,7 +94,6 @@ public class ValidationForm extends Form{
 			if (abstractComponent.getData() != null){
 				value = abstractComponent.getData().toString();                
 
-
 				int valueWidth = metrics.charsWidth(value.toCharArray(), 0, value.length());
 
 				//System.out.println(value);
@@ -109,15 +112,10 @@ public class ValidationForm extends Form{
 					panel.setContent(area);
 				}
 			}
-
 			grid.addComponent(panel);
 			grid.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
-
 		}
-
 		this.getLayout().addComponent(grid);
-
 	}
-
-
+	
 }
