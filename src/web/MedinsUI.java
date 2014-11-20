@@ -1,37 +1,27 @@
 package web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.annotation.WebServlet;
 
-import pojo_classes.Enumerations;
 import property_pckg.ManageProperty;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Property;
-import com.vaadin.data.Property.ReadOnlyStatusChangeEvent;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.server.Sizeable;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -192,9 +182,23 @@ public class MedinsUI extends UI {
 				optionalStepsDisplay
 		};
 
-		//enable through tree component selection of first required step 
+		//enable selection of initially validated steps
 		final ArrayList<String> validatedSteps = new ArrayList<String>();
 		validatedSteps.add(((Form)requiredSteps[0]).getLabel());
+		validatedSteps.add(((Form)requiredStepsDisplay[0]).getLabel());
+		for (int i = 0; i < optionalStepsDisplay.length; i++) {
+			validatedSteps.add(((Form)optionalStepsDisplay[i]).getLabel());
+		}
+
+		//create a list of required steps' labels 
+		final ArrayList<String> requiredStepsLabels = new ArrayList<String>();
+		for	(int i = 0; i < requiredSteps.length; i++){
+			requiredStepsLabels.add(((Form)requiredSteps[i]).getLabel());
+		}
+		//create a list of step categories' labels
+		final ArrayList<String> stepCategoryLabels = new ArrayList<String>();
+		stepCategoryLabels.add(((Form)requiredStepsDisplay[0]).getLabel());
+		stepCategoryLabels.add(((Form)optionalStepsDisplay[0]).getLabel());
 
 		//Add step categories as root items in the tree.
 		for (int i = 0; i < stepCategory.length; i++) {
@@ -219,118 +223,51 @@ public class MedinsUI extends UI {
 			}
 		}
 
-		/*
-        // Show all leaf nodes as disabled
-        menu.setItemStyleGenerator(new Tree.ItemStyleGenerator() {
-            private static final long serialVersionUID = -3801493951826750909L;
+		//colour validated and not validated steps
+		menu.addStyleName("validationStep");
+		Tree.ItemStyleGenerator itemStyleGenerator = new Tree.ItemStyleGenerator() {
+			private static final long serialVersionUID = -7016120138582433243L;
+			public String getStyle(Tree source, Object itemId) {
+				String itemLabel = itemId.toString();
+				String style = "notValidated";
+				if (stepCategoryLabels.contains(itemLabel)){
+					style =  "category";
+				} else if (validatedSteps.contains(itemLabel)){
+					style = "validated";
+				}
+				return style;
+			}
+		}; 
+		menu.setItemStyleGenerator(itemStyleGenerator);
 
-            public String getStyle(Tree source, Object itemId) {
-                if (! menu.hasChildren(itemId))
-                    return "disabled";
-                return null;
-            }
-
-        });
-		 */
-
-
+		//add warning message when not validated step is selected
 		menu.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-
+			private static final long serialVersionUID = 5548609446898735032L;
 			public void itemClick(ItemClickEvent event) {
-				String selectedItem;
-				//System.out.println("test ItemClickListener" + event.getButton().toString()); 
-				boolean validated = false, selected = false, change = false;
-				if (event.getButton().toString().equals("LEFT")){
-					selectedItem = event.getItemId().toString();
-					for (int i = 0; i < requiredSteps.length; i++) {	
-						selected = ((Form)requiredSteps[i]).getLabel().equals(selectedItem);
-						validated = ((Form)requiredSteps[i]).isValidated();
-						if (selected && validated) {
-							change = true;
-						}
-					}
-				}
-				if(change){
-					//menu.select(event.getItemId());
-					System.out.println(change);
-				}else{
-					if (customComponentLayout.getComponentCount() > 0){
-						Form currentComponent = (Form)customComponentLayout.getComponent(0);
-						String currentStep = currentComponent.getLabel();
-						//System.out.println(currentStep);
-						//menu.select(currentStep);
-						//menu.setValue(currentStep);
-						System.out.println(change);
-					}
-				}
-			}
-		});
-
-		//manage nextButton
-		nextButton.addClickListener(new Button.ClickListener() {	
-			public void buttonClick(ClickEvent event) {
-				CustomComponent currentComponent = (CustomComponent)customComponentLayout.getComponent(0);
-				String nextStep;
-				int stepPosition = 0;
-				boolean isValid = false;
-				for (int i = 0; i < requiredSteps.length; i++) {	
-					if (currentComponent.equals(requiredSteps[i])) {
-						stepPosition = i;
-						isValid = customValidator.validate(currentComponent);
-					}
-				}
-				int nextStepPosition;
-				if (stepPosition < requiredSteps.length - 1 && isValid){
-					((Form)currentComponent).setValidated(isValid);
-					nextStepPosition = stepPosition + 1;
-				}else{
-					nextStepPosition = stepPosition;
-				}
-				nextStep = ((Form)requiredSteps[nextStepPosition]).getLabel();
-				
-				if(isValid && !validatedSteps.contains(nextStep)){
-					validatedSteps.add(nextStep);
-				}
-				
-				menu.select(nextStep);	
-			}
-		});
-		menu.setImmediate(true);
-
-		//manage prevButton 
-		prevButton.addClickListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				Component currentComponent = customComponentLayout.getComponent(0);
-				String prevStep;
-				int stepPosition = 0;
-				for (int i = 0; i < requiredSteps.length; i++) {	
-					if (currentComponent.equals(requiredSteps[i])) {
-						stepPosition = i;
-					}
-				}
-				int prevStepPosition = 0;
-				if (stepPosition - 1 > 0){
-					prevStepPosition = stepPosition - 1;
-				}else{
-					prevStepPosition = 0;
-				}
-				prevStep = ((Form)requiredSteps[prevStepPosition]).getLabel();
-				CustomComponent prevComponent = requiredSteps[prevStepPosition];
-				prevComponent.setComponentError(null);
-				menu.select(prevStep);
+				String selectedItem = event.getItemId().toString();
+				if (requiredStepsLabels.contains(selectedItem) && !validatedSteps.contains(selectedItem))
+					Notification.show(ManageProperty.getLabelDtl("stepNotValidated" + "_" + language));
 			}
 		});
 
 		//select an item from menu
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
+			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
 				CustomComponent tmpCustomComponent, customComponent, validationForm;
-				if (event.getProperty() != null &&
-						event.getProperty().getValue() != null){
+				if (event.getProperty() != null && event.getProperty().getValue() != null){
 
 					String value = event.getProperty().getValue().toString();	
 
-					if (((Form)stepCategory[0][0]).getLabel().equals(value) || ((Form)stepCategory[1][0]).getLabel().equals(value)){
+					//manage selection of not validated step
+					if (!validatedSteps.contains(value)) 
+						menu.setValue(previous);
+					else
+						previous = menu.getValue();
+
+					//a category is selected 
+					if (((Form)stepCategory[0][0]).getLabel().equals(value) || 
+							((Form)stepCategory[1][0]).getLabel().equals(value)){
 
 						detailsbox.removeAllComponents();
 						Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
@@ -338,9 +275,11 @@ public class MedinsUI extends UI {
 						detailsbox.addComponent(noStepSelected);
 
 					}else{
+						//a step is selected
 						String stepLabel;
 						for(int i = 0;  i < requiredSteps.length; i++){
 							stepLabel = ((Form)requiredSteps[i]).getLabel();
+							//if the previous step is validated and the next step is reachable - add next step to detailsbox
 							if (stepLabel.equals(value) && validatedSteps.contains(((Form)requiredSteps[i]).getLabel())) {
 								tmpCustomComponent = requiredSteps[i];
 
@@ -381,6 +320,60 @@ public class MedinsUI extends UI {
 						}	
 					}
 				}
+			}
+		});
+
+		//manage nextButton
+		nextButton.addClickListener(new Button.ClickListener() {	
+			public void buttonClick(ClickEvent event) {
+				CustomComponent currentComponent = (CustomComponent)customComponentLayout.getComponent(0);
+				String nextStep;
+				int stepPosition = 0;
+				boolean isValid = false;
+				for (int i = 0; i < requiredSteps.length; i++) {	
+					if (currentComponent.equals(requiredSteps[i])) {
+						stepPosition = i;
+						isValid = customValidator.validate(currentComponent);
+					}
+				}
+				int nextStepPosition;
+				if (stepPosition < requiredSteps.length - 1 && isValid){
+					nextStepPosition = stepPosition + 1;
+				}else{
+					nextStepPosition = stepPosition;
+				}
+				nextStep = ((Form)requiredSteps[nextStepPosition]).getLabel();
+
+				if(isValid && !validatedSteps.contains(nextStep)){
+					validatedSteps.add(nextStep);
+					((Form)currentComponent).setValidated(isValid);
+				}
+
+				menu.select(nextStep);	
+			}
+		});
+
+		//manage prevButton 
+		prevButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Component currentComponent = customComponentLayout.getComponent(0);
+				String prevStep;
+				int stepPosition = 0;
+				for (int i = 0; i < requiredSteps.length; i++) {	
+					if (currentComponent.equals(requiredSteps[i])) {
+						stepPosition = i;
+					}
+				}
+				int prevStepPosition = 0;
+				if (stepPosition - 1 > 0){
+					prevStepPosition = stepPosition - 1;
+				}else{
+					prevStepPosition = 0;
+				}
+				prevStep = ((Form)requiredSteps[prevStepPosition]).getLabel();
+				CustomComponent prevComponent = requiredSteps[prevStepPosition];
+				prevComponent.setComponentError(null);
+				menu.select(prevStep);
 			}
 		});
 

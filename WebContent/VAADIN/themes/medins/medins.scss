@@ -113,6 +113,22 @@
 		background-color:yellow; !important;
 	}
 	
-	v-tree-node-treetest{}
+	.v-tree-validationStep .v-tree-node-caption-notValidated{
+	    font-weight: bold;
+	    font-size: 12pt;
+	    color: red;
+	}
+
+	.v-tree-validationStep .v-tree-node-caption-validated{
+	    font-weight: bold;
+	    font-size: 12pt;
+	    color: green;
+	}
+	
+	.v-tree-validationStep .v-tree-node-caption-category{
+	    font-weight: bold;
+	    font-size: 14pt;
+	    color: black;
+	}
   
 }
