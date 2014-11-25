@@ -3,23 +3,15 @@ package web;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Iterator;
 
-import property_pckg.ManageProperty;
-
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ReadOnlyStatusChangeEvent;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Layout;
@@ -31,31 +23,30 @@ public class ValidationForm extends Form{
 	public ValidationForm(){}
 
 	public ValidationForm(VaadinRequest request, String label){
-		super(request, label);
+		super(request, label, new VerticalLayout());
 	}
 
 	public ValidationForm(ValidationForm validationForm) {
 
 		super(validationForm);
-		this.setLayout(new VerticalLayout());
-		this.buildFormLayout(validationForm.getObjectArray());
-		setCompositionRoot(this.getLayout());
+		setLayout(new VerticalLayout());
+		
+		buildFormLayout(validationForm);
+		setCompositionRoot(getLayout());
 
 	}
 
-	private void buildFormLayout(Object[] objectArray) {
+	private void buildFormLayout(ValidationForm validationForm) {
 
-		VerticalLayout verticalLayout = (VerticalLayout)this.getLayout();
-		verticalLayout.setImmediate(true);
-		verticalLayout.setSizeUndefined();
+		getLayout().setSizeUndefined();
 		
-		for(int i = 0; i < objectArray.length - 1; i++){
-			addValidationComponent(objectArray[i]);
+		for(int i = 0; i < getObjectArray().length - 1; i++){
+			addValidationComponent(getObjectArray()[i]);
 		}
 
 	}
 
-	public void addValidationComponent(Object object){
+	private void addValidationComponent(Object object){
 
 		Layout componentLayout = ((CustomComponentIntrfc)object).getLayout();
 
@@ -63,11 +54,11 @@ public class ValidationForm extends Form{
 		GridLayout grid = new GridLayout(1, componentCount + 1);
 		grid.setWidth("400px");
 
-		Label title = new Label(((Form)object).getLabel());
-		title.setStyleName("validationCompenentTitle");
-		title.setSizeUndefined();
-		grid.addComponent(title);
-		grid.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		Label label = new Label(((Form)object).getLabel());
+		label.setStyleName("validationCompenentTitle");
+		label.setSizeUndefined();
+		grid.addComponent(label);
+		grid.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
 
 		Iterator<Component> iterator = componentLayout.iterator();
 		AbstractComponent abstractComponent;
@@ -111,6 +102,10 @@ public class ValidationForm extends Form{
 					area.setReadOnly(true);
 					panel.setContent(area);
 				}
+			}else{
+				valueLabel = new Label("-");
+				valueLabel.setSizeUndefined();
+				panel.setContent(valueLabel);
 			}
 			grid.addComponent(panel);
 			grid.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);

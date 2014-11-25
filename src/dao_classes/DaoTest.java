@@ -39,7 +39,7 @@ public class DaoTest {
 
 		//SEARCH PERSON TEST
 		System.out.println();
-		System.out.println("REATE PERSON");
+		System.out.println("CREATE PERSON");
 		Persons searchPerson = new Persons ();
 		searchPerson.setFirstName("Petko");
 

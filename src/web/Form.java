@@ -9,14 +9,13 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 
-import dao_classes.DaoImpl;
 import dao_classes.DaoIntrfc;
 
 public class Form extends CustomComponent implements CustomComponentIntrfc{
 
 	private static final long serialVersionUID = 1L;
 	//this is an array of objects that are behind the form
-	private Object[] objectArray;
+	private Object[] objectArray = new Object[]{};
 	//this is the layout of the form
 	private Layout layout;
 	//this is custom validator used to validate form components
@@ -27,23 +26,11 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	private DaoIntrfc dao;
 	//language of the form
 	private String language;
-	//title/step of the form
+	//label of the form
 	private String label;
 	
 
 	public Form(){}
-	
-	public Form(VaadinRequest request, String title){
-		this.setDao((DaoIntrfc)request.getAttribute("dao"));
-		this.setLanguage(request.getLocale().getLanguage());	
-		this.setLabel(ManageProperty.getLabelDtl(title + "_" + this.getLanguage()));
-	}
-	
-	public Form(Object[] objectArray, Layout layout, ComponentValidator componentValidator){
-		this.setObjectArray(objectArray);
-		this.setLayout(layout);
-		this.setComponentValidator(componentValidator);
-	}
 	
 	public Form(Form form){
 		this.setObjectArray(form.getObjectArray());
@@ -54,7 +41,29 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.setLanguage(this.getLanguage());
 		this.setLabel(this.getLabel());
 	}
-
+	
+	public Form(VaadinRequest request, String label){
+		this.setDao((DaoIntrfc)request.getAttribute("dao"));
+		this.setLanguage(request.getLocale().getLanguage());	
+		this.setLabel(ManageProperty.getLabelDtl(label + "_" + this.getLanguage()));
+	}
+	
+	public Form(VaadinRequest request, String label, Layout layout){
+		this.setDao((DaoIntrfc)request.getAttribute("dao"));
+		this.setLanguage(request.getLocale().getLanguage());	
+		this.setLabel(ManageProperty.getLabelDtl(label + "_" + this.getLanguage()));
+		this.setLayout(layout);
+		//((AbstractComponent) layout).setImmediate(true);
+		this.setComponentValidator(new ComponentValidator(this.getLanguage()));
+		//setCompositionRoot(layout);
+	}
+	
+	public Form(Object[] objectArray, Layout layout, ComponentValidator componentValidator){
+		this.setObjectArray(objectArray);
+		this.setLayout(layout);
+		this.setComponentValidator(componentValidator);
+	}
+	
 	public Object[] getObjectArray(){
 		return objectArray;
 	}
@@ -114,7 +123,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
+	
 	public void setReadOnly(boolean readOnly) {
 		Iterator<Component> layoutIterator = this.getLayout().iterator();
 		while(layoutIterator.hasNext()){

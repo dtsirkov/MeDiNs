@@ -147,6 +147,8 @@ public class MedinsUI extends UI {
 		DaoIntrfc dao = new DaoImpl();
 		request.setAttribute("dao", dao);
 
+		final String validationMethod = "createPerson";
+
 		//put required steps in array
 		final CustomComponent[] requiredSteps = {
 				new PersonForm(request, "stepCreatePerson"), 
@@ -374,6 +376,21 @@ public class MedinsUI extends UI {
 				CustomComponent prevComponent = requiredSteps[prevStepPosition];
 				prevComponent.setComponentError(null);
 				menu.select(prevStep);
+			}
+		});
+
+		//manage validateButton 
+		validateButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				ValidationClass validationClass = new ValidationClass(validationMethod, requiredSteps, optionalSteps);
+				detailsbox.removeAllComponents();
+				String validationResult = "not_validated";
+				if(validationClass.validate()){
+					validationResult = "validated";
+				}
+				Label noStepSelected = new Label(ManageProperty.getLabelDtl(validationResult + "_" + language));
+				noStepSelected.addStyleName("stepTitle");
+				detailsbox.addComponent(noStepSelected);
 			}
 		});
 
