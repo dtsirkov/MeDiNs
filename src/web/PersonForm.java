@@ -5,7 +5,7 @@ import java.util.Map;
 
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
-import property_pckg.ManageProperty;
+import property_pckg.PropertyManager;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -48,8 +48,8 @@ public class PersonForm extends Form{
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validater
 		ComponentValidator componentValidator = getComponentValidator();
-		//get language
-		String language = getLanguage();
+		//get propertyManager
+		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 		//get object that will be bind to the components
@@ -58,7 +58,7 @@ public class PersonForm extends Form{
 		String width = "180px", height = "-1px";
 		
 		// personTitleCB
-		personTitleCB = new ComboBox(ManageProperty.getLabelDtl("personTitle" + "_" + language));
+		personTitleCB = new ComboBox(propertyManager.getLabelDtl("personTitle"));
 		personTitleCB.setImmediate(true);
 		personTitleCB.setRequired(true);
 		personTitleCB.setWidth(width);
@@ -66,43 +66,43 @@ public class PersonForm extends Form{
 		formLayout.addComponent(personTitleCB);
 		
 		// personFirstNameTF
-		personFirstNameTF = new TextField(ManageProperty.getLabelDtl("personFirstName" + "_" + language));
+		personFirstNameTF = new TextField(propertyManager.getLabelDtl("personFirstName"));
 		personFirstNameTF.setImmediate(true);
-		personFirstNameTF.setInvalidAllowed(false);
 		personFirstNameTF.setRequired(true);
 		personFirstNameTF.setWidth(width);
 		personFirstNameTF.setHeight(height);
+		personFirstNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personFirstNameTF);
 
 		// persomMiddleNameTF
-		persomMiddleNameTF = new TextField(ManageProperty.getLabelDtl("personMiddleName" + "_" + language));
+		persomMiddleNameTF = new TextField(propertyManager.getLabelDtl("personMiddleName"));
 		persomMiddleNameTF.setImmediate(true);
-		persomMiddleNameTF.setInvalidAllowed(false);
 		persomMiddleNameTF.setWidth(width);
 		persomMiddleNameTF.setHeight(height);
+		persomMiddleNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(persomMiddleNameTF);
 
 		// personLastNameTF
-		personLastNameTF = new TextField(ManageProperty.getLabelDtl("personLastName" + "_" + language));
+		personLastNameTF = new TextField(propertyManager.getLabelDtl("personLastName"));
 		personLastNameTF.setImmediate(true);
-		personLastNameTF.setInvalidAllowed(false);
 		personLastNameTF.setRequired(true);
 		personLastNameTF.setWidth(width);
 		personLastNameTF.setHeight(height);
+		personLastNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personLastNameTF);
-
+		
 		// personSocialNumberTF
-		personSocialNumberTF = new TextField(ManageProperty.getLabelDtl("personSocialNumber" + "_" + language));
+		personSocialNumberTF = new TextField(propertyManager.getLabelDtl("personSocialNumber"));
 		personSocialNumberTF.setImmediate(true);
 		personSocialNumberTF.setRequired(true);
 		personSocialNumberTF.setWidth(width);
 		personSocialNumberTF.setHeight(height);
+		personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator("IncorrectSocialNumber"));
+		personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
 		formLayout.addComponent(personSocialNumberTF);
-		String socialNumberException = "IncorrectSocialNumber" + "_" + language;
-		personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator(socialNumberException));
-
+		
 		// personBirthDatePDF
-		personBirthDatePDF = new PopupDateField(ManageProperty.getLabelDtl("personBirthDate" + "_" + language));
+		personBirthDatePDF = new PopupDateField(propertyManager.getLabelDtl("personBirthDate"));
 		personBirthDatePDF.setImmediate(true);
 		personBirthDatePDF.setInvalidAllowed(false);
 		personBirthDatePDF.setRequired(true);
@@ -111,7 +111,7 @@ public class PersonForm extends Form{
 		formLayout.addComponent(personBirthDatePDF);
 
 		// personSexCB
-		personSexCB = new ComboBox(ManageProperty.getLabelDtl("personSex" + "_" + language));
+		personSexCB = new ComboBox(propertyManager.getLabelDtl("personSex"));
 		personSexCB.setImmediate(true);
 		personSexCB.setInvalidAllowed(false);
 		personSexCB.setRequired(true);
@@ -120,7 +120,7 @@ public class PersonForm extends Form{
 		formLayout.addComponent(personSexCB);
 
 		// personJobTitleCB
-		personJobTitleCB = new ComboBox(ManageProperty.getLabelDtl("personJobTitle" + "_" + language));
+		personJobTitleCB = new ComboBox(propertyManager.getLabelDtl("personJobTitle"));
 		personJobTitleCB.setImmediate(true);
 		personJobTitleCB.setInvalidAllowed(false);
 		personJobTitleCB.setRequired(true);
@@ -129,7 +129,7 @@ public class PersonForm extends Form{
 		formLayout.addComponent(personJobTitleCB);
 
 		// personRoleCB
-		personRoleCB = new ComboBox(ManageProperty.getLabelDtl("personRole" + "_" + language));
+		personRoleCB = new ComboBox(propertyManager.getLabelDtl("personRole"));
 		personRoleCB.setImmediate(true);
 		personRoleCB.setRequired(true);
 		personRoleCB.setWidth(width);
@@ -137,10 +137,10 @@ public class PersonForm extends Form{
 		formLayout.addComponent(personRoleCB);
 
 		//get enumerations 
-		final Map<Enumerations, String> personTitleEnum = dao.getEnumeration("person title", this.getLanguage());
-		final Map<Enumerations, String> personSexEnum = dao.getEnumeration("person sex", this.getLanguage());
-		final Map<Enumerations, String> personRoleEnum = dao.getEnumeration("person role", this.getLanguage());
-		final Map<Enumerations, String> personJobTitleEnum = dao.getEnumeration("job title", this.getLanguage());
+		final Map<Enumerations, String> personTitleEnum = dao.getEnumeration("person title");
+		final Map<Enumerations, String> personSexEnum = dao.getEnumeration("person sex");
+		final Map<Enumerations, String> personRoleEnum = dao.getEnumeration("person role");
+		final Map<Enumerations, String> personJobTitleEnum = dao.getEnumeration("job title");
 
 		//add values in combo boxes
 		personTitleCB.addItems(personTitleEnum.values().toArray());		

@@ -64,7 +64,7 @@ public class ValidationForm extends Form{
 		AbstractComponent abstractComponent;
 		Panel panel;
 		String caption, value;
-		Label captionLabel, valueLabel;
+		Label valueLabel;
 		TextArea area;
 
 		BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR_PRE);
@@ -76,8 +76,7 @@ public class ValidationForm extends Form{
 			abstractComponent = (AbstractComponent)iterator.next();
 
 			caption = abstractComponent.getCaption();
-			//System.out.println(caption);
-			captionLabel = new Label(caption);		
+			//System.out.println(caption);		
 			panel = new Panel(caption);
 			//panel.setWidth("400px");
 			panel.setStyleName("validation_panel");
@@ -88,7 +87,7 @@ public class ValidationForm extends Form{
 				int valueWidth = metrics.charsWidth(value.toCharArray(), 0, value.length());
 
 				//System.out.println(value);
-
+				
 				if (valueWidth < 400){
 					valueLabel = new Label(value);
 					valueLabel.setSizeUndefined();

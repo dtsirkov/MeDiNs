@@ -19,7 +19,7 @@ public class DaoTest {
 		System.out.println();
 		System.out.println("CREATE CONFIGURATION AND SESSION");
 
-		DaoImpl daoImpl = new DaoImpl();
+		DaoImpl daoImpl = new DaoImpl("EN");
 
 		//CREATE PERSON
 		System.out.println();
@@ -62,7 +62,7 @@ public class DaoTest {
 		System.out.println();
 		System.out.println("GET ENUMERATION CODE VALUE AND LABEL");
 
-		Map<Enumerations, String> jobTitleEnumLs = daoImpl.getEnumeration("job title", "EN");
+		Map<Enumerations, String> jobTitleEnumLs = daoImpl.getEnumeration("job title");
 
 		for (Map.Entry<Enumerations, String> entry : jobTitleEnumLs.entrySet()) {
 			Enumerations enumeration = entry.getKey();

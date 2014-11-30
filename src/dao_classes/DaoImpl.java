@@ -22,6 +22,7 @@ import pojo_classes.EnumerationLabels;
 import pojo_classes.EnumerationTypes;
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
+import property_pckg.PropertyManager;
 
 
 
@@ -41,9 +42,25 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	private static final Log log = LogFactory.getLog(DaoImpl.class);
 
 	private final Session session = (new SessionFactoryConfig()).getSession();
+	
+	private String language;
 
 	public Session getSession() {
 		return session;
+	}
+	
+	public DaoImpl(){}
+	
+	public DaoImpl(String language){
+		setLanguage(language);
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public void persist(Object transientInstance) {
@@ -175,7 +192,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		}
 	}
 
-	public Map<Enumerations, String> getEnumeration(String type, String language){
+	public Map<Enumerations, String> getEnumeration(String type){
 
 		Map<Enumerations, String> hmEnumerationEnumerationLabel = new HashMap<Enumerations, String>();
 

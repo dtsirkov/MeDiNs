@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
-import property_pckg.ManageProperty;
+import property_pckg.PropertyManager;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -41,9 +41,9 @@ public class MedinsUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-
-		final String language = request.getLocale().getLanguage();
-		final ComponentValidator customValidator = new ComponentValidator(language);
+		
+		final PropertyManager propertyManager = new PropertyManager(request);
+		final ComponentValidator customValidator = new ComponentValidator(propertyManager);
 
 		// Create the root layout (VerticalLayout is actually the default).
 		VerticalLayout root = new VerticalLayout();
@@ -55,7 +55,7 @@ public class MedinsUI extends UI {
 		titleBar.setWidth("100%");
 		root.addComponent(titleBar);
 
-		Label title = new Label(ManageProperty.getLabelDtl("personCreate" + "_" + language));
+		Label title = new Label(propertyManager.getLabelDtl("personCreate"));
 		title.addStyleName("title");
 		titleBar.addComponent(title);
 
@@ -69,7 +69,7 @@ public class MedinsUI extends UI {
 
 		// Layout for the menu area. Wrap the menu in a Panel to allow
 		// scrollbar.
-		Panel menuContainer = new Panel(ManageProperty.getLabelDtl("stepList" + "_" + language));
+		Panel menuContainer = new Panel(propertyManager.getLabelDtl("stepList"));
 		menuContainer.addStyleName("menucontainer");
 		menuContainer.addStyleName("light"); // No border
 		menuContainer.setWidth("-1px"); // Undefined width
@@ -84,7 +84,7 @@ public class MedinsUI extends UI {
 		menuContainer.setContent(menu);
 
 		// A panel for the main view area on the right side
-		Panel detailspanel = new Panel(ManageProperty.getLabelDtl("personCreateDetails" + "_" + language));
+		Panel detailspanel = new Panel(propertyManager.getLabelDtl("personCreateDetails"));
 		detailspanel.addStyleName("detailspanel");
 		detailspanel.addStyleName("light"); // No borders
 		detailspanel.setSizeFull();
@@ -102,7 +102,7 @@ public class MedinsUI extends UI {
 		detailsbox.setSizeUndefined();
 		detailsbox.setMargin(new MarginInfo(true, false, true, false));
 
-		final Label startActivity = new Label(ManageProperty.getLabelDtl("startActivity" + "_" + language));
+		final Label startActivity = new Label(propertyManager.getLabelDtl("startActivity"));
 		startActivity.addStyleName("stepTitle");
 		startActivity.setSizeUndefined(); 
 		detailsbox.addComponent(startActivity);
@@ -130,9 +130,9 @@ public class MedinsUI extends UI {
 		buttonsLayout.setSpacing(true);
 		buttonsLayout.setImmediate(true);
 
-		final Button prevButton = new Button(ManageProperty.getButtonDtl("prevButton" + "_" + language));
-		final Button nextButton = new Button(ManageProperty.getButtonDtl("nextButton" + "_" + language));
-		final Button validateButton = new Button(ManageProperty.getButtonDtl("validateButton" + "_" + language));
+		final Button prevButton = new Button(propertyManager.getButtonDtl("prevButton"));
+		final Button nextButton = new Button(propertyManager.getButtonDtl("nextButton"));
+		final Button validateButton = new Button(propertyManager.getButtonDtl("validateButton"));
 		buttonsLayout.addComponent(prevButton);
 		buttonsLayout.addComponent(nextButton);
 
@@ -144,8 +144,10 @@ public class MedinsUI extends UI {
 		//////////////////////////////////////////////////////
 		//Put in the application data and handle the UI logic
 
-		DaoIntrfc dao = new DaoImpl();
+		String language = propertyManager.getLanguage();
+		DaoIntrfc dao = new DaoImpl(language);
 		request.setAttribute("dao", dao);
+		request.setAttribute("propertyManager", propertyManager);
 
 		final String validationMethod = "createPerson";
 
@@ -225,8 +227,8 @@ public class MedinsUI extends UI {
 			}
 		}
 
-		//colour validated and not validated steps
-		menu.addStyleName("validationStep");
+		//colour validated, not validated steps and step categories
+		menu.addStyleName("stepStyle");
 		Tree.ItemStyleGenerator itemStyleGenerator = new Tree.ItemStyleGenerator() {
 			private static final long serialVersionUID = -7016120138582433243L;
 			public String getStyle(Tree source, Object itemId) {
@@ -248,7 +250,7 @@ public class MedinsUI extends UI {
 			public void itemClick(ItemClickEvent event) {
 				String selectedItem = event.getItemId().toString();
 				if (requiredStepsLabels.contains(selectedItem) && !validatedSteps.contains(selectedItem))
-					Notification.show(ManageProperty.getLabelDtl("stepNotValidated" + "_" + language));
+					Notification.show(propertyManager.getLabelDtl("stepNotValidated"));
 			}
 		});
 
@@ -272,7 +274,7 @@ public class MedinsUI extends UI {
 							((Form)stepCategory[1][0]).getLabel().equals(value)){
 
 						detailsbox.removeAllComponents();
-						Label noStepSelected = new Label(ManageProperty.getLabelDtl("noStepSelected" + "_" + language));
+						Label noStepSelected = new Label(propertyManager.getLabelDtl("noStepSelected"));
 						noStepSelected.addStyleName("stepTitle");
 						detailsbox.addComponent(noStepSelected);
 
@@ -335,7 +337,7 @@ public class MedinsUI extends UI {
 				for (int i = 0; i < requiredSteps.length; i++) {	
 					if (currentComponent.equals(requiredSteps[i])) {
 						stepPosition = i;
-						isValid = customValidator.validate(currentComponent);
+						isValid = customValidator.validate(currentComponent, "EmptyValueException");
 					}
 				}
 				int nextStepPosition;
@@ -383,14 +385,17 @@ public class MedinsUI extends UI {
 		validateButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				ValidationClass validationClass = new ValidationClass(validationMethod, requiredSteps, optionalSteps);
-				detailsbox.removeAllComponents();
 				String validationResult = "not_validated";
 				if(validationClass.validate()){
 					validationResult = "validated";
+					menu.expandItemsRecursively(((Form)requiredStepsDisplay[0]).getLabel());
+					menu.unselect(((Form)requiredStepsDisplay[requiredSteps.length]).getLabel());
+					menu.setReadOnly(true);
 				}
-				Label noStepSelected = new Label(ManageProperty.getLabelDtl(validationResult + "_" + language));
-				noStepSelected.addStyleName("stepTitle");
-				detailsbox.addComponent(noStepSelected);
+				detailsbox.removeAllComponents();
+				Label result = new Label(propertyManager.getLabelDtl(validationResult));
+				result.addStyleName("stepTitle");
+				detailsbox.addComponent(result);
 			}
 		});
 

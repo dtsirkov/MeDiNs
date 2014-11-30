@@ -2,7 +2,7 @@ package web;
 
 import java.util.Iterator;
 
-import property_pckg.ManageProperty;
+import property_pckg.PropertyManager;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
@@ -24,44 +24,48 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	private boolean validated = false;
 	//get access to DB
 	private DaoIntrfc dao;
-	//language of the form
-	private String language;
 	//label of the form
 	private String label;
+	//object that manages contents of Form labels
+	private PropertyManager propertyManager;
 	
 
 	public Form(){}
 	
 	public Form(Form form){
-		this.setObjectArray(form.getObjectArray());
-		this.setLayout(form.getLayout());
-		this.setComponentValidator(form.getComponentValidator());
-		this.setValidated(this.isValidated());
-		this.setDao(this.getDao());
-		this.setLanguage(this.getLanguage());
-		this.setLabel(this.getLabel());
+		setObjectArray(form.getObjectArray());
+		setLayout(form.getLayout());
+		setComponentValidator(form.getComponentValidator());
+		setValidated(form.isValidated());
+		setDao(form.getDao());
+		setLabel(form.getLabel());
+		setPropertyManager(form.getPropertyManager());
 	}
 	
 	public Form(VaadinRequest request, String label){
-		this.setDao((DaoIntrfc)request.getAttribute("dao"));
-		this.setLanguage(request.getLocale().getLanguage());	
-		this.setLabel(ManageProperty.getLabelDtl(label + "_" + this.getLanguage()));
+		setDao((DaoIntrfc)request.getAttribute("dao"));
+		setPropertyManager((PropertyManager)request.getAttribute("propertyManager"));
+		setLabel(propertyManager.getLabelDtl(label));
 	}
 	
 	public Form(VaadinRequest request, String label, Layout layout){
-		this.setDao((DaoIntrfc)request.getAttribute("dao"));
-		this.setLanguage(request.getLocale().getLanguage());	
-		this.setLabel(ManageProperty.getLabelDtl(label + "_" + this.getLanguage()));
-		this.setLayout(layout);
-		//((AbstractComponent) layout).setImmediate(true);
-		this.setComponentValidator(new ComponentValidator(this.getLanguage()));
-		//setCompositionRoot(layout);
+		setDao((DaoIntrfc)request.getAttribute("dao"));
+		setPropertyManager((PropertyManager)request.getAttribute("propertyManager"));
+		setLabel(propertyManager.getLabelDtl(label));
+		setLayout(layout);
+		setComponentValidator(new ComponentValidator(getPropertyManager()));
 	}
 	
 	public Form(Object[] objectArray, Layout layout, ComponentValidator componentValidator){
-		this.setObjectArray(objectArray);
-		this.setLayout(layout);
-		this.setComponentValidator(componentValidator);
+		setObjectArray(objectArray);
+		setLayout(layout);
+		setComponentValidator(componentValidator);
+	}
+	
+	public Form(DaoIntrfc dao, PropertyManager propertyManager, String label){
+		setDao(dao);
+		setPropertyManager(propertyManager);
+		setLabel(label);
 	}
 	
 	public Object[] getObjectArray(){
@@ -108,14 +112,6 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.dao = dao;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
 	public String getLabel() {
 		return label;
 	}
@@ -124,6 +120,14 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.label = label;
 	}
 	
+	public PropertyManager getPropertyManager() {
+		return propertyManager;
+	}
+
+	public void setPropertyManager(PropertyManager propertyManager) {
+		this.propertyManager = propertyManager;
+	}
+
 	public void setReadOnly(boolean readOnly) {
 		Iterator<Component> layoutIterator = this.getLayout().iterator();
 		while(layoutIterator.hasNext()){

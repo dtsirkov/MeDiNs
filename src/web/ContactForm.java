@@ -4,7 +4,7 @@ import java.util.Map;
 
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
-import property_pckg.ManageProperty;
+import property_pckg.PropertyManager;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -50,8 +50,8 @@ public class ContactForm extends Form{
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validater
 		ComponentValidator componentValidator = getComponentValidator();
-		//get language
-		String language = getLanguage();
+		//get propertyManager
+		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 		//get object that will be bind to the components
@@ -60,7 +60,7 @@ public class ContactForm extends Form{
 		String width = "180px", height = "-1px";
 
 		// addressTF
-		addressTF = new TextField(ManageProperty.getLabelDtl("address" + "_" + language));
+		addressTF = new TextField(propertyManager.getLabelDtl("address"));
 		addressTF.setImmediate(true);
 		addressTF.setRequired(true);
 		addressTF.setWidth(width);
@@ -68,25 +68,23 @@ public class ContactForm extends Form{
 		formLayout.addComponent(addressTF);
 
 		// zipCodeTF
-		zipCodeTF = new TextField(ManageProperty.getLabelDtl("zip" + "_" + language));
+		zipCodeTF = new TextField(propertyManager.getLabelDtl("zip"));
 		zipCodeTF.setImmediate(true);
-		zipCodeTF.setInvalidAllowed(false);
 		zipCodeTF.setRequired(true);
 		zipCodeTF.setWidth(width);
 		zipCodeTF.setHeight(height);
 		formLayout.addComponent(zipCodeTF);
 
 		// cityTF
-		cityTF = new TextField(ManageProperty.getLabelDtl("city" + "_" + language));
+		cityTF = new TextField(propertyManager.getLabelDtl("city"));
 		cityTF.setImmediate(true);
-		cityTF.setInvalidAllowed(false);
 		cityTF.setRequired(true);
 		cityTF.setWidth(width);
 		cityTF.setHeight(height);
 		formLayout.addComponent(cityTF);		
 
 		// countryCB
-		countryCB = new ComboBox(ManageProperty.getLabelDtl("country" + "_" + language));
+		countryCB = new ComboBox(propertyManager.getLabelDtl("country"));
 		countryCB.setImmediate(true);
 		countryCB.setRequired(true);
 		countryCB.setWidth(width);
@@ -94,9 +92,8 @@ public class ContactForm extends Form{
 		formLayout.addComponent(countryCB);
 
 		// phoneTF
-		phoneTF = new TextField(ManageProperty.getLabelDtl("phone" + "_" + language));
+		phoneTF = new TextField(propertyManager.getLabelDtl("phone"));
 		phoneTF.setImmediate(true);
-		phoneTF.setInvalidAllowed(false);
 		phoneTF.setRequired(true);
 		phoneTF.setWidth(width);
 		phoneTF.setHeight(height);
@@ -104,33 +101,30 @@ public class ContactForm extends Form{
 
 
 		// mobileTF
-		mobileTF = new TextField(ManageProperty.getLabelDtl("mobile" + "_" + language));
+		mobileTF = new TextField(propertyManager.getLabelDtl("mobile"));
 		mobileTF.setImmediate(true);
-		mobileTF.setInvalidAllowed(false);
 		mobileTF.setWidth(width);
 		mobileTF.setHeight(height);
 		formLayout.addComponent(mobileTF);
 
 		// emailTF
-		emailTF = new TextField(ManageProperty.getLabelDtl("email" + "_" + language));
+		emailTF = new TextField(propertyManager.getLabelDtl("email"));
 		emailTF.setImmediate(true);
-		emailTF.setInvalidAllowed(false);
 		emailTF.setRequired(true);
 		emailTF.setWidth(width);
 		emailTF.setHeight(height);
 		formLayout.addComponent(emailTF);
 
 		// typeCB
-		typeCB = new ComboBox(ManageProperty.getLabelDtl("contactType" + "_" + language));
+		typeCB = new ComboBox(propertyManager.getLabelDtl("contactType"));
 		typeCB.setImmediate(true);
-		typeCB.setInvalidAllowed(false);
 		typeCB.setRequired(true);
 		typeCB.setWidth(width);
 		typeCB.setHeight(height);
 		formLayout.addComponent(typeCB);
 
 		// preferedCB
-		preferedCB = new ComboBox(ManageProperty.getLabelDtl("preferedContact" + "_" + language));
+		preferedCB = new ComboBox(propertyManager.getLabelDtl("preferedContact"));
 		preferedCB.setImmediate(true);
 		preferedCB.setRequired(true);
 		preferedCB.setWidth(width);
@@ -138,19 +132,18 @@ public class ContactForm extends Form{
 		formLayout.addComponent(preferedCB);
 		
 		// activeCB
-		activeCB = new ComboBox(ManageProperty.getLabelDtl("activeContact" + "_" + language));
+		activeCB = new ComboBox(propertyManager.getLabelDtl("activeContact"));
 		activeCB.setImmediate(true);
-		activeCB.setInvalidAllowed(false);
 		activeCB.setWidth(width);
 		activeCB.setHeight(height);
 		activeCB.setEnabled(false);
 		formLayout.addComponent(activeCB);
 		
 		//get enumerations 
-		final Map<Enumerations, String> countryEnum = dao.getEnumeration("country", this.getLanguage());
-		final Map<Enumerations, String> contactTypeEnum = dao.getEnumeration("contact type", this.getLanguage());
-		final Map<Enumerations, String> contactActiveEnum = dao.getEnumeration("yes no", this.getLanguage());
-		final Map<Enumerations, String> contactPreferedEnum = dao.getEnumeration("yes no", this.getLanguage());
+		final Map<Enumerations, String> countryEnum = dao.getEnumeration("country");
+		final Map<Enumerations, String> contactTypeEnum = dao.getEnumeration("contact type");
+		final Map<Enumerations, String> contactActiveEnum = dao.getEnumeration("yes no");
+		final Map<Enumerations, String> contactPreferedEnum = dao.getEnumeration("yes no");
 		
 		//add values in combo boxes
 		countryCB.addItems(countryEnum.values().toArray());		
