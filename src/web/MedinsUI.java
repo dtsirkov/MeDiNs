@@ -41,7 +41,7 @@ public class MedinsUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		
+
 		final PropertyManager propertyManager = new PropertyManager(request);
 		final ComponentValidator customValidator = new ComponentValidator(propertyManager);
 
@@ -145,11 +145,12 @@ public class MedinsUI extends UI {
 		//Put in the application data and handle the UI logic
 
 		String language = propertyManager.getLanguage();
-		DaoIntrfc dao = new DaoImpl(language);
+		final DaoIntrfc dao = new DaoImpl(language);
 		request.setAttribute("dao", dao);
 		request.setAttribute("propertyManager", propertyManager);
 
-		final String validationMethod = "createPerson";
+		final String validationMethod = "validatePerson";
+		final String mode = "no_update";
 
 		//put required steps in array
 		final CustomComponent[] requiredSteps = {
@@ -157,6 +158,27 @@ public class MedinsUI extends UI {
 				new ContactForm(request, "stepCreateContact"), 
 				new ValidationForm(request, "stepValidate")
 		};
+
+		/*
+		Persons person = (Persons)dao.findById("Persons", "411515");
+		requiredSteps[0].setData(person);
+
+		Map<Object, List<Object>> hmPerson = new HashMap<Object, List<Object>>();
+		List<Object> personsLs = new ArrayList<Object>();
+		personsLs.add(person);
+		hmPerson.put("persons", personsLs);
+		List<Object> personAddressLinks = dao.findByExample(new PersonContactLink(), hmPerson);
+
+		Enumerations enumeration;
+		Contacts contact;
+		for(Object personAddressLink : personAddressLinks){
+			contact = ((PersonContactLink) personAddressLink).getContacts();
+			enumeration = contact.getEnumerationsByActive();
+			if(enumeration.getCode().equals("yes")){
+				requiredSteps[1].setData(contact);
+			}
+		}
+		*/
 
 		final Object [] requiredStepsDisplay = new Object[requiredSteps.length + 1];	
 		requiredStepsDisplay[0] = new Form(request, "requiredSteps");
@@ -295,7 +317,7 @@ public class MedinsUI extends UI {
 								stepLabel = ((Form)validationForm).getLabel();
 								if(value.equals(stepLabel))
 								{	
-									((Form)validationForm).setObjectArray(requiredSteps);
+									validationForm.setData(requiredSteps);
 									customComponent = new ValidationForm((ValidationForm)validationForm);
 									buttonsLayout.addComponent(validateButton);
 								}else{
@@ -303,6 +325,7 @@ public class MedinsUI extends UI {
 									buttonsLayout.addComponent(prevButton);
 									buttonsLayout.addComponent(nextButton);	
 								}
+								((Form)customComponent).buildFormLayout(mode);
 
 								//add stepTitleLayout
 								stepTitle.setValue(value);					
@@ -385,13 +408,16 @@ public class MedinsUI extends UI {
 		validateButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				ValidationClass validationClass = new ValidationClass(validationMethod, requiredSteps, optionalSteps);
+				validationClass.setDao(dao);
 				String validationResult = "not_validated";
-				if(validationClass.validate()){
+				if(validationClass.validate(mode)){
 					validationResult = "validated";
-					menu.expandItemsRecursively(((Form)requiredStepsDisplay[0]).getLabel());
-					menu.unselect(((Form)requiredStepsDisplay[requiredSteps.length]).getLabel());
-					menu.setReadOnly(true);
+				}else{
+					validatedSteps.remove(((Form)requiredSteps[requiredSteps.length-1]).getLabel());
 				}
+				menu.expandItemsRecursively(((Form)requiredStepsDisplay[0]).getLabel());
+				menu.unselect(((Form)requiredStepsDisplay[requiredSteps.length]).getLabel());
+				menu.setReadOnly(true);
 				detailsbox.removeAllComponents();
 				Label result = new Label(propertyManager.getLabelDtl(validationResult));
 				result.addStyleName("stepTitle");

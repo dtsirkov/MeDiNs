@@ -4,6 +4,7 @@ import java.util.Map;
 
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
+import pojo_classes.Persons;
 import property_pckg.PropertyManager;
 
 import com.vaadin.data.Property;
@@ -36,15 +37,11 @@ public class ContactForm extends Form{
 	public ContactForm(VaadinRequest request, String label) {
 
 		super(request, label, new FormLayout());
-		Object[] objectArray = {new Contacts()};
-		setObjectArray(objectArray);
-		
-		buildFormLayout();
 		setCompositionRoot(getLayout());
 
 	}
 
-	private Layout buildFormLayout() {
+	public Layout buildFormLayout(String mode) {
 
 		//gem main layout
 		FormLayout formLayout = (FormLayout)getLayout();
@@ -54,8 +51,31 @@ public class ContactForm extends Form{
 		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		DaoIntrfc dao = getDao();	
+
 		//get object that will be bind to the components
-		final Contacts contact = (Contacts)getObjectArray()[0];
+		final Contacts contact;
+		if(mode.equals("update")){
+			contact = (Contacts)getData();
+		}else{
+			if(getData() == null){
+				contact = new Contacts();
+				//set initial values
+				contact.setAddress("");
+				contact.setCity("");
+				contact.setCountry("");
+				contact.setZip("");
+				contact.setEmail("");
+				contact.setPhone("");
+				contact.setMobile("");
+				setData(contact);
+			}else{
+				contact = (Contacts)getData();
+			}
+		}
+
+		//remove all current components
+		formLayout.removeAllComponents();
+
 		//define measurements of the components 
 		String width = "180px", height = "-1px";
 
@@ -130,47 +150,25 @@ public class ContactForm extends Form{
 		preferedCB.setWidth(width);
 		preferedCB.setHeight(height);
 		formLayout.addComponent(preferedCB);
-		
+
 		// activeCB
 		activeCB = new ComboBox(propertyManager.getLabelDtl("activeContact"));
 		activeCB.setImmediate(true);
 		activeCB.setWidth(width);
 		activeCB.setHeight(height);
-		activeCB.setEnabled(false);
 		formLayout.addComponent(activeCB);
-		
+
 		//get enumerations 
 		final Map<Enumerations, String> countryEnum = dao.getEnumeration("country");
 		final Map<Enumerations, String> contactTypeEnum = dao.getEnumeration("contact type");
 		final Map<Enumerations, String> contactActiveEnum = dao.getEnumeration("yes no");
 		final Map<Enumerations, String> contactPreferedEnum = dao.getEnumeration("yes no");
-		
+
 		//add values in combo boxes
 		countryCB.addItems(countryEnum.values().toArray());		
 		typeCB.addItems(contactTypeEnum.values().toArray());		
 		activeCB.addItems(contactActiveEnum.values().toArray());	
 		preferedCB.addItems(contactPreferedEnum.values().toArray());
-		
-		//set initial values
-		contact.setAddress("");
-		contact.setCity("");
-		contact.setCountry("");
-		contact.setZip("");
-		contact.setEmail("");
-		contact.setPhone("");
-		contact.setMobile("");
-		
-		//bind data
-		addressTF.setValue(contact.getAddress());
-		zipCodeTF.setValue(contact.getZip());
-		cityTF.setValue(contact.getCity());
-		countryCB.setValue(contact.getCountry());
-		phoneTF.setValue(contact.getPhone());
-		mobileTF.setValue(contact.getMobile());
-		emailTF.setValue(contact.getEmail());
-		typeCB.setValue(contact.getEnumerationsByType());
-		preferedCB.setValue(contact.getEnumerationsByPrefered());
-		activeCB.setValue(contact.getEnumerationsByActive());
 
 		//add listeners
 		addressTF.addValueChangeListener(
@@ -266,7 +264,7 @@ public class ContactForm extends Form{
 						typeCB.setComponentError(null);
 					}
 				});
-		
+
 
 		preferedCB.addValueChangeListener(
 				new Property.ValueChangeListener() {
@@ -284,18 +282,63 @@ public class ContactForm extends Form{
 						preferedCB.setComponentError(null);
 					}
 				});
-		
-		String codeValue = "yes";
-		String value = "";
-		for (Map.Entry<Enumerations, String> entry : contactActiveEnum.entrySet()) {		
-			if (codeValue.equals(entry.getKey().getCode())) {
-				value = (String)entry.getValue();
-				contact.setEnumerationsByActive(entry.getKey());
-				activeCB.setData(codeValue);
-				activeCB.setComponentError(null);
+
+		if(mode.equals("update")){
+			//activeCB.setEnabled(true);
+			activeCB.setReadOnly(false);
+			activeCB.setRequired(true);
+			activeCB.addValueChangeListener(
+					new Property.ValueChangeListener() {
+						private static final long serialVersionUID = 1L;
+						public void valueChange(ValueChangeEvent event) {
+							String value = event.getProperty().getValue().toString();
+							Enumerations enumeration = new Enumerations();
+							for (Map.Entry<Enumerations, String> entry : contactPreferedEnum.entrySet()) {		
+								if (value.equals(entry.getValue())) {
+									enumeration = (Enumerations)entry.getKey();
+								}		
+							}
+							contact.setEnumerationsByActive(enumeration);
+							activeCB.setData(event.getProperty().getValue().toString());
+							activeCB.setComponentError(null);
+						}
+					});
+		}else{
+			String codeValue = "yes";
+			String value = "";
+			for (Map.Entry<Enumerations, String> entry : contactActiveEnum.entrySet()) {		
+				if (codeValue.equals(entry.getKey().getCode())) {
+					value = (String)entry.getValue();
+					contact.setEnumerationsByActive(entry.getKey());
+					activeCB.setData(value);
+					activeCB.setComponentError(null);
+				}		
+			}
+			activeCB.select(value);
+			activeCB.setReadOnly(true);
+		}
+
+		//if mode is equal to "update" display selected value
+		for (Map.Entry<Enumerations, String> entry : countryEnum.entrySet()) {		
+			if (contact.getCountry().equals(entry.getKey().getCode())) {
+				activeCB.select((String)entry.getValue());
 			}		
 		}
-		activeCB.select(value);
+		typeCB.select(contactTypeEnum.get(contact.getEnumerationsByType()));
+		activeCB.select(contactActiveEnum.get(contact.getEnumerationsByActive()));
+		preferedCB.select(contactPreferedEnum.get(contact.getEnumerationsByPrefered()));
+
+		//bind data
+		addressTF.setValue(contact.getAddress());
+		zipCodeTF.setValue(contact.getZip());
+		cityTF.setValue(contact.getCity());
+		countryCB.setValue(contact.getCountry());
+		phoneTF.setValue(contact.getPhone());
+		mobileTF.setValue(contact.getMobile());
+		emailTF.setValue(contact.getEmail());
+		typeCB.setValue(contact.getEnumerationsByType());
+		preferedCB.setValue(contact.getEnumerationsByPrefered());
+		activeCB.setValue(contact.getEnumerationsByActive());
 
 		return formLayout;
 	}

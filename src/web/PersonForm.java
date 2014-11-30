@@ -34,16 +34,12 @@ public class PersonForm extends Form{
 	public PersonForm(VaadinRequest request, String label) {
 
 		super(request, label, new FormLayout());
-		Object[] objectArray = {new Persons()};
-		setObjectArray(objectArray);
-		
-		buildFormLayout();
 		setCompositionRoot(getLayout());
 
 	}
 
-	private Layout buildFormLayout() {	
-		
+	public Layout buildFormLayout(String mode) {	
+
 		//gem main layout
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validater
@@ -52,11 +48,31 @@ public class PersonForm extends Form{
 		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		DaoIntrfc dao = getDao();	
+
 		//get object that will be bind to the components
-		final Persons person = (Persons)getObjectArray()[0];
+		final Persons person;
+		if(mode.equals("update")){
+			person = (Persons)getData();
+		}else{
+			if(getData() == null){
+				person = new Persons();
+				//set initial values
+				person.setSocialNumber("");
+				person.setFirstName("");
+				person.setMiddleName("");
+				person.setLastName("");
+				setData(person);
+			}else{
+				person = (Persons)getData();
+			}
+		}
+
+		//remove all current components
+		formLayout.removeAllComponents();
+
 		//define measurements of the components 
 		String width = "180px", height = "-1px";
-		
+
 		// personTitleCB
 		personTitleCB = new ComboBox(propertyManager.getLabelDtl("personTitle"));
 		personTitleCB.setImmediate(true);
@@ -64,7 +80,7 @@ public class PersonForm extends Form{
 		personTitleCB.setWidth(width);
 		personTitleCB.setHeight(height);
 		formLayout.addComponent(personTitleCB);
-		
+
 		// personFirstNameTF
 		personFirstNameTF = new TextField(propertyManager.getLabelDtl("personFirstName"));
 		personFirstNameTF.setImmediate(true);
@@ -90,17 +106,15 @@ public class PersonForm extends Form{
 		personLastNameTF.setHeight(height);
 		personLastNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personLastNameTF);
-		
+
 		// personSocialNumberTF
 		personSocialNumberTF = new TextField(propertyManager.getLabelDtl("personSocialNumber"));
 		personSocialNumberTF.setImmediate(true);
 		personSocialNumberTF.setRequired(true);
 		personSocialNumberTF.setWidth(width);
 		personSocialNumberTF.setHeight(height);
-		personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator("IncorrectSocialNumber"));
-		personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
 		formLayout.addComponent(personSocialNumberTF);
-		
+
 		// personBirthDatePDF
 		personBirthDatePDF = new PopupDateField(propertyManager.getLabelDtl("personBirthDate"));
 		personBirthDatePDF.setImmediate(true);
@@ -143,27 +157,10 @@ public class PersonForm extends Form{
 		final Map<Enumerations, String> personJobTitleEnum = dao.getEnumeration("job title");
 
 		//add values in combo boxes
-		personTitleCB.addItems(personTitleEnum.values().toArray());		
+		personTitleCB.addItems(personTitleEnum.values().toArray());	
 		personSexCB.addItems(personSexEnum.values().toArray());		
 		personRoleCB.addItems(personRoleEnum.values().toArray());	
 		personJobTitleCB.addItems(personJobTitleEnum.values().toArray());
-
-		//set initial values
-		person.setSocialNumber("");
-		person.setFirstName("");
-		person.setMiddleName("");
-		person.setLastName("");
-
-		//bind data
-		personSocialNumberTF.setValue(person.getSocialNumber());
-		personFirstNameTF.setValue(person.getFirstName());
-		persomMiddleNameTF.setValue(person.getMiddleName());
-		personLastNameTF.setValue(person.getLastName());
-		personBirthDatePDF.setValue(person.getBirthDate());
-		personSexCB.setValue(person.getEnumerationsBySex());
-		personJobTitleCB.setValue(person.getEnumerationsByJobTitle());
-		personRoleCB.setValue(person.getEnumerationsByRole());
-		personTitleCB.setValue(person.getEnumerationsByTitle());
 
 		//add listeners
 		personSocialNumberTF.addValueChangeListener(
@@ -291,6 +288,31 @@ public class PersonForm extends Form{
 						}
 					}
 				});
+
+		//if mode is equal to "update" display selected value
+		personTitleCB.select(personTitleEnum.get(person.getEnumerationsByTitle()));
+		personSexCB.select(personSexEnum.get(person.getEnumerationsBySex()));
+		personRoleCB.select(personRoleEnum.get(person.getEnumerationsByRole()));
+		personJobTitleCB.select(personJobTitleEnum.get(person.getEnumerationsByJobTitle()));
+
+		//bind data
+		personSocialNumberTF.setValue(person.getSocialNumber());
+		personFirstNameTF.setValue(person.getFirstName());
+		persomMiddleNameTF.setValue(person.getMiddleName());
+		personLastNameTF.setValue(person.getLastName());
+		personBirthDatePDF.setValue(person.getBirthDate());
+		personSexCB.setValue(person.getEnumerationsBySex());
+		personJobTitleCB.setValue(person.getEnumerationsByJobTitle());
+		personRoleCB.setValue(person.getEnumerationsByRole());
+		personTitleCB.setValue(person.getEnumerationsByTitle());
+
+		if (mode.equals("update")){
+			personSocialNumberTF.setData(person.getSocialNumber());
+			personSocialNumberTF.setReadOnly(true);
+		}else{
+			personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator("IncorrectSocialNumber"));
+			personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
+		}
 
 		return formLayout;
 	}

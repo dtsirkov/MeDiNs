@@ -8,17 +8,18 @@ import dao_classes.DaoIntrfc;
 
 public class ValidationClass {
 
-	boolean isValidated = false;
-	String validationMethod;
-	CustomComponent[] requiredSteps;
-	CustomComponent[] optionalSteps;
+	private boolean isValidated = false;
+	private String validationMethod;
+	private DaoIntrfc dao;
+	private CustomComponent[] requiredSteps;
+	private CustomComponent[] optionalSteps;
 
 	public ValidationClass(String validationMethod, CustomComponent[] requiredSteps, CustomComponent[] optionalSteps){
-		
+
 		setValidationMethod(validationMethod);
 		setRequiredSteps(requiredSteps);
 		setOptionalSteps(optionalSteps);
-		
+
 	}
 
 	public boolean isValidated() {
@@ -38,6 +39,14 @@ public class ValidationClass {
 		this.validationMethod = validationMethod;
 	}
 
+	public DaoIntrfc getDao() {
+		return dao;
+	}
+
+	public void setDao(DaoIntrfc dao) {
+		this.dao = dao;
+	}
+
 	public CustomComponent[] getRequiredSteps() {
 		return requiredSteps;
 	}
@@ -54,30 +63,43 @@ public class ValidationClass {
 		this.optionalSteps = optionalSteps;
 	}
 
-	public boolean validate(){
-		if(this.getValidationMethod().equals("createPerson")){
-			return createPerson();
+	public boolean validate(String mode){
+		if(this.getValidationMethod().equals("validatePerson")){
+			return validatePerson(mode);
 		}
 		return isValidated();
 	}
 
-	private boolean createPerson(){		
+	private boolean validatePerson(String mode){		
 		try{
 
-			Persons person = (Persons)((Form)getRequiredSteps()[0]).getObjectArray()[0];
-			Contacts contact = (Contacts)((Form)getRequiredSteps()[1]).getObjectArray()[0];
+			Persons person = (Persons)((Form)getRequiredSteps()[0]).getData();
+			Contacts contact = (Contacts)((Form)getRequiredSteps()[1]).getData();
 			PersonContactLink personContactLink = new PersonContactLink(person, contact);
 
-			DaoIntrfc dao = ((Form)getRequiredSteps()[0]).getDao();
+			Object[] objectsToCreate  = {
+					person,
+					contact, 
+					personContactLink
+			};
 
-			dao.persist(person);
-			dao.persist(contact);
-			dao.persist(personContactLink);
+			Object[] objectsToUpdate  = {
+					person,
+					contact
+			};
 
+			Object[] objects;
+			if(mode.equals("update")){
+				objects = objectsToUpdate;
+			}else{
+				objects = objectsToCreate;
+			}
+			dao.persist(objects);
 			setValidated(true);
 
-		}catch(Exception e){}
-
+		}catch(Exception e){
+			System.out.println("Error in personValidateMethod");
+		}
 		return isValidated();
 	}
 

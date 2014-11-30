@@ -89,6 +89,17 @@ public class DaoTest {
 			System.out.println(((PersonContactLink) link).getPersons().getFirstName());
 
 		}
+		
+		Persons foundPerson = (Persons)daoImpl.findById("Persons", "411515");
+		Map<Object, List<Object>> hmPerson = new HashMap<Object, List<Object>>();
+		List<Object> personsLs = new ArrayList<Object>();
+		personsLs.add(foundPerson);
+		hmPerson.put("persons", personsLs);
+		List<Object> personAddressLinks = daoImpl.findByExample(new PersonContactLink(), hmPerson);
+		for(Object personAddressLink : personAddressLinks){
+			System.out.println(((PersonContactLink) personAddressLink).getContacts().getAddress());
+		}
+		
 
 		/*	
 	((Persons) merge).setFirstName("Petko");

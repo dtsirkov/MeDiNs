@@ -14,8 +14,6 @@ import dao_classes.DaoIntrfc;
 public class Form extends CustomComponent implements CustomComponentIntrfc{
 
 	private static final long serialVersionUID = 1L;
-	//this is an array of objects that are behind the form
-	private Object[] objectArray = new Object[]{};
 	//this is the layout of the form
 	private Layout layout;
 	//this is custom validator used to validate form components
@@ -33,13 +31,13 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	public Form(){}
 	
 	public Form(Form form){
-		setObjectArray(form.getObjectArray());
 		setLayout(form.getLayout());
 		setComponentValidator(form.getComponentValidator());
 		setValidated(form.isValidated());
 		setDao(form.getDao());
 		setLabel(form.getLabel());
 		setPropertyManager(form.getPropertyManager());
+		setData(form.getData());
 	}
 	
 	public Form(VaadinRequest request, String label){
@@ -56,8 +54,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		setComponentValidator(new ComponentValidator(getPropertyManager()));
 	}
 	
-	public Form(Object[] objectArray, Layout layout, ComponentValidator componentValidator){
-		setObjectArray(objectArray);
+	public Form(Layout layout, ComponentValidator componentValidator){
 		setLayout(layout);
 		setComponentValidator(componentValidator);
 	}
@@ -68,16 +65,9 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		setLabel(label);
 	}
 	
-	public Object[] getObjectArray(){
-		return objectArray;
-	}
-
-	public void setObjectArray(Object[] objectArray){
-		this.objectArray = new Object[objectArray.length];
-		for(int i = 0; i < objectArray.length; i++){
-			this.objectArray[i] = objectArray[i];
-		}
-	}
+	public Layout buildFormLayout(String mode){
+		return layout;
+	};
 
 	public Layout getLayout() {
 		return layout;

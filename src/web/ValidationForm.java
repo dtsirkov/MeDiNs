@@ -30,20 +30,19 @@ public class ValidationForm extends Form{
 
 		super(validationForm);
 		setLayout(new VerticalLayout());
-		
-		buildFormLayout(validationForm);
 		setCompositionRoot(getLayout());
 
 	}
 
-	private void buildFormLayout(ValidationForm validationForm) {
+	public Layout buildFormLayout(String mode) {
 
 		getLayout().setSizeUndefined();
+		Object[] requiredSteps = (Object[])getData();
+		for(int i = 0; i < requiredSteps.length - 1; i++){
+			addValidationComponent(requiredSteps[i]);
+		}	
+		return getLayout();
 		
-		for(int i = 0; i < getObjectArray().length - 1; i++){
-			addValidationComponent(getObjectArray()[i]);
-		}
-
 	}
 
 	private void addValidationComponent(Object object){

@@ -22,7 +22,6 @@ import pojo_classes.EnumerationLabels;
 import pojo_classes.EnumerationTypes;
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
-import property_pckg.PropertyManager;
 
 
 
@@ -42,15 +41,15 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	private static final Log log = LogFactory.getLog(DaoImpl.class);
 
 	private final Session session = (new SessionFactoryConfig()).getSession();
-	
+
 	private String language;
 
 	public Session getSession() {
 		return session;
 	}
-	
+
 	public DaoImpl(){}
-	
+
 	public DaoImpl(String language){
 		setLanguage(language);
 	}
@@ -70,6 +69,26 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			Transaction trans = session.beginTransaction();
 			session.persist(transientInstance);
 			trans.commit();
+		} catch (RuntimeException re) {
+			log.error("Persist failed!", re);
+			throw re;
+		}
+	}
+
+	public void persist(Object[] objectArray) {
+		try {
+			//Session session = sessionFactory.getCurrentSession();
+			Transaction trans = session.beginTransaction();
+			try{
+				for(int i = 0; i < objectArray.length; i++){
+					log.info("persisting " +  getClassName(objectArray[i]) + " instance");
+					session.persist(objectArray[i]);
+				}	
+				trans.commit();
+			}catch (RuntimeException re) {
+				trans.rollback();
+				throw re;
+			}
 		} catch (RuntimeException re) {
 			log.error("Persist failed!", re);
 			throw re;
