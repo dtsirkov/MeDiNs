@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import property_pckg.PropertyManager;
 
-import com.vaadin.server.VaadinRequest;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
@@ -14,57 +14,48 @@ import dao_classes.DaoIntrfc;
 public class Form extends CustomComponent implements CustomComponentIntrfc{
 
 	private static final long serialVersionUID = 1L;
-	//this is the layout of the form
+	//layout of the form
 	private Layout layout;
-	//this is custom validator used to validate form components
+	//label of the form
+	private String label;
+	//custom validator used to validate form components
 	private ComponentValidator componentValidator;
 	//the form is always not validated
 	private boolean validated = false;
-	//get access to DB
-	private DaoIntrfc dao;
-	//label of the form
-	private String label;
-	//object that manages contents of Form labels
-	private PropertyManager propertyManager;
-	
+	//view of the form
+	private AbstractView view;
 
 	public Form(){}
-	
+
 	public Form(Form form){
 		setLayout(form.getLayout());
+		setLabel(form.getLabel());
 		setComponentValidator(form.getComponentValidator());
 		setValidated(form.isValidated());
-		setDao(form.getDao());
-		setLabel(form.getLabel());
-		setPropertyManager(form.getPropertyManager());
-		setData(form.getData());
+		setView(form.getView());
 	}
 	
-	public Form(VaadinRequest request, String label){
-		setDao((DaoIntrfc)request.getAttribute("dao"));
-		setPropertyManager((PropertyManager)request.getAttribute("propertyManager"));
-		setLabel(propertyManager.getLabelDtl(label));
+	public Form(String label){
+		setLabel(label);
 	}
-	
-	public Form(VaadinRequest request, String label, Layout layout){
-		setDao((DaoIntrfc)request.getAttribute("dao"));
-		setPropertyManager((PropertyManager)request.getAttribute("propertyManager"));
-		setLabel(propertyManager.getLabelDtl(label));
-		setLayout(layout);
-		setComponentValidator(new ComponentValidator(getPropertyManager()));
+
+	public Form(AbstractView view, String label){
+		setLabel(label);
+		setView(view);
 	}
 	
 	public Form(Layout layout, ComponentValidator componentValidator){
 		setLayout(layout);
 		setComponentValidator(componentValidator);
 	}
-	
-	public Form(DaoIntrfc dao, PropertyManager propertyManager, String label){
-		setDao(dao);
-		setPropertyManager(propertyManager);
+
+	public Form(AbstractView view, String label, Layout layout){
+		setLayout(layout);
 		setLabel(label);
+		setView(view);
+		setComponentValidator(new ComponentValidator(getPropertyManager()));
 	}
-	
+
 	public Layout buildFormLayout(String mode){
 		return layout;
 	};
@@ -77,6 +68,13 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.layout = layout;
 	}
 	
+	public String getLabel() {
+		return getPropertyManager().getLabelDtl(label);
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
 
 	public ComponentValidator getComponentValidator() {
 		return componentValidator;
@@ -94,28 +92,24 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		this.validated = validated;
 	}
 
-	public DaoIntrfc getDao() {
-		return dao;
+	public AbstractView getView() {
+		return view;
 	}
 
-	public void setDao(DaoIntrfc dao) {
-		this.dao = dao;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
+	public void setView(AbstractView view) {
+		this.view = view;
 	}
 	
-	public PropertyManager getPropertyManager() {
-		return propertyManager;
+	public DaoIntrfc getDao() {
+		return view.getDao();
 	}
 
-	public void setPropertyManager(PropertyManager propertyManager) {
-		this.propertyManager = propertyManager;
+	public PropertyManager getPropertyManager() {
+		return view.getPropertyManager();
+	}
+
+	public Navigator getNavigator() {
+		return view.getNavigator();
 	}
 
 	public void setReadOnly(boolean readOnly) {

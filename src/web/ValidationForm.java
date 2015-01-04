@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -22,8 +21,10 @@ public class ValidationForm extends Form{
 
 	public ValidationForm(){}
 
-	public ValidationForm(VaadinRequest request, String label){
-		super(request, label, new VerticalLayout());
+	public ValidationForm(AbstractView view, String label){
+		
+		super(view, label, new VerticalLayout());
+		
 	}
 
 	public ValidationForm(ValidationForm validationForm) {
@@ -37,15 +38,15 @@ public class ValidationForm extends Form{
 	public Layout buildFormLayout(String mode) {
 
 		getLayout().setSizeUndefined();
-		Object[] requiredSteps = (Object[])getData();
+		Form[] requiredSteps = (Form[])getData();
 		for(int i = 0; i < requiredSteps.length - 1; i++){
 			addValidationComponent(requiredSteps[i]);
 		}	
 		return getLayout();
-		
+
 	}
 
-	private void addValidationComponent(Object object){
+	private void addValidationComponent(Form object){
 
 		Layout componentLayout = ((CustomComponentIntrfc)object).getLayout();
 
@@ -53,7 +54,7 @@ public class ValidationForm extends Form{
 		GridLayout grid = new GridLayout(1, componentCount + 1);
 		grid.setWidth("400px");
 
-		Label label = new Label(((Form)object).getLabel());
+		Label label = new Label(object.getLabel());
 		label.setStyleName("validationCompenentTitle");
 		label.setSizeUndefined();
 		grid.addComponent(label);
@@ -86,7 +87,7 @@ public class ValidationForm extends Form{
 				int valueWidth = metrics.charsWidth(value.toCharArray(), 0, value.length());
 
 				//System.out.println(value);
-				
+
 				if (valueWidth < 400){
 					valueLabel = new Label(value);
 					valueLabel.setSizeUndefined();
@@ -110,5 +111,5 @@ public class ValidationForm extends Form{
 		}
 		this.getLayout().addComponent(grid);
 	}
-	
+
 }

@@ -130,5 +130,16 @@
 	    font-size: 14pt;
 	    color: black;
 	}
-  
+	
+	.v-gridlayout-gridexpandratio {
+	    background: blue; /* Creates a "border" around the grid. */
+	    margin:     10px; /* Empty space around the layout. */
+	    padding:    2px;
+	    padding-right: 100px;
+	}
+	
+	.v-gridlayout-test{
+	    	background: gray;
+	}
+	
 }

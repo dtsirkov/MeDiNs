@@ -4,12 +4,10 @@ import java.util.Map;
 
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
-import pojo_classes.Persons;
 import property_pckg.PropertyManager;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
@@ -34,9 +32,9 @@ public class ContactForm extends Form{
 	private ComboBox activeCB;
 	private ComboBox preferedCB;
 
-	public ContactForm(VaadinRequest request, String label) {
+	public ContactForm(AbstractView view, String label) {
 
-		super(request, label, new FormLayout());
+		super(view, label, new FormLayout());
 		setCompositionRoot(getLayout());
 
 	}
@@ -45,7 +43,7 @@ public class ContactForm extends Form{
 
 		//gem main layout
 		FormLayout formLayout = (FormLayout)getLayout();
-		//get component validater
+		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();

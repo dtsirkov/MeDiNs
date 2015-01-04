@@ -9,7 +9,6 @@ import property_pckg.PropertyManager;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
@@ -31,9 +30,9 @@ public class PersonForm extends Form{
 	private TextField persomMiddleNameTF;
 	private TextField personFirstNameTF;
 
-	public PersonForm(VaadinRequest request, String label) {
+	public PersonForm(AbstractView view, String label) {
 
-		super(request, label, new FormLayout());
+		super(view, label, new FormLayout());
 		setCompositionRoot(getLayout());
 
 	}
@@ -42,7 +41,7 @@ public class PersonForm extends Form{
 
 		//gem main layout
 		FormLayout formLayout = (FormLayout)getLayout();
-		//get component validater
+		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();

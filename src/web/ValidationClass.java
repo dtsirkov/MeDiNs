@@ -11,10 +11,10 @@ public class ValidationClass {
 	private boolean isValidated = false;
 	private String validationMethod;
 	private DaoIntrfc dao;
-	private CustomComponent[] requiredSteps;
-	private CustomComponent[] optionalSteps;
+	private Form[] requiredSteps;
+	private Form[] optionalSteps;
 
-	public ValidationClass(String validationMethod, CustomComponent[] requiredSteps, CustomComponent[] optionalSteps){
+	public ValidationClass(String validationMethod, Form[] requiredSteps, Form[] optionalSteps){
 
 		setValidationMethod(validationMethod);
 		setRequiredSteps(requiredSteps);
@@ -51,7 +51,7 @@ public class ValidationClass {
 		return requiredSteps;
 	}
 
-	public void setRequiredSteps(CustomComponent[] requiredSteps) {
+	public void setRequiredSteps(Form[] requiredSteps) {
 		this.requiredSteps = requiredSteps;
 	}
 
@@ -59,7 +59,7 @@ public class ValidationClass {
 		return optionalSteps;
 	}
 
-	public void setOptionalSteps(CustomComponent[] optionalSteps) {
+	public void setOptionalSteps(Form[] optionalSteps) {
 		this.optionalSteps = optionalSteps;
 	}
 
@@ -73,8 +73,8 @@ public class ValidationClass {
 	private boolean validatePerson(String mode){		
 		try{
 
-			Persons person = (Persons)((Form)getRequiredSteps()[0]).getData();
-			Contacts contact = (Contacts)((Form)getRequiredSteps()[1]).getData();
+			Persons person = (Persons)(getRequiredSteps()[0]).getData();
+			Contacts contact = (Contacts)(getRequiredSteps()[1]).getData();
 			PersonContactLink personContactLink = new PersonContactLink(person, contact);
 
 			Object[] objectsToCreate  = {
