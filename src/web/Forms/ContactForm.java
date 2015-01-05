@@ -1,10 +1,12 @@
-package web;
+package web.Forms;
 
 import java.util.Map;
 
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
 import property_pckg.PropertyManager;
+import web.Views.AbstractView;
+
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -39,7 +41,7 @@ public class ContactForm extends Form{
 
 	}
 
-	public Layout buildFormLayout(String mode) {
+	public Layout buildLayout(String mode) {
 
 		//gem main layout
 		FormLayout formLayout = (FormLayout)getLayout();

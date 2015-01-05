@@ -1,6 +1,8 @@
-package web;
+package web.Forms;
 
 import property_pckg.PropertyManager;
+import web.Views.AbstractView;
+
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
@@ -28,7 +30,7 @@ public class LoginForm extends Form {
 
 	}
 
-	public Layout buildFormLayout(String mode) {
+	public Layout buildLayout(String mode) {
 
 		//get main layout
 		VerticalLayout layout = (VerticalLayout)getLayout();
@@ -47,7 +49,7 @@ public class LoginForm extends Form {
 		//define measurements of the components 
 		String width = "180px", height = "-1px";
 
-		Panel panel = new Panel(getLabel());
+		Panel panel = new Panel(getLabelDtl());
 		panel.setImmediate(true);
 		panel.setWidth(width);
 		panel.setHeight(height);

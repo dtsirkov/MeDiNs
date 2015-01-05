@@ -1,4 +1,4 @@
-package web;
+package web.Forms;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -17,7 +17,7 @@ import com.vaadin.ui.CustomComponent;
 
 import dao_classes.DaoIntrfc;
 
-class ComponentValidator implements java.io.Serializable{
+public class ComponentValidator implements java.io.Serializable{
 
 	/**
 	 * 
@@ -138,7 +138,7 @@ class ComponentValidator implements java.io.Serializable{
 		return new MyValidator();
 	}
 
-	protected final boolean validate(CustomComponent customComponent, final String propertyName) {
+	public final boolean validate(CustomComponent customComponent, final String propertyName) {
 		boolean result = true;
 		Iterator<Component> customComponentIterator = customComponent.iterator();
 		while(customComponentIterator.hasNext()){
@@ -162,7 +162,7 @@ class ComponentValidator implements java.io.Serializable{
 		return result;
 	}
 
-	protected final boolean validate(AbstractComponentContainer abstractComponentContainer, final String propertyName) {
+	public final boolean validate(AbstractComponentContainer abstractComponentContainer, final String propertyName) {
 		boolean result = true;
 		Iterator<Component> containerIterator = abstractComponentContainer.iterator();
 		while(containerIterator.hasNext()){

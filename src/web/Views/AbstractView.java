@@ -1,6 +1,7 @@
-package web;
+package web.Views;
 
 import property_pckg.PropertyManager;
+import web.CustomComponentIntrfc;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.CustomComponent;
@@ -8,7 +9,7 @@ import com.vaadin.ui.Layout;
 
 import dao_classes.DaoIntrfc;
 
-public abstract class AbstractView extends CustomComponent{
+public abstract class AbstractView extends CustomComponent implements CustomComponentIntrfc{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -81,7 +82,11 @@ public abstract class AbstractView extends CustomComponent{
 		this.navigator = navigator;
 	}
 	
-	abstract Layout buildViewLayout();
+	public Layout buildLayout(String mode){
+		return buildLayout();
+	};
+	
+	abstract Layout buildLayout();
 
 }
 

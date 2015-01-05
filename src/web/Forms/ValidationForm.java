@@ -1,9 +1,14 @@
-package web;
+package web.Forms;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+
+import web.CustomComponentIntrfc;
+import web.Views.AbstractView;
+
+
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
@@ -35,7 +40,7 @@ public class ValidationForm extends Form{
 
 	}
 
-	public Layout buildFormLayout(String mode) {
+	public Layout buildLayout(String mode) {
 
 		getLayout().setSizeUndefined();
 		Form[] requiredSteps = (Form[])getData();
@@ -54,7 +59,7 @@ public class ValidationForm extends Form{
 		GridLayout grid = new GridLayout(1, componentCount + 1);
 		grid.setWidth("400px");
 
-		Label label = new Label(object.getLabel());
+		Label label = new Label(object.getLabelDtl());
 		label.setStyleName("validationCompenentTitle");
 		label.setSizeUndefined();
 		grid.addComponent(label);

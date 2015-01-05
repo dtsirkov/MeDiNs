@@ -1,4 +1,4 @@
-package web;
+package web.Forms;
 
 import java.util.Date;
 import java.util.Map;
@@ -6,6 +6,8 @@ import java.util.Map;
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
 import property_pckg.PropertyManager;
+import web.Views.AbstractView;
+
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -37,9 +39,9 @@ public class PersonForm extends Form{
 
 	}
 
-	public Layout buildFormLayout(String mode) {	
+	public Layout buildLayout(String mode) {	
 
-		//gem main layout
+		//get main layout
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();

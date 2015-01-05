@@ -1,8 +1,15 @@
-package web;
+package web.Views;
 
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
+import web.Forms.ComponentValidator;
+import web.Forms.ContactForm;
+import web.Forms.Form;
+import web.Forms.PersonForm;
+import web.Forms.ValidationClass;
+import web.Forms.ValidationForm;
+
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property;
@@ -29,9 +36,9 @@ import dao_classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
-public class ActivityView extends AbstractView implements View{
+public class CreatePersonActivity extends AbstractView implements View{
 
-	public ActivityView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
+	public CreatePersonActivity(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
 
 		super(propertyManager, dao, navigator);
 		setLabel("createPerson");
@@ -40,10 +47,10 @@ public class ActivityView extends AbstractView implements View{
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(buildViewLayout());
+		setCompositionRoot(buildLayout());
 	}
 
-	public Layout buildViewLayout(){
+	public Layout buildLayout(){
 
 		//get propertyManager
 		final PropertyManager propertyManager = getPropertyManager();
@@ -329,7 +336,7 @@ public class ActivityView extends AbstractView implements View{
 									buttonsLayout.addComponent(prevButton);
 									buttonsLayout.addComponent(nextButton);	
 								}
-								customComponent.buildFormLayout(mode);
+								customComponent.buildLayout(mode);
 
 								//add stepTitleLayout
 								stepTitle.setValue(value);					

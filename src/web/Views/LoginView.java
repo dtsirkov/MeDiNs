@@ -1,12 +1,17 @@
-package web;
+package web.Views;
 
+
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import property_pckg.PropertyManager;
+import web.Forms.LoginForm;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -29,10 +34,10 @@ public class LoginView extends AbstractView implements View{
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setCompositionRoot(buildViewLayout());
+		setCompositionRoot(buildLayout());
 	}
 
-	public Layout buildViewLayout() {
+	public Layout buildLayout() {
 	
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
@@ -55,17 +60,17 @@ public class LoginView extends AbstractView implements View{
 		titleBar.addComponent(title);
 
 		LoginForm loginFormIndividial = new LoginForm(this, "individualClients");
-		loginFormIndividial.buildFormLayout("individual");
+		loginFormIndividial.buildLayout("individual");
 		LoginForm loginFormCorporate = new LoginForm(this, "corporateClients");
-		loginFormCorporate.buildFormLayout("corporate");
+		loginFormCorporate.buildLayout("corporate");
 
 		GridLayout grid = new GridLayout(2, 1);
 		grid.setWidth("600px");
 		grid.setSpacing(true);
 		grid.addStyleName("test");
 
-		grid.addComponent(loginFormCorporate);
 		loginFormCorporate.setSizeUndefined();
+		grid.addComponent(loginFormCorporate);
 		grid.setComponentAlignment(loginFormCorporate, Alignment.MIDDLE_LEFT);
 
 		loginFormIndividial.setSizeUndefined();

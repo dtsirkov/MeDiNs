@@ -1,8 +1,11 @@
-package web;
+package web.Forms;
 
 import java.util.Iterator;
 
 import property_pckg.PropertyManager;
+import web.CustomComponentIntrfc;
+import web.Views.AbstractView;
+
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.Component;
@@ -56,7 +59,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		setComponentValidator(new ComponentValidator(getPropertyManager()));
 	}
 
-	public Layout buildFormLayout(String mode){
+	public Layout buildLayout(String mode){
 		return layout;
 	};
 
@@ -69,6 +72,10 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	}
 	
 	public String getLabel() {
+		return label;
+	}
+	
+	public String getLabelDtl() {
 		return getPropertyManager().getLabelDtl(label);
 	}
 
