@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 
 import property_pckg.PropertyManager;
-import web.Forms.Domain;
-import web.Views.ActivityView;
-import web.Views.LoginView;
+import web.forms.Activity;
+import web.forms.Domain;
+import web.views.CreatePersonActivity;
+import web.views.DomainSelectionView;
+import web.views.LoginView;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -39,17 +41,23 @@ public class MedinsUI extends UI {
 
 		// Create and register the views
 		navigator.addView("loginView", new LoginView(propertyManager, dao, navigator));
-		
-		ActivityView domainSelectionView =  new ActivityView(propertyManager, dao, navigator);
-		
+
+		DomainSelectionView domainSelectionView =  new DomainSelectionView(propertyManager, dao, navigator);
+
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 		domainList.add(new Domain("caseDomain"));
-		domainList.add(new Domain("personOrganizationDomain"));
+
+		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
+
+		CreatePersonActivity createPersonActivity = new CreatePersonActivity(propertyManager, dao, navigator);
+		personOrganizationDomain.addActivity(new Activity(createPersonActivity));
+
+		domainList.add(personOrganizationDomain);
 		domainList.add(new Domain("medicalDomain"));
 		domainList.add(new Domain("treatmentDomain"));
 		domainSelectionView.setDomainList(domainList);
-		
-		navigator.addView("activityView", domainSelectionView);
+
+		navigator.addView("domainSelectionView", domainSelectionView);
 
 		navigator.navigateTo("loginView");
 

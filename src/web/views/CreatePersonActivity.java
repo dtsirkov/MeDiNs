@@ -1,14 +1,14 @@
-package web.Views;
+package web.views;
 
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
-import web.Forms.ComponentValidator;
-import web.Forms.ContactForm;
-import web.Forms.Form;
-import web.Forms.PersonForm;
-import web.Forms.ValidationClass;
-import web.Forms.ValidationForm;
+import web.forms.ComponentValidator;
+import web.forms.ContactForm;
+import web.forms.Form;
+import web.forms.PersonForm;
+import web.forms.ValidationClass;
+import web.forms.ValidationForm;
 
 
 import com.vaadin.annotations.Theme;
@@ -16,7 +16,6 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -36,12 +35,12 @@ import dao_classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
-public class CreatePersonActivity extends AbstractView implements View{
+public class CreatePersonActivity extends AbstractView{
 
 	public CreatePersonActivity(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
 
 		super(propertyManager, dao, navigator);
-		setLabel("createPerson");
+		setLabel("personCreate");
 
 	}
 
@@ -241,6 +240,7 @@ public class CreatePersonActivity extends AbstractView implements View{
 		for (int i = 0; i < stepCategory.length; i++) {
 			String stepList = (stepCategory[i][0]).getLabel();
 			menu.addItem(stepList);
+			menu.setItemCaption(stepList, propertyManager.getLabelDtl(stepList));
 			if (stepCategory[i].length == 1) {
 				// The stepList has no steps so make it a leaf.
 				menu.setChildrenAllowed(stepList, false);
@@ -248,6 +248,7 @@ public class CreatePersonActivity extends AbstractView implements View{
 				// Add children (step) under the stepList.
 				for (int j = 1; j < stepCategory[i].length; j++) {
 					final String step = (stepCategory[i][j]).getLabel();
+					menu.setItemCaption(step, propertyManager.getLabelDtl(step));
 					// Add the item as a regular item.
 					menu.addItem(step);
 					// Set it to be a child.

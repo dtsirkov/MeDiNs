@@ -1,4 +1,4 @@
-package web.Forms;
+package web.forms;
 
 import java.util.Date;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
 import property_pckg.PropertyManager;
-import web.Views.AbstractView;
+import web.views.AbstractView;
 
 
 import com.vaadin.data.Property;

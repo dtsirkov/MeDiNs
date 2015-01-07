@@ -1,49 +1,31 @@
-package web.Views;
+package web.views;
 
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
-import web.Forms.ComponentValidator;
-import web.Forms.ContactForm;
-import web.Forms.Domain;
-import web.Forms.DomainForm;
-import web.Forms.Form;
-import web.Forms.PersonForm;
-import web.Forms.ValidationClass;
-import web.Forms.ValidationForm;
+import web.forms.ComponentValidator;
+import web.forms.Domain;
+import web.forms.DomainSelectionForm;
 
-
-import com.vaadin.annotations.Theme;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 import dao_classes.DaoIntrfc;
 
-@SuppressWarnings("serial")
-@Theme("medins")
-public class ActivityView extends AbstractView implements View{
-	
+//@SuppressWarnings("serial")
+//@Theme("medins")
+public class DomainSelectionView extends AbstractView{
+
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Domain> domainList;
 
-	public ActivityView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
+	public DomainSelectionView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
 
 		super(propertyManager, dao, navigator);
 		setLabel("domainSelectionView");
@@ -61,6 +43,8 @@ public class ActivityView extends AbstractView implements View{
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao = getDao();	
+		//get navigator 
+		final Navigator navigator = getNavigator();
 
 		//create main layout
 		final VerticalLayout root = new VerticalLayout();
@@ -79,7 +63,7 @@ public class ActivityView extends AbstractView implements View{
 		Label title = new Label(propertyManager.getLabelDtl("personCreate"));
 		title.addStyleName("title");
 		titleBar.addComponent(title);
-		
+
 		int rowsNumber = 0;
 		int domainListSize = domainList.size();
 		if (domainListSize % 2 == 0){
@@ -87,16 +71,20 @@ public class ActivityView extends AbstractView implements View{
 		}else{
 			rowsNumber = domainListSize / 2 + 1;
 		}
-		
+
 		GridLayout grid = new GridLayout(2, rowsNumber);
 		grid.setSizeUndefined();
 		grid.setSpacing(true);
 		grid.addStyleName("test");
-		
+
 		for(int i = 0; i < domainListSize; i++){
-			DomainForm domainForm = new DomainForm(this, domainList.get(i));
-			domainForm.buildLayout("");
-			grid.addComponent(domainForm);
+			DomainSelectionForm domainSelectionForm = new DomainSelectionForm(this, domainList.get(i));
+			domainSelectionForm.buildLayout("");
+			grid.addComponent(domainSelectionForm);
+
+			ActivitySelectionView activitySelectionView = new ActivitySelectionView(propertyManager, dao, navigator);
+			activitySelectionView.setDomain(domainList.get(i));
+			navigator.addView(domainList.get(i).getLabel(), activitySelectionView);
 		}
 
 		//grid.setComponentAlignment(loginFormCorporate, Alignment.MIDDLE_LEFT);

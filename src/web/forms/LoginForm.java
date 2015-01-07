@@ -1,7 +1,7 @@
-package web.Forms;
+package web.forms;
 
 import property_pckg.PropertyManager;
-import web.Views.AbstractView;
+import web.views.AbstractView;
 
 
 import com.vaadin.navigator.Navigator;
@@ -94,7 +94,7 @@ public class LoginForm extends Form {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo("activityView");
+				navigator.navigateTo("domainSelectionView");
 			}
 		});
 

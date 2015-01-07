@@ -1,10 +1,10 @@
-package web.Forms;
+package web.forms;
 
 import java.util.Iterator;
 
 import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
-import web.Views.AbstractView;
+import web.views.AbstractView;
 
 
 import com.vaadin.navigator.Navigator;

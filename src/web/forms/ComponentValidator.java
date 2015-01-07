@@ -1,4 +1,4 @@
-package web.Forms;
+package web.forms;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;

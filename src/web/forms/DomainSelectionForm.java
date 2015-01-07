@@ -1,9 +1,9 @@
-package web.Forms;
+package web.forms;
 
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
-import web.Views.AbstractView;
+import web.views.AbstractView;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -12,19 +12,16 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class DomainForm extends Form{
+public class DomainSelectionForm extends Form{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Domain domain;
 	private Button domainButton;
 
-	public DomainForm(AbstractView view, Domain domain) {
+	public DomainSelectionForm(AbstractView view, Domain domain) {
 
-		super(view, domain.getName(), new HorizontalLayout());
+		super(view, domain.getLabel(), new HorizontalLayout());
 		setDomain(domain);
 		setCompositionRoot(getLayout());
 
@@ -37,22 +34,23 @@ public class DomainForm extends Form{
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 		//get activities by domain
-		final ArrayList<Object> activities = getDomain().getActivities();
+		final ArrayList<Activity> activities = domain.getActivities();
 		//get naviagator
 		final Navigator navigator = getNavigator();
 
 		domainButton = new Button(propertyManager.getButtonDtl(getLabel()));
-		
+
 		domainButton.setWidth("300px");
-		
+
 		domainButton.addClickListener(new Button.ClickListener() {	
 
 			private static final long serialVersionUID = 1L;
 
 			public void buttonClick(ClickEvent event) {
 				for(int i = 0; i < activities.size(); i++){
-					navigator.addView("activitySelectionView", (View)activities.get(i));
+					navigator.addView(activities.get(i).getLabel(), (View)activities.get(i).getAbstractView());
 				}
+				navigator.navigateTo(domain.getLabel());
 			}
 		});
 

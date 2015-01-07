@@ -1,17 +1,11 @@
-package web.Views;
-
-
-import java.util.Spliterator;
-import java.util.function.Consumer;
+package web.views;
 
 import property_pckg.PropertyManager;
-import web.Forms.LoginForm;
+import web.forms.LoginForm;
 
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -20,7 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import dao_classes.DaoIntrfc;
 
-public class LoginView extends AbstractView implements View{
+public class LoginView extends AbstractView{
 
 	private static final long serialVersionUID = 1L;
 

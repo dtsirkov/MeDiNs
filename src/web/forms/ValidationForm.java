@@ -1,4 +1,4 @@
-package web.Forms;
+package web.forms;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
 import web.CustomComponentIntrfc;
-import web.Views.AbstractView;
+import web.views.AbstractView;
 
 
 

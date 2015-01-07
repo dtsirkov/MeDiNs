@@ -1,4 +1,4 @@
-package web.Forms;
+package web.forms;
 
 import pojo_classes.*;
 
