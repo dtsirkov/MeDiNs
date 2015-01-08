@@ -1,9 +1,9 @@
 package web.views;
 
 import property_pckg.PropertyManager;
+import web.classes.ComponentValidator;
+import web.classes.Domain;
 import web.forms.ActivitySelectionForm;
-import web.forms.ComponentValidator;
-import web.forms.Domain;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,8 +15,6 @@ import com.vaadin.ui.VerticalLayout;
 
 import dao_classes.DaoIntrfc;
 
-//@SuppressWarnings("serial")
-//@Theme("medins")
 public class ActivitySelectionView extends AbstractView{
 
 	private static final long serialVersionUID = 1L;

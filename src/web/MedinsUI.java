@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 
 import property_pckg.PropertyManager;
-import web.forms.Activity;
-import web.forms.Domain;
+import web.classes.Activity;
+import web.classes.Domain;
 import web.views.CreatePersonActivity;
 import web.views.DomainSelectionView;
 import web.views.LoginView;

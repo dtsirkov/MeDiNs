@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
+import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
 

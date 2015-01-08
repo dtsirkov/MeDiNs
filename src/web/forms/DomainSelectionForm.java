@@ -3,6 +3,8 @@ package web.forms;
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
+import web.classes.Activity;
+import web.classes.Domain;
 import web.views.AbstractView;
 
 import com.vaadin.navigator.Navigator;
@@ -48,7 +50,7 @@ public class DomainSelectionForm extends Form{
 
 			public void buttonClick(ClickEvent event) {
 				for(int i = 0; i < activities.size(); i++){
-					navigator.addView(activities.get(i).getLabel(), (View)activities.get(i).getAbstractView());
+					navigator.addView(activities.get(i).getLabel(), (View)activities.get(i).getAbstractActivityView());
 				}
 				navigator.navigateTo(domain.getLabel());
 			}

@@ -1,4 +1,4 @@
-package web.forms;
+package web.classes;
 
 import java.util.ArrayList;
 
@@ -43,6 +43,8 @@ public class Domain {
 	
 	public void addActivity(Activity activity){
 		activities.add(activity);
+		activity.setDomain(this);
+		activity.getAbstractActivityView().setDomain(this);
 	}
 
 }

@@ -3,6 +3,8 @@ package web.forms;
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
+import web.classes.Activity;
+import web.classes.Domain;
 import web.views.AbstractView;
 
 import com.vaadin.data.Property;

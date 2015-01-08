@@ -1,6 +1,7 @@
 package web.forms;
 
 import property_pckg.PropertyManager;
+import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
 

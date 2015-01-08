@@ -5,6 +5,7 @@ import java.util.Map;
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
 import property_pckg.PropertyManager;
+import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
 

@@ -1,6 +1,7 @@
-package web.forms;
+package web.classes;
 
 import pojo_classes.*;
+import web.forms.Form;
 
 
 import com.vaadin.ui.CustomComponent;

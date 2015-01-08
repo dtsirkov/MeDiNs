@@ -3,8 +3,8 @@ package web.views;
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
-import web.forms.ComponentValidator;
-import web.forms.Domain;
+import web.classes.ComponentValidator;
+import web.classes.Domain;
 import web.forms.DomainSelectionForm;
 
 import com.vaadin.navigator.Navigator;
@@ -18,7 +18,6 @@ import com.vaadin.ui.VerticalLayout;
 
 import dao_classes.DaoIntrfc;
 
-//@SuppressWarnings("serial")
 //@Theme("medins")
 public class DomainSelectionView extends AbstractView{
 

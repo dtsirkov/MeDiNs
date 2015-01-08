@@ -1,4 +1,4 @@
-package web.forms;
+package web.classes;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -19,10 +19,7 @@ import dao_classes.DaoIntrfc;
 
 public class ComponentValidator implements java.io.Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2270732896484883778L;
+	private static final long serialVersionUID = 1L;
 	private PropertyManager propertyManager;
 
 	public ComponentValidator(PropertyManager propertyManager){
@@ -38,7 +35,7 @@ public class ComponentValidator implements java.io.Serializable{
 	}
 
 	//validate social number
-	protected final Validator getOnlyDigitsValidator(final String propertyName){
+	public final Validator getOnlyDigitsValidator(final String propertyName){
 		class MyValidator implements Validator {
 			private static final long serialVersionUID = -8281962473854901819L;
 			@Override
@@ -64,7 +61,7 @@ public class ComponentValidator implements java.io.Serializable{
 	}
 
 	//validate social number
-	protected final Validator getSocialNumberExistValidator(final DaoIntrfc dao, final String errorMessage){
+	public final Validator getSocialNumberExistValidator(final DaoIntrfc dao, final String errorMessage){
 		class MyValidator implements Validator {
 			private static final long serialVersionUID = 4583840990919281331L;
 			@Override
@@ -84,7 +81,7 @@ public class ComponentValidator implements java.io.Serializable{
 	}
 	
 	//validate only letters as an input
-	protected final Validator getOnlyLettersValidator(final String propertyName){
+	public final Validator getOnlyLettersValidator(final String propertyName){
 		class MyValidator implements Validator {
 
 			private static final long serialVersionUID = 4922238330568656105L;
@@ -117,7 +114,7 @@ public class ComponentValidator implements java.io.Serializable{
 		return new MyValidator();
 	}
 
-	protected final Validator getRequiredValidator(final String propertyName){
+	public final Validator getRequiredValidator(final String propertyName){
 		class MyValidator implements Validator {
 			private static final long serialVersionUID = -8281962473854901819L;
 			@Override
