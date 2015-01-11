@@ -3,6 +3,7 @@ package web.views;
 import java.util.ArrayList;
 
 import property_pckg.PropertyManager;
+import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.forms.DomainSelectionForm;
@@ -24,9 +25,9 @@ public class DomainSelectionView extends AbstractView{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Domain> domainList;
 
-	public DomainSelectionView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
+	public DomainSelectionView(MedinsUI ui) {
 
-		super(propertyManager, dao, navigator);
+		super(ui);
 		setLabel("domainSelectionView");
 
 	}
@@ -81,7 +82,7 @@ public class DomainSelectionView extends AbstractView{
 			domainSelectionForm.buildLayout("");
 			grid.addComponent(domainSelectionForm);
 
-			ActivitySelectionView activitySelectionView = new ActivitySelectionView(propertyManager, dao, navigator);
+			ActivitySelectionView activitySelectionView = new ActivitySelectionView(getUi());
 			activitySelectionView.setDomain(domainList.get(i));
 			navigator.addView(domainList.get(i).getLabel(), activitySelectionView);
 		}

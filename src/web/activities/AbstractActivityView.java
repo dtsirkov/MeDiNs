@@ -1,4 +1,4 @@
-package web.views;
+package web.activities;
 
 import java.util.ArrayList;
 
@@ -19,6 +19,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -28,22 +29,23 @@ import web.classes.Domain;
 import web.classes.ValidationClass;
 import web.forms.Form;
 import web.forms.ValidationForm;
+import web.views.AbstractView;
 
 public abstract class AbstractActivityView extends AbstractView {
 
 	private static final long serialVersionUID = 1L;
 
-	private Form[] requiredSteps;
-	private Form[] optionalSteps;
-	private String mode;
+	private Form[] requiredSteps = new Form[]{};
+	private Form[] optionalSteps = new Form[]{};
+	private String mode = "view";
 	private String validationMethod;
 	private Domain domain;
 
 	public AbstractActivityView(){};
 
-	public AbstractActivityView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator){
+	public AbstractActivityView(UI ui){
 
-		super(propertyManager, dao, navigator);
+		super(ui);
 
 	};
 
@@ -512,6 +514,8 @@ public abstract class AbstractActivityView extends AbstractView {
 				navigator.navigateTo(domain.getLabel());
 			}
 		});
+		
+		setLayout(root);
 
 		return root;
 

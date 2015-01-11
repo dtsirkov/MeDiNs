@@ -1,16 +1,17 @@
 package web.views;
 
 import property_pckg.PropertyManager;
+import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.forms.ActivitySelectionForm;
 
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import dao_classes.DaoIntrfc;
@@ -20,10 +21,10 @@ public class ActivitySelectionView extends AbstractView{
 	private static final long serialVersionUID = 1L;
 	private Domain domain;
 
-	public ActivitySelectionView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
+	public ActivitySelectionView(UI ui) {
 
-		super(propertyManager, dao, navigator);
-		setLabel("domainSelectionView");
+		super(ui);
+		setLabel("activitySelectionView");
 
 	}
 

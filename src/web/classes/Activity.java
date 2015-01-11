@@ -1,6 +1,6 @@
 package web.classes;
 
-import web.views.AbstractActivityView;
+import web.activities.AbstractActivityView;
 
 public class Activity{
 

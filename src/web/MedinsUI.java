@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 
 import property_pckg.PropertyManager;
+import web.activities.CreatePersonView;
 import web.classes.Activity;
 import web.classes.Domain;
-import web.views.CreatePersonActivity;
 import web.views.DomainSelectionView;
 import web.views.LoginView;
 
@@ -25,7 +25,14 @@ import dao_classes.DaoIntrfc;
 @SuppressWarnings("serial")
 @Theme("medins")
 public class MedinsUI extends UI {
-
+	
+	private PropertyManager propertyManager;
+	private DaoIntrfc dao;
+	private Navigator navigator;
+	
+	public MedinsUI(){
+		
+	}
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = MedinsUI.class)
@@ -35,23 +42,22 @@ public class MedinsUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 
-		PropertyManager propertyManager = new PropertyManager(request);
-		DaoIntrfc dao = new DaoImpl(propertyManager.getLanguage());
-		Navigator navigator = new Navigator(this, this);
+		setPropertyManager(new PropertyManager(request));
+		setDao(new DaoImpl(propertyManager.getLanguage()));
+		setNavigator(new Navigator(this, this));
 
 		// Create and register the views
-		navigator.addView("loginView", new LoginView(propertyManager, dao, navigator));
+		navigator.addView("loginView", new LoginView(this));
 
-		DomainSelectionView domainSelectionView =  new DomainSelectionView(propertyManager, dao, navigator);
-
-		ArrayList<Domain> domainList = new ArrayList<Domain>();
-		domainList.add(new Domain("caseDomain"));
+		DomainSelectionView domainSelectionView =  new DomainSelectionView(this);
 
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
+		Activity createPersonActivity = new Activity(new CreatePersonView(this));
+		personOrganizationDomain.addActivity(createPersonActivity);
 
-		CreatePersonActivity createPersonActivity = new CreatePersonActivity(propertyManager, dao, navigator);
-		personOrganizationDomain.addActivity(new Activity(createPersonActivity));
-
+		ArrayList<Domain> domainList = new ArrayList<Domain>();
+		
+		domainList.add(new Domain("caseDomain"));
 		domainList.add(personOrganizationDomain);
 		domainList.add(new Domain("medicalDomain"));
 		domainList.add(new Domain("treatmentDomain"));
@@ -61,6 +67,30 @@ public class MedinsUI extends UI {
 
 		navigator.navigateTo("loginView");
 
+	}
+
+	public PropertyManager getPropertyManager() {
+		return propertyManager;
+	}
+
+	public void setPropertyManager(PropertyManager propertyManager) {
+		this.propertyManager = propertyManager;
+	}
+
+	public DaoIntrfc getDao() {
+		return dao;
+	}
+
+	public void setDao(DaoIntrfc dao) {
+		this.dao = dao;
+	}
+
+	public Navigator getNavigator() {
+		return navigator;
+	}
+
+	public void setNavigator(Navigator navigator) {
+		this.navigator = navigator;
 	}
 
 }

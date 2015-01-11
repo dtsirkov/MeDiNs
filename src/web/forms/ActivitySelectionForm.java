@@ -19,7 +19,7 @@ public class ActivitySelectionForm extends Form{
 	private static final long serialVersionUID = 1L;
 
 	private Domain domain;
-	private ListSelect listSelect;
+	private ListSelect activityList;
 
 	public ActivitySelectionForm(AbstractView view, Domain domain) {
 
@@ -41,19 +41,19 @@ public class ActivitySelectionForm extends Form{
 		final Navigator navigator = getNavigator();
 
 		// Create the selection component
-		listSelect = new ListSelect(propertyManager.getButtonDtl(domain.getLabel()));
+		activityList = new ListSelect(propertyManager.getButtonDtl(domain.getLabel()));
 		// Show 10 items and a scrollbar if there are more
-		listSelect.setRows(10);
-		listSelect.setNullSelectionAllowed(false);
+		activityList.setRows(10);
+		activityList.setNullSelectionAllowed(false);
 
 		String label;
 		for(int i = 0; i < activities.size(); i++){
 			label = activities.get(i).getLabel();
-			listSelect.addItem(label);
-			listSelect.setItemCaption(label, propertyManager.getLabelDtl(label));
+			activityList.addItem(label);
+			activityList.setItemCaption(label, propertyManager.getLabelDtl(label));
 		}
 
-		listSelect.addValueChangeListener(new Property.ValueChangeListener() {	
+		activityList.addValueChangeListener(new Property.ValueChangeListener() {	
 
 			private static final long serialVersionUID = 1L;
 
@@ -65,7 +65,7 @@ public class ActivitySelectionForm extends Form{
 			}
 		});
 
-		layout.addComponent(listSelect);
+		layout.addComponent(activityList);
 
 		setSizeUndefined();
 
@@ -80,12 +80,12 @@ public class ActivitySelectionForm extends Form{
 		this.domain = domain;
 	}
 
-	public ListSelect getListSelect() {
-		return listSelect;
+	public ListSelect getActvityList() {
+		return activityList;
 	}
 
-	public void setListSelect(ListSelect listSelect) {
-		this.listSelect = listSelect;
+	public void setActvityList(ListSelect actvityList) {
+		this.activityList = actvityList;
 	}
 
 }

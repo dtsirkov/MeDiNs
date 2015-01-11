@@ -1,15 +1,16 @@
 package web.views;
 
 import property_pckg.PropertyManager;
+import web.MedinsUI;
 import web.forms.LoginForm;
 
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import dao_classes.DaoIntrfc;
@@ -19,9 +20,9 @@ public class LoginView extends AbstractView{
 	private static final long serialVersionUID = 1L;
 
 
-	public LoginView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator) {
+	public LoginView(UI ui) {
 
-		super(propertyManager, dao, navigator);
+		super(ui);
 		setLabel("login");
 
 	}	

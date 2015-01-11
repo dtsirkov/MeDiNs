@@ -2,11 +2,13 @@ package web.views;
 
 import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
+import web.MedinsUI;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.UI;
 
 import dao_classes.DaoIntrfc;
 
@@ -16,40 +18,30 @@ public abstract class AbstractView extends CustomComponent implements CustomComp
 	
 	//this is the layout of the view
 	private Layout layout;
-	//get access to DB
-	private DaoIntrfc dao;
 	//label of the view
 	private String label;
-	//object that manages contents of View labels
-	private PropertyManager propertyManager;
-	//object that manages navigation 
-	private Navigator navigator;
+	//this is the UI to which the view belongs
+	private UI ui;
+
 
 	public AbstractView(){}
 
-	public AbstractView(PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator){
-		setPropertyManager(propertyManager);
-		setDao(dao);
-		setNavigator(navigator);
+	public AbstractView(UI ui){
+		setUi(ui);
 		setSizeFull();
 	}
-
+	
 	public AbstractView(String label, Layout layout, 
 			PropertyManager propertyManager, DaoIntrfc dao, Navigator navigator){
 		setLabel(label);
 		setLayout(layout);
-		setPropertyManager(propertyManager);
-		setDao(dao);
-		setNavigator(navigator);
 		setSizeFull();
 	}
 
-	public AbstractView(AbstractView AbstractView){
-		setLabel(AbstractView.getLabel());
-		setLayout(AbstractView.getLayout());
-		setPropertyManager(AbstractView.getPropertyManager());
-		setDao(AbstractView.getDao());
-		setNavigator(AbstractView.getNavigator());
+	public AbstractView(AbstractView abstractView){
+		setLabel(abstractView.getLabel());
+		setLayout(abstractView.getLayout());
+		setUi(abstractView.getUi());
 	}
 
 	public Layout getLayout() {
@@ -58,36 +50,39 @@ public abstract class AbstractView extends CustomComponent implements CustomComp
 	public void setLayout(Layout layout) {
 		this.layout = layout;
 	}
-	public DaoIntrfc getDao() {
-		return dao;
-	}
-	public void setDao(DaoIntrfc dao) {
-		this.dao = dao;
-	}
+
 	public String getLabel() {
 		return label;
 	}
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	public UI getUi() {
+		return ui;
+	}
+
+	public void setUi(UI ui) {
+		this.ui = ui;
+	}
+	
 	public PropertyManager getPropertyManager() {
-		return propertyManager;
+		return ((MedinsUI)getUi()).getPropertyManager();
 	}
-	public void setPropertyManager(PropertyManager propertyManager) {
-		this.propertyManager = propertyManager;
+
+	public DaoIntrfc getDao() {
+		return ((MedinsUI)getUi()).getDao();
 	}
+
 	public Navigator getNavigator() {
-		return navigator;
-	}
-	public void setNavigator(Navigator navigator) {
-		this.navigator = navigator;
+		return ((MedinsUI)getUi()).getNavigator();
 	}
 	
 	public Layout buildLayout(String mode){
 		return buildLayout();
 	};
 	
-	abstract Layout buildLayout();
+	public abstract Layout buildLayout();
 
 }
 

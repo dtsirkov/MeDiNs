@@ -60,10 +60,6 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		setComponentValidator(new ComponentValidator(getPropertyManager()));
 	}
 
-	public Layout buildLayout(String mode){
-		return layout;
-	};
-
 	public Layout getLayout() {
 		return layout;
 	}
@@ -119,6 +115,10 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 	public Navigator getNavigator() {
 		return view.getNavigator();
 	}
+	
+	public Layout buildLayout(String mode){
+		return layout;
+	};
 
 	public void setReadOnly(boolean readOnly) {
 		Iterator<Component> layoutIterator = this.getLayout().iterator();
