@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import property_pckg.PropertyManager;
 import web.activities.CreatePersonView;
+import web.activities.UpdatePersonView;
 import web.classes.Activity;
 import web.classes.Domain;
 import web.views.DomainSelectionView;
@@ -54,6 +55,8 @@ public class MedinsUI extends UI {
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
 		Activity createPersonActivity = new Activity(new CreatePersonView(this));
 		personOrganizationDomain.addActivity(createPersonActivity);
+		Activity updatePersonActivity = new Activity(new UpdatePersonView(this));
+		personOrganizationDomain.addActivity(updatePersonActivity);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 		
