@@ -24,5 +24,7 @@ public interface DaoIntrfc {
 	public List<Object> findByExample(Object instance, Map<Object, List<Object>> hm);
 
 	public Map<Enumerations, String> getEnumeration(String type);
+	
+	public String toString(Object pojoObject);
 
 }

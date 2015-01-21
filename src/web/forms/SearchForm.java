@@ -8,10 +8,14 @@ import java.util.Set;
 import pojo_classes.Persons;
 import property_pckg.PropertyManager;
 import web.classes.ComponentValidator;
+import web.components.PagedTable;
 import web.views.AbstractView;
 
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -19,13 +23,20 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.data.Item;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Table.ColumnGenerator;
 
 import dao_classes.DaoIntrfc;
 
+@Theme("pagedtabletheme")
+@Title("PagedTable Example")
 public abstract class SearchForm <T extends Serializable> extends Form {
 
 	private static final long serialVersionUID = 1L;
@@ -40,11 +51,14 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	private ArrayList<T> searchByCriteriaResult  = new ArrayList<T>();
 
 	private HorizontalLayout searchByObjectLayout;
-	private ArrayList<T> searchByObjectResult;
+	private ArrayList<T> searchByObjectResult = new ArrayList<T>();
+	
+	private ArrayList<T> searchResult = new ArrayList<T>();
 
 	private Button searchButton;
-	private ListSelect resultListLayout;
-	private String table;
+	private VerticalLayout resultTableLayout;
+	private String dBTableName;
+	private T selectedItem;
 
 	public SearchForm(){}
 
@@ -55,7 +69,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	public SearchForm(SearchForm<T> searchForm){
 		setSearchByCriteriaLayout(searchForm.getSearchByCriteriaLayout());
 		setSearchButton(searchForm.getSearchButton());
-		setResultListLayout(searchForm.getResultListLayout());
+		setResultTableLayout(searchForm.getResultTableLayout());
 	}
 
 	public SearchForm(AbstractView view, String label){
@@ -67,6 +81,10 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 	public FormLayout getSearchByIdntfrLayout() {
 		return searchByIdntfrLayout;
+	}
+
+	public void setSearchByIdntfrLayout(FormLayout searchByIdntfrLayout) {
+		this.searchByIdntfrLayout = searchByIdntfrLayout;
 	}
 
 	public void setSearchByIdntfr(FormLayout searchByIdntfrLayout) {
@@ -129,6 +147,14 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		this.searchByObjectResult = searchByObjectResult;
 	}
 
+	public ArrayList<T> getSearchResult() {
+		return searchResult;
+	}
+
+	public void setSearchResult(ArrayList<T> searchResult) {
+		this.searchResult = searchResult;
+	}
+
 	public Button getSearchButton() {
 		return searchButton;
 	}
@@ -137,20 +163,24 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		this.searchButton = searchButton;
 	}
 
-	public ListSelect getResultListLayout() {
-		return resultListLayout;
+	public VerticalLayout getResultTableLayout() {
+		return resultTableLayout;
 	}
 
-	public void setResultListLayout(ListSelect resultListLayout) {
-		this.resultListLayout = resultListLayout;
+	public void setResultTableLayout(VerticalLayout resultTableLayout) {
+		this.resultTableLayout = resultTableLayout;
 	}
 
-	public String getTable() {
-		return table;
+	public String getdBTableName() {
+		return dBTableName;
 	}
 
-	public void setTable(String table) {
-		this.table = table;
+	public void setdBTableName(String dBTableName) {
+		this.dBTableName = dBTableName;
+	}
+
+	public T getSelectedItem() {
+		return selectedItem;
 	}
 
 	public Layout buildLayout(String mode){
@@ -162,7 +192,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
-		DaoIntrfc dao = getDao();
+		final DaoIntrfc dao = getDao();
 
 		//remove all current components
 		root.removeAllComponents();
@@ -170,8 +200,11 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		//define measurements of the components 
 		String width = "180px", height = "-1px";
 
-		resultListLayout = new ListSelect(propertyManager.getLabelDtl("searchResult"));
-		resultListLayout.setWidth(width);
+		resultTableLayout = new VerticalLayout();	
+		resultTableLayout.setSizeUndefined();
+		final PagedTable resultTable = createTable();
+		resultTableLayout.addComponent(resultTable);
+		resultTableLayout.addComponent(resultTable.createControls());
 
 		searchByIdntfrLayout = new FormLayout();
 
@@ -214,11 +247,11 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 			}
 
 		});
-		
-		searchByObjectResult = searchByObject(table, "");
+
+		searchByObjectResult = searchByObject(dBTableName, "");
 
 		searchByCriteriaLayout = buildSearchByCriteriaLayout();
-		
+
 		searchByObjectLayout = buildSearchByObject(); 
 
 		searchByIdntfrLayout.setSizeUndefined();
@@ -241,19 +274,20 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 			private static final long serialVersionUID = 1L;
 
 			public void buttonClick(ClickEvent event) {
+				
 				searchByCriteriaResult = search();
 
-				ArrayList<T> result = new ArrayList<T>();
-				result.addAll(searchByIdntfrResult);
-				result.addAll(searchByKeyResult);
-				result.addAll(searchByCriteriaResult);
-				result.addAll(searchByObjectResult);
+				searchResult = new ArrayList<T>();
+				searchResult.addAll(searchByIdntfrResult);
+				searchResult.addAll(searchByKeyResult);
+				searchResult.addAll(searchByCriteriaResult);
+				searchResult.addAll(searchByObjectResult);
 
-				Set<T> hs = new HashSet<T>(result);
-				result.clear();
-				result.addAll(hs);
-
-				resultListLayout.addItems(result);
+				Set<T> hs = new HashSet<T>(searchResult);
+				searchResult.clear();
+				searchResult.addAll(hs);
+				
+				resultTable.setContainerDataSource(createContainer());
 
 			}
 		});
@@ -261,7 +295,8 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		root.addComponent(searchButton);
 		root.setComponentAlignment(searchButton, Alignment.MIDDLE_RIGHT);
 
-		root.addComponent(resultListLayout);
+		root.addComponent(resultTableLayout);
+		root.setComponentAlignment(resultTableLayout, Alignment.MIDDLE_CENTER);
 
 		return root;
 	};
@@ -309,7 +344,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	private ArrayList<T> searchByIdntfr(String value){
 		ArrayList<T> searchByIdntfrResult = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
-		T object = (T)getDao().findById(table, value);
+		T object = (T)getDao().findById(dBTableName, value);
 		searchByIdntfrResult.add(object);
 		return searchByIdntfrResult;
 	}
@@ -317,9 +352,26 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	private ArrayList<T> searchByObject(String table, String idntfr){
 		return new ArrayList<T>();
 	};
+	
+	public PagedTable createTable() {
+		PagedTable pagedTable = new PagedTable();
+		pagedTable.setContainerDataSource(createContainer());
+		//pagedTable.setRowHeaderMode(Table.RowHeaderMode.ICON_ONLY);
+		pagedTable.setWidth("400px");
+		pagedTable.setPageLength(10);
+		pagedTable.setImmediate(true);
+		pagedTable.setSelectable(true);
+		pagedTable.setAlwaysRecalculateColumnWidths(true);
+		pagedTable.setColumnHeaders(getTableHeader());
+		return pagedTable;
+	}
 
 	public abstract ArrayList<T> search();
 
 	public abstract FormLayout buildSearchByCriteriaLayout();
+	
+	public abstract IndexedContainer createContainer();
+	
+	public abstract String[] getTableHeader();
 
 }

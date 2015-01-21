@@ -32,11 +32,16 @@ public class UpdatePersonView extends AbstractActivityView{
 
 	public Layout buildLayout(){
 
+		SearchPersonForm searchPersonForm = new SearchPersonForm(this, "stepSearchPerson");
+		PersonForm personForm = new PersonForm(this, "stepCreatePerson"); 
+		ContactForm contactForm = new ContactForm(this, "stepCreateContact");
+		ValidationForm validationForm = new ValidationForm(this, "stepValidate");
+
 		Form[] requiredSteps = {
-				new SearchPersonForm(this, "stepSearchPerson"),
-				new PersonForm(this, "stepCreatePerson"), 
-				new ContactForm(this, "stepCreateContact"), 
-				new ValidationForm(this, "stepValidate")
+				searchPersonForm,
+				personForm,
+				contactForm, 
+				validationForm
 		};
 		setRequiredSteps(requiredSteps);
 
@@ -44,7 +49,7 @@ public class UpdatePersonView extends AbstractActivityView{
 		setOptionalSteps(optionalSteps);
 
 		setValidationMethod("validatePerson");
-		setMode("create");
+		setMode("update");
 
 		return super.buildLayout();
 	}

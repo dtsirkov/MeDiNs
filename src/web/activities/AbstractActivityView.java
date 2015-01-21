@@ -28,6 +28,7 @@ import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.ValidationClass;
 import web.forms.Form;
+import web.forms.SearchForm;
 import web.forms.ValidationForm;
 import web.views.AbstractView;
 
@@ -191,7 +192,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		final Button validateButton = new Button(propertyManager.getButtonDtl("validate"));
 		final Button domainSelectionButton = new Button(propertyManager.getButtonDtl("domainSelection"));
 		final Button activitySelectionButton = new Button(propertyManager.getButtonDtl("activitySelection"));
-		
+
 		buttonsLayout.addComponent(prevButton);
 		buttonsLayout.addComponent(nextButton);
 
@@ -320,7 +321,9 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		//add warning message when not validated step is selected
 		menu.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-			private static final long serialVersionUID = 5548609446898735032L;
+
+			private static final long serialVersionUID = 1L;
+
 			public void itemClick(ItemClickEvent event) {
 				String selectedItem = event.getItemId().toString();
 				if (requiredStepsLabels.contains(selectedItem) && !validatedSteps.contains(selectedItem))
@@ -330,9 +333,9 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		//select an item from menu
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
-			
+
 			private static final long serialVersionUID = 1L;
-			
+
 			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
 				//CustomComponent validationForm;
@@ -396,8 +399,11 @@ public abstract class AbstractActivityView extends AbstractView {
 								detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
 								//add buttonsLayout 
-								detailsbox.addComponent(buttonsLayout);
-								detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+								if(! (customComponent instanceof  SearchForm)){
+									detailsbox.addComponent(buttonsLayout);
+									detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+								}
+
 							}
 						}	
 					}
@@ -486,7 +492,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				Label result = new Label(propertyManager.getLabelDtl(validationResult));
 				result.addStyleName("stepTitle");
 				detailsbox.addComponent(result);
-				
+
 				buttonsLayout.removeAllComponents();
 				buttonsLayout.addComponent(domainSelectionButton);
 				buttonsLayout.addComponent(activitySelectionButton);
@@ -494,9 +500,9 @@ public abstract class AbstractActivityView extends AbstractView {
 				detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
 			}
 		});
-		
+
 		final Navigator navigator = getNavigator();
-		
+
 		domainSelectionButton.addClickListener(new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -505,7 +511,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				navigator.navigateTo("domainSelectionView");
 			}
 		});
-		
+
 		activitySelectionButton.addClickListener(new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
@@ -514,7 +520,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				navigator.navigateTo(domain.getLabel());
 			}
 		});
-		
+
 		setLayout(root);
 
 		return root;
