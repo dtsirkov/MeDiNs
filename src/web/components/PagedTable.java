@@ -1,7 +1,9 @@
 package web.components;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Validator;
 import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -43,7 +45,7 @@ public class PagedTable extends Table {
 
 	private PagedTableContainer container;
 
-
+	private Object selectedItem = null;
 
 
 	public PagedTable() {
@@ -54,6 +56,25 @@ public class PagedTable extends Table {
 		super(caption);
 		setPageLength(25);
 		addStyleName("pagedtable");
+		addItemClickListener();
+	}
+
+	public Object getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(Object selectedItem) {
+		this.selectedItem = selectedItem;
+	}
+
+	private void addItemClickListener(){
+		this.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+			private static final long serialVersionUID = -6287768389172009900L;
+
+			public void itemClick(ItemClickEvent event) {
+				selectedItem = event.getItemId();
+			}
+		});
 	}
 
 	public HorizontalLayout createControls() {
@@ -339,6 +360,15 @@ public class PagedTable extends Table {
 	public void setAlwaysRecalculateColumnWidths(
 			boolean alwaysRecalculateColumnWidths) {
 		this.alwaysRecalculateColumnWidths = alwaysRecalculateColumnWidths;
+	}
+
+	@Override
+	public void validate() throws Validator.InvalidValueException {
+
+		if (selectedItem == null) {
+			throw new Validator.InvalidValueException("");
+		}
+
 	}
 
 }

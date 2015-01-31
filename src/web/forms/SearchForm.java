@@ -28,6 +28,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.data.Item;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
@@ -52,7 +53,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 	private HorizontalLayout searchByObjectLayout;
 	private ArrayList<T> searchByObjectResult = new ArrayList<T>();
-	
+
 	private ArrayList<T> searchResult = new ArrayList<T>();
 
 	private Button searchButton;
@@ -183,6 +184,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return selectedItem;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Layout buildLayout(String mode){
 
 		//get main layout
@@ -205,6 +207,16 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		final PagedTable resultTable = createTable();
 		resultTableLayout.addComponent(resultTable);
 		resultTableLayout.addComponent(resultTable.createControls());
+
+		resultTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			public void itemClick(ItemClickEvent event) {
+				selectedItem = (T)event.getItemId();
+			}
+		});
+
 
 		searchByIdntfrLayout = new FormLayout();
 
@@ -274,7 +286,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 			private static final long serialVersionUID = 1L;
 
 			public void buttonClick(ClickEvent event) {
-				
+
 				searchByCriteriaResult = search();
 
 				searchResult = new ArrayList<T>();
@@ -286,7 +298,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 				Set<T> hs = new HashSet<T>(searchResult);
 				searchResult.clear();
 				searchResult.addAll(hs);
-				
+
 				resultTable.setContainerDataSource(createContainer());
 
 			}
@@ -297,6 +309,10 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 		root.addComponent(resultTableLayout);
 		root.setComponentAlignment(resultTableLayout, Alignment.MIDDLE_CENTER);
+
+		selectedItem = (T)resultTable.getSelectedItem();
+		setData(selectedItem);
+		System.out.println(selectedItem);
 
 		return root;
 	};
@@ -352,16 +368,16 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	private ArrayList<T> searchByObject(String table, String idntfr){
 		return new ArrayList<T>();
 	};
-	
+
 	public PagedTable createTable() {
-		PagedTable pagedTable = new PagedTable();
+		final PagedTable pagedTable = new PagedTable();
 		pagedTable.setContainerDataSource(createContainer());
 		//pagedTable.setRowHeaderMode(Table.RowHeaderMode.ICON_ONLY);
 		pagedTable.setWidth("400px");
 		pagedTable.setPageLength(10);
 		pagedTable.setImmediate(true);
 		pagedTable.setSelectable(true);
-		pagedTable.setAlwaysRecalculateColumnWidths(true);
+		pagedTable.setAlwaysRecalculateColumnWidths(false);
 		pagedTable.setColumnHeaders(getTableHeader());
 		return pagedTable;
 	}
@@ -369,9 +385,9 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	public abstract ArrayList<T> search();
 
 	public abstract FormLayout buildSearchByCriteriaLayout();
-	
+
 	public abstract IndexedContainer createContainer();
-	
+
 	public abstract String[] getTableHeader();
 
 }

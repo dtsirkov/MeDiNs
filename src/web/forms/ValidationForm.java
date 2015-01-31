@@ -3,9 +3,13 @@ package web.forms;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import web.CustomComponentIntrfc;
+import web.StepIntrfc;
 import web.views.AbstractView;
 
 
@@ -20,16 +24,16 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Layout;
 
-public class ValidationForm extends Form{
+public class ValidationForm extends Form implements StepIntrfc{
 
 	private static final long serialVersionUID = 1L;
 
 	public ValidationForm(){}
 
 	public ValidationForm(AbstractView view, String label){
-		
+
 		super(view, label, new VerticalLayout());
-		
+
 	}
 
 	public ValidationForm(ValidationForm validationForm) {
@@ -115,6 +119,12 @@ public class ValidationForm extends Form{
 			grid.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 		}
 		this.getLayout().addComponent(grid);
+	}
+
+	@Override
+	public void process(HashMap<String, Form> steps) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

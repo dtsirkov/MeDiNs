@@ -1,10 +1,14 @@
 package web.forms;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import pojo_classes.Contacts;
 import pojo_classes.Enumerations;
 import property_pckg.PropertyManager;
+import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
@@ -12,13 +16,14 @@ import web.views.AbstractView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
 import dao_classes.DaoIntrfc;
 
-public class ContactForm extends Form{
+public class ContactForm extends Form implements StepIntrfc{
 
 	/**
 	 * 
@@ -342,5 +347,11 @@ public class ContactForm extends Form{
 		activeCB.setValue(contact.getEnumerationsByActive());
 
 		return formLayout;
+	}
+
+	@Override
+	public void process(HashMap<String, Form> steps) {
+		// TODO Auto-generated method stub
+		
 	}
 }

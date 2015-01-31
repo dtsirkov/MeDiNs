@@ -1,9 +1,13 @@
 package web.forms;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
+import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
@@ -15,7 +19,7 @@ import com.vaadin.ui.Layout;
 
 import dao_classes.DaoIntrfc;
 
-public class Form extends CustomComponent implements CustomComponentIntrfc{
+public class Form extends CustomComponent implements CustomComponentIntrfc, StepIntrfc{
 
 	private static final long serialVersionUID = 1L;
 	//layout of the form
@@ -125,6 +129,12 @@ public class Form extends CustomComponent implements CustomComponentIntrfc{
 		while(layoutIterator.hasNext()){
 			layoutIterator.next().setReadOnly(readOnly);
 		}
+	}
+
+	@Override
+	public void process(HashMap<String, Form> steps) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

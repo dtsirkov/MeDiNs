@@ -1,6 +1,7 @@
 package web.activities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import property_pckg.PropertyManager;
 
@@ -231,10 +232,16 @@ public abstract class AbstractActivityView extends AbstractView {
 		}
 		 */
 
+		String stepLabel;
+		final HashMap<String, Form> hmSteps = new HashMap<String, Form>();
 		final Form [] requiredStepsDisplay = new Form[requiredSteps.length + 1];	
+
 		requiredStepsDisplay[0] = new Form(this, "requiredSteps");
+
 		for(int i = 0; i < requiredSteps.length; i++){
 			requiredStepsDisplay[i+1] = requiredSteps[i];
+			stepLabel = requiredSteps[i].getLabel();
+			hmSteps.put(stepLabel, requiredSteps[i]);
 		}
 
 		//put additional steps in array
@@ -261,8 +268,8 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		//enable selection of initially validated steps
 		final ArrayList<String> validatedSteps = new ArrayList<String>();
-		validatedSteps.add((requiredSteps[0]).getLabel());
-		validatedSteps.add((requiredStepsDisplay[0]).getLabel());
+		validatedSteps.add(requiredSteps[0].getLabel());
+		validatedSteps.add(requiredStepsDisplay[0].getLabel());
 		for (int i = 0; i < optionalStepsDisplay.length; i++) {
 			validatedSteps.add((optionalStepsDisplay[i]).getLabel());
 		}
@@ -399,10 +406,8 @@ public abstract class AbstractActivityView extends AbstractView {
 								detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
 								//add buttonsLayout 
-								if(! (customComponent instanceof  SearchForm)){
-									detailsbox.addComponent(buttonsLayout);
-									detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
-								}
+								detailsbox.addComponent(buttonsLayout);
+								detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
 
 							}
 						}	
@@ -438,6 +443,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				if(isValid && !validatedSteps.contains(nextStep)){
 					validatedSteps.add(nextStep);
 					currentComponent.setValidated(isValid);
+					currentComponent.process(hmSteps);
 				}
 
 				menu.select(nextStep);	

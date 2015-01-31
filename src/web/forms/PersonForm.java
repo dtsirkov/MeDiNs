@@ -1,11 +1,15 @@
 package web.forms;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import pojo_classes.Enumerations;
 import pojo_classes.Persons;
 import property_pckg.PropertyManager;
+import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.views.AbstractView;
 
@@ -13,6 +17,7 @@ import web.views.AbstractView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
@@ -20,7 +25,7 @@ import com.vaadin.ui.TextField;
 
 import dao_classes.DaoIntrfc;
 
-public class PersonForm extends Form{
+public class PersonForm extends Form implements StepIntrfc{
 
 	private static final long serialVersionUID = 1L;
 	private TextField personSocialNumberTF;
@@ -317,6 +322,12 @@ public class PersonForm extends Form{
 		}
 
 		return formLayout;
+	}
+
+	@Override
+	public void process(HashMap<String, Form> steps) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
