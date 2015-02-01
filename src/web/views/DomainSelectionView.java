@@ -2,10 +2,10 @@ package web.views;
 
 import java.util.ArrayList;
 
-import property_pckg.PropertyManager;
 import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
+import web.classes.PropertyManager;
 import web.forms.DomainSelectionForm;
 
 import com.vaadin.navigator.Navigator;
@@ -17,7 +17,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 //@Theme("medins")
 public class DomainSelectionView extends AbstractView{

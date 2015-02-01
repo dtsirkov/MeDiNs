@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import pojo_classes.Enumerations;
-import pojo_classes.Persons;
-import property_pckg.PropertyManager;
+import pojo.classes.Enumerations;
+import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
@@ -23,7 +23,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class PersonForm extends Form implements StepIntrfc{
 
@@ -58,20 +58,16 @@ public class PersonForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the components
 		final Persons person;
-		if(mode.equals("update")){
+		if(mode.equals("update") || getData() != null){
 			person = (Persons)getData();
 		}else{
-			if(getData() == null){
-				person = new Persons();
-				//set initial values
-				person.setSocialNumber("");
-				person.setFirstName("");
-				person.setMiddleName("");
-				person.setLastName("");
-				setData(person);
-			}else{
-				person = (Persons)getData();
-			}
+			//set initial values
+			person = new Persons();
+			person.setSocialNumber("");
+			person.setFirstName("");
+			person.setMiddleName("");
+			person.setLastName("");
+			setData(person);
 		}
 
 		//remove all current components
@@ -325,9 +321,9 @@ public class PersonForm extends Form implements StepIntrfc{
 	}
 
 	@Override
-	public void process(HashMap<String, Form> steps) {
+	public boolean process(HashMap<String, Form> steps) {
 		// TODO Auto-generated method stub
-
+		return true;
 	}
 
 }

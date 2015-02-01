@@ -3,12 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.Treatments" table="treatments">
+    <class name="pojo.classes.Treatments" table="treatments">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="enumerations" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerations" class="pojo.classes.Enumerations" fetch="select">
             <column name="type" length="15" />
         </many-to-one>
         <property name="name" type="string">
@@ -24,19 +24,19 @@
             <key>
                 <column name="treatment_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.TreatmentMedicamentLink" />
+            <one-to-many class="pojo.classes.TreatmentMedicamentLink" />
         </set>
         <set name="deceaseTreatmentLinks" table="decease_treatment_link" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="treatment_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.DeceaseTreatmentLink" />
+            <one-to-many class="pojo.classes.DeceaseTreatmentLink" />
         </set>
         <set name="caseInfos" table="case_info" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="treatment" />
             </key>
-            <one-to-many class="pojo_classes.CaseInfo" />
+            <one-to-many class="pojo.classes.CaseInfo" />
         </set>
     </class>
 </hibernate-mapping>

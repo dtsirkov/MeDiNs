@@ -4,30 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.Table.ColumnGenerator;
 
-import dao_classes.DaoIntrfc;
 
-import pojo_classes.Contacts;
-import pojo_classes.Enumerations;
-import pojo_classes.PersonContactLink;
-import pojo_classes.Persons;
-import property_pckg.PropertyManager;
+import dao.classes.DaoIntrfc;
+
+import pojo.classes.Contacts;
+import pojo.classes.Enumerations;
+import pojo.classes.PersonContactLink;
+import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
-import web.components.PagedTable;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
@@ -99,12 +91,15 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 	}
 
 	@Override
-	public void process(HashMap<String, Form> steps) {
+	public boolean process(HashMap<String, Form> steps) {
+
+		boolean processed = false;
 
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
 		Persons selectedPerson = getSelectedItem();
+		dao.evict(selectedPerson);
 
 		steps.get("stepCreatePerson").setData(selectedPerson);
 
@@ -115,14 +110,20 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		List<Object> personAddressLinks = dao.findByExample(new PersonContactLink(), hmPerson);
 
 		Enumerations enumeration;
-		Contacts contact;
+		Contacts contact = new Contacts();
 		for(Object personAddressLink : personAddressLinks){
+			dao.evict(personAddressLink);
 			contact = ((PersonContactLink) personAddressLink).getContacts();
 			enumeration = contact.getEnumerationsByActive();
 			if(enumeration.getCode().equals("yes")){
+				dao.evict(contact);
 				steps.get("stepCreateContact").setData(contact);
 			}
 		}
+		
+		processed = true;
+		return processed;
+
 	}
 
 }

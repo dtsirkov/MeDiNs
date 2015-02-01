@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import pojo_classes.Contacts;
-import pojo_classes.Enumerations;
-import property_pckg.PropertyManager;
+import pojo.classes.Contacts;
+import pojo.classes.Enumerations;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
@@ -21,7 +21,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class ContactForm extends Form implements StepIntrfc{
 
@@ -60,23 +60,19 @@ public class ContactForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the components
 		final Contacts contact;
-		if(mode.equals("update")){
+		if(mode.equals("update") || getData() != null){
 			contact = (Contacts)getData();
 		}else{
-			if(getData() == null){
-				contact = new Contacts();
-				//set initial values
-				contact.setAddress("");
-				contact.setCity("");
-				contact.setCountry("");
-				contact.setZip("");
-				contact.setEmail("");
-				contact.setPhone("");
-				contact.setMobile("");
-				setData(contact);
-			}else{
-				contact = (Contacts)getData();
-			}
+			//set initial values
+			contact = new Contacts();
+			contact.setAddress("");
+			contact.setCity("");
+			contact.setCountry("");
+			contact.setZip("");
+			contact.setEmail("");
+			contact.setPhone("");
+			contact.setMobile("");
+			setData(contact);
 		}
 
 		//remove all current components
@@ -350,8 +346,8 @@ public class ContactForm extends Form implements StepIntrfc{
 	}
 
 	@Override
-	public void process(HashMap<String, Form> steps) {
+	public boolean process(HashMap<String, Form> steps) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 }

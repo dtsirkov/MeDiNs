@@ -3,15 +3,15 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.Policies" table="policies">
+    <class name="pojo.classes.Policies" table="policies">
         <id name="number" type="string">
             <column name="number" length="45" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="organizationsByAssistanceCompany" class="pojo_classes.Organizations" fetch="select">
+        <many-to-one name="organizationsByAssistanceCompany" class="pojo.classes.Organizations" fetch="select">
             <column name="assistance_company" length="45" not-null="true" />
         </many-to-one>
-        <many-to-one name="organizationsByInsuaranceCompany" class="pojo_classes.Organizations" fetch="select">
+        <many-to-one name="organizationsByInsuaranceCompany" class="pojo.classes.Organizations" fetch="select">
             <column name="insuarance_company" length="45" not-null="true" />
         </many-to-one>
         <property name="validFrom" type="date">
@@ -24,7 +24,7 @@
             <key>
                 <column name="policy" length="45" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.MedicalCases" />
+            <one-to-many class="pojo.classes.MedicalCases" />
         </set>
     </class>
 </hibernate-mapping>

@@ -3,18 +3,18 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.Contacts" table="contacts">
+    <class name="pojo.classes.Contacts" table="contacts">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="enumerationsByPrefered" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByPrefered" class="pojo.classes.Enumerations" fetch="select">
             <column name="prefered" length="15" not-null="true" />
         </many-to-one>
-        <many-to-one name="enumerationsByActive" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByActive" class="pojo.classes.Enumerations" fetch="select">
             <column name="active" length="15" not-null="true" />
         </many-to-one>
-        <many-to-one name="enumerationsByType" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByType" class="pojo.classes.Enumerations" fetch="select">
             <column name="type" length="15" not-null="true" />
         </many-to-one>
         <property name="address" type="string">
@@ -42,13 +42,13 @@
             <key>
                 <column name="contact_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.PersonContactLink" />
+            <one-to-many class="pojo.classes.PersonContactLink" />
         </set>
         <set name="organizationContactLinks" table="organization_contact_link" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="contact_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.OrganizationContactLink" />
+            <one-to-many class="pojo.classes.OrganizationContactLink" />
         </set>
     </class>
 </hibernate-mapping>

@@ -1,22 +1,21 @@
 package web.classes;
 
-import pojo_classes.*;
+import java.util.HashMap;
+
+import pojo.classes.*;
 import web.forms.Form;
 
-
-import com.vaadin.ui.CustomComponent;
-
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class ValidationClass {
 
 	private boolean isValidated = false;
 	private String validationMethod;
 	private DaoIntrfc dao;
-	private Form[] requiredSteps;
-	private Form[] optionalSteps;
+	private HashMap<String, Form> requiredSteps;
+	private HashMap<String, Form> optionalSteps;
 
-	public ValidationClass(String validationMethod, Form[] requiredSteps, Form[] optionalSteps){
+	public ValidationClass(String validationMethod, HashMap<String, Form> requiredSteps, HashMap<String, Form> optionalSteps){
 
 		setValidationMethod(validationMethod);
 		setRequiredSteps(requiredSteps);
@@ -49,19 +48,19 @@ public class ValidationClass {
 		this.dao = dao;
 	}
 
-	public CustomComponent[] getRequiredSteps() {
+	public HashMap<String, Form> getRequiredSteps() {
 		return requiredSteps;
 	}
 
-	public void setRequiredSteps(Form[] requiredSteps) {
+	public void setRequiredSteps(HashMap<String, Form> requiredSteps) {
 		this.requiredSteps = requiredSteps;
 	}
 
-	public CustomComponent[] getOptionalSteps() {
+	public HashMap<String, Form> getOptionalSteps() {
 		return optionalSteps;
 	}
 
-	public void setOptionalSteps(Form[] optionalSteps) {
+	public void setOptionalSteps(HashMap<String, Form> optionalSteps) {
 		this.optionalSteps = optionalSteps;
 	}
 
@@ -75,8 +74,8 @@ public class ValidationClass {
 	private boolean validatePerson(String mode){		
 		try{
 
-			Persons person = (Persons)(getRequiredSteps()[0]).getData();
-			Contacts contact = (Contacts)(getRequiredSteps()[1]).getData();
+			Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+			Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
 			PersonContactLink personContactLink = new PersonContactLink(person, contact);
 
 			Object[] objectsToCreate  = {
@@ -96,7 +95,10 @@ public class ValidationClass {
 			}else{
 				objects = objectsToCreate;
 			}
-			dao.persist(objects);
+
+			for(int i = 0; i < objects.length; i++){
+				dao.attachDirty(objects[i]);
+			}
 			setValidated(true);
 
 		}catch(Exception e){

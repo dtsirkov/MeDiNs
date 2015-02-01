@@ -3,12 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.EnumerationLabels" table="enumeration_labels">
+    <class name="pojo.classes.EnumerationLabels" table="enumeration_labels">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="enumerations" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerations" class="pojo.classes.Enumerations" fetch="select">
             <column name="code" length="15" not-null="true" />
         </many-to-one>
         <property name="language" type="string">

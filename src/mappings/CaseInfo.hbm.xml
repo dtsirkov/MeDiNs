@@ -3,40 +3,40 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.CaseInfo" table="case_info">
+    <class name="pojo.classes.CaseInfo" table="case_info">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="treatments" class="pojo_classes.Treatments" fetch="select">
+        <many-to-one name="treatments" class="pojo.classes.Treatments" fetch="select">
             <column name="treatment" />
         </many-to-one>
-        <many-to-one name="caseInfo" class="pojo_classes.CaseInfo" fetch="select">
+        <many-to-one name="caseInfo" class="pojo.classes.CaseInfo" fetch="select">
             <column name="case_history" />
         </many-to-one>
-        <many-to-one name="persons" class="pojo_classes.Persons" fetch="select">
+        <many-to-one name="persons" class="pojo.classes.Persons" fetch="select">
             <column name="physician" length="45" not-null="true" />
         </many-to-one>
-        <many-to-one name="medicaments" class="pojo_classes.Medicaments" fetch="select">
+        <many-to-one name="medicaments" class="pojo.classes.Medicaments" fetch="select">
             <column name="medication" />
         </many-to-one>
         <set name="medicalCaseses" table="medical_cases" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="case_info" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.MedicalCases" />
+            <one-to-many class="pojo.classes.MedicalCases" />
         </set>
         <set name="caseInfos" table="case_info" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="case_history" />
             </key>
-            <one-to-many class="pojo_classes.CaseInfo" />
+            <one-to-many class="pojo.classes.CaseInfo" />
         </set>
         <set name="documentations" table="documentation" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="case_info_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.Documentation" />
+            <one-to-many class="pojo.classes.Documentation" />
         </set>
     </class>
 </hibernate-mapping>

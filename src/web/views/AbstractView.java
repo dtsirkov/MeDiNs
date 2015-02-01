@@ -1,8 +1,8 @@
 package web.views;
 
-import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
 import web.MedinsUI;
+import web.classes.PropertyManager;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -10,7 +10,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public abstract class AbstractView extends CustomComponent implements CustomComponentIntrfc, View{
 

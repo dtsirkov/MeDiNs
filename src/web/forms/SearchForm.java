@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import pojo_classes.Persons;
-import property_pckg.PropertyManager;
+import pojo.classes.Persons;
 import web.classes.ComponentValidator;
+import web.classes.PropertyManager;
 import web.components.PagedTable;
 import web.views.AbstractView;
 
@@ -34,7 +34,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Table.ColumnGenerator;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 @Theme("pagedtabletheme")
 @Title("PagedTable Example")

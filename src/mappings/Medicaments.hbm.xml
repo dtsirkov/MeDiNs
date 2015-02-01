@@ -3,12 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.Medicaments" table="medicaments">
+    <class name="pojo.classes.Medicaments" table="medicaments">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="enumerations" class="pojo_classes.Enumerations" fetch="select">
+        <many-to-one name="enumerations" class="pojo.classes.Enumerations" fetch="select">
             <column name="type" length="15" />
         </many-to-one>
         <property name="name" type="string">
@@ -30,13 +30,13 @@
             <key>
                 <column name="medication" />
             </key>
-            <one-to-many class="pojo_classes.CaseInfo" />
+            <one-to-many class="pojo.classes.CaseInfo" />
         </set>
         <set name="treatmentMedicamentLinks" table="treatment_medicament_link" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="medicament_id" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.TreatmentMedicamentLink" />
+            <one-to-many class="pojo.classes.TreatmentMedicamentLink" />
         </set>
     </class>
 </hibernate-mapping>

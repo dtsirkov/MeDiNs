@@ -1,7 +1,7 @@
 package web.forms;
 
-import property_pckg.PropertyManager;
 import web.classes.ComponentValidator;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
@@ -15,7 +15,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class LoginForm extends Form {
 

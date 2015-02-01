@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import property_pckg.PropertyManager;
 import web.CustomComponentIntrfc;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
@@ -17,7 +17,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class Form extends CustomComponent implements CustomComponentIntrfc, StepIntrfc{
 
@@ -132,9 +132,9 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 	}
 
 	@Override
-	public void process(HashMap<String, Form> steps) {
+	public boolean process(HashMap<String, Form> steps) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 }

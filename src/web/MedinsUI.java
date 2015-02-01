@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
-import property_pckg.PropertyManager;
-import web.activities.CreatePersonView;
-import web.activities.UpdatePersonView;
+import web.activities.CreatePerson;
+import web.activities.UpdatePerson;
 import web.classes.Activity;
 import web.classes.Domain;
+import web.classes.PropertyManager;
 import web.views.DomainSelectionView;
 import web.views.LoginView;
 
@@ -20,8 +20,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import dao_classes.DaoImpl;
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoImpl;
+import dao.classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
@@ -53,9 +53,9 @@ public class MedinsUI extends UI {
 		DomainSelectionView domainSelectionView =  new DomainSelectionView(this);
 
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
-		Activity createPersonActivity = new Activity(new CreatePersonView(this));
+		Activity createPersonActivity = new Activity(new CreatePerson(this));
 		personOrganizationDomain.addActivity(createPersonActivity);
-		Activity updatePersonActivity = new Activity(new UpdatePersonView(this));
+		Activity updatePersonActivity = new Activity(new UpdatePerson(this));
 		personOrganizationDomain.addActivity(updatePersonActivity);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();

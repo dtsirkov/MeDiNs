@@ -49,7 +49,8 @@ public class ValidationForm extends Form implements StepIntrfc{
 		getLayout().setSizeUndefined();
 		Form[] requiredSteps = (Form[])getData();
 		for(int i = 0; i < requiredSteps.length - 1; i++){
-			addValidationComponent(requiredSteps[i]);
+			if(! (requiredSteps[i] instanceof SearchForm))
+				addValidationComponent(requiredSteps[i]);
 		}	
 		return getLayout();
 
@@ -122,9 +123,9 @@ public class ValidationForm extends Form implements StepIntrfc{
 	}
 
 	@Override
-	public void process(HashMap<String, Form> steps) {
+	public boolean process(HashMap<String, Form> steps) {
 		// TODO Auto-generated method stub
-
+		return true;
 	}
 
 }

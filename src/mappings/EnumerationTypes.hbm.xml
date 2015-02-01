@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo_classes.EnumerationTypes" table="enumeration_types">
+    <class name="pojo.classes.EnumerationTypes" table="enumeration_types">
         <id name="type" type="string">
             <column name="type" length="15" />
             <generator class="assigned" />
@@ -15,7 +15,7 @@
             <key>
                 <column name="enumeration_type" length="15" not-null="true" />
             </key>
-            <one-to-many class="pojo_classes.Enumerations" />
+            <one-to-many class="pojo.classes.Enumerations" />
         </set>
     </class>
 </hibernate-mapping>

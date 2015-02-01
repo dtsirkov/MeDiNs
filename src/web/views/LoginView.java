@@ -1,7 +1,7 @@
 package web.views;
 
-import property_pckg.PropertyManager;
 import web.MedinsUI;
+import web.classes.PropertyManager;
 import web.forms.LoginForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -13,7 +13,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class LoginView extends AbstractView{
 

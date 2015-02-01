@@ -2,9 +2,9 @@ package web.forms;
 
 import java.util.ArrayList;
 
-import property_pckg.PropertyManager;
 import web.classes.Activity;
 import web.classes.Domain;
+import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 import com.vaadin.navigator.Navigator;

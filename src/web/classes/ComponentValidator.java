@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import property_pckg.PropertyManager;
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.EmptyValueException;
@@ -15,7 +14,7 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
-import dao_classes.DaoIntrfc;
+import dao.classes.DaoIntrfc;
 
 public class ComponentValidator implements java.io.Serializable{
 
