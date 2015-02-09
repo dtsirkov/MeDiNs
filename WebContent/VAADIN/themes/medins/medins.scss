@@ -54,7 +54,11 @@
 	    color: white;
 	    line-height:36pt;
 	    background: black;
-	}     
+	}   
+	
+	.em{
+	    padding: 100px;
+	}
 	
 	/* The details text. */
 	.stepTitle{
@@ -93,7 +97,7 @@
 	    font-size: 18pt;
 	}
 	
-	.personcreate .treecontainer, .personcreate .v-panel, .personcreate .v-caption {
+	.personcreate .treecontainer, .personcreate .v-panel {
 	    background: white;
 	}
 	
@@ -139,7 +143,7 @@
 	}
 	
 	.v-gridlayout-test{
-	    	background: gray;
+	    background: gray;
 	}
 	
 }

@@ -3,16 +3,21 @@ package web.views;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.hibernate.Transaction;
+
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -29,7 +34,6 @@ import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
 import web.forms.Form;
-import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
 public abstract class AbstractActivityView extends AbstractView {
@@ -55,6 +59,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		setOptionalSteps(abstractActivityView.getOptionalSteps());
 		setMode(abstractActivityView.getMode());
 		setValidationMethod(abstractActivityView.getValidationMethod());
+		setDomain(abstractActivityView.getDomain());
 	}
 
 	public Form[] getRequiredSteps() {
@@ -96,6 +101,9 @@ public abstract class AbstractActivityView extends AbstractView {
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao = getDao();	
+		//begin transaction
+		dao.getTransaction().rollback();
+		final Transaction transaction = dao.getTransaction();
 
 		//create main layout
 		final VerticalLayout root = new VerticalLayout();
@@ -115,6 +123,12 @@ public abstract class AbstractActivityView extends AbstractView {
 		final Label title = new Label(propertyManager.getLabelDtl(label));
 		title.addStyleName("title");
 		titleBar.addComponent(title);
+		
+		// home image
+		Embedded homeEm = new Embedded("", new ThemeResource("images/home.png"));
+		homeEm.setHeight("50px");
+		titleBar.addComponent(homeEm);
+		titleBar.setComponentAlignment(homeEm, Alignment.MIDDLE_RIGHT);
 
 		// Horizontal layout with selection tree on the left and 
 		// a details panel on the right.
@@ -506,6 +520,17 @@ public abstract class AbstractActivityView extends AbstractView {
 
 			public void buttonClick(ClickEvent event) {
 				navigator.navigateTo(domain.getLabel());
+			}
+		});
+
+		homeEm.addClickListener(new MouseEvents.ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
+				transaction.rollback();
+				navigator.navigateTo("domainSelectionView");	
 			}
 		});
 

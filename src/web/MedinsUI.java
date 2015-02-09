@@ -27,7 +27,8 @@ import dao.classes.DaoIntrfc;
 @Theme("medins")
 public class MedinsUI extends UI {
 	
-	private PropertyManager propertyManager;
+	private static PropertyManager propertyManager;
+	
 	private DaoIntrfc dao;
 	private Navigator navigator;
 	
@@ -72,12 +73,12 @@ public class MedinsUI extends UI {
 
 	}
 
-	public PropertyManager getPropertyManager() {
-		return propertyManager;
+	public static PropertyManager getPropertyManager() {
+		return MedinsUI.propertyManager;
 	}
 
-	public void setPropertyManager(PropertyManager propertyManager) {
-		this.propertyManager = propertyManager;
+	public static void setPropertyManager(PropertyManager propertyManager) {
+		MedinsUI.propertyManager = propertyManager;
 	}
 
 	public DaoIntrfc getDao() {

@@ -13,6 +13,9 @@ import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.MedinsUI;
+import web.classes.PropertyManager;
+
 public class PagedTable extends Table {
 	private static final long serialVersionUID = 6881455780158545828L;
 
@@ -78,7 +81,10 @@ public class PagedTable extends Table {
 	}
 
 	public HorizontalLayout createControls() {
-		Label itemsPerPageLabel = new Label("Items per page:");
+
+		PropertyManager propertyManager = MedinsUI.getPropertyManager();
+
+		Label itemsPerPageLabel = new Label(propertyManager.getLabelDtl("itemsPerPage") + ":");
 		final ComboBox itemsPerPageSelect = new ComboBox();
 
 		itemsPerPageSelect.addItem("5");
@@ -100,7 +106,8 @@ public class PagedTable extends Table {
 			}
 		});
 		itemsPerPageSelect.select((new Integer(this.getPageLength())).toString());
-		Label pageLabel = new Label("Page:&nbsp;", ContentMode.HTML);
+		String pageStr = propertyManager.getLabelDtl("page");
+		Label pageLabel = new Label(pageStr + ":&nbsp;", ContentMode.HTML);
 		final TextField currentPageTextField = new TextField();
 		currentPageTextField.setValue(String.valueOf(getCurrentPage()));
 		currentPageTextField.setConverter(Integer.class);

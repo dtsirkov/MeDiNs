@@ -6,7 +6,6 @@ import web.views.AbstractView;
 
 
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;

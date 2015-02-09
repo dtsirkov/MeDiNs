@@ -2,10 +2,11 @@ package web.forms;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import pojo.classes.Persons;
+import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.components.PagedTable;
@@ -23,16 +24,10 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Table.ColumnGenerator;
 
 import dao.classes.DaoIntrfc;
 
@@ -42,23 +37,25 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 	private static final long serialVersionUID = 1L;
 
-	private FormLayout searchByIdntfrLayout;
-	private ArrayList<T> searchByIdntfrResult = new ArrayList<T>();
+	private FormLayout searchByIdLayout;
+	private ArrayList<T> searchByIdResult = new ArrayList<T>();
 
 	private FormLayout searchByKeyLayout;
-	private ArrayList<T> searchByKeyResult = new ArrayList<T>();
+	private  ArrayList<T> searchByKeyResult = new ArrayList<T>();
 
 	private FormLayout searchByCriteriaLayout;
-	private ArrayList<T> searchByCriteriaResult  = new ArrayList<T>();
 
 	private HorizontalLayout searchByObjectLayout;
-	private ArrayList<T> searchByObjectResult = new ArrayList<T>();
+	private  ArrayList<T> searchByObjectResult = new ArrayList<T>();
+
+	private HashMap<String, String> searchConstraint = new HashMap<String, String>();
 
 	private ArrayList<T> searchResult = new ArrayList<T>();
 
 	private Button searchButton;
 	private VerticalLayout resultTableLayout;
 	private String dBTableName;
+	private String id;
 	private T selectedItem;
 
 	public SearchForm(){}
@@ -81,23 +78,23 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	}
 
 	public FormLayout getSearchByIdntfrLayout() {
-		return searchByIdntfrLayout;
+		return searchByIdLayout;
 	}
 
-	public void setSearchByIdntfrLayout(FormLayout searchByIdntfrLayout) {
-		this.searchByIdntfrLayout = searchByIdntfrLayout;
+	public void setSearchByIdntfrLayout(FormLayout searchByIdLayout) {
+		this.searchByIdLayout = searchByIdLayout;
 	}
 
-	public void setSearchByIdntfr(FormLayout searchByIdntfrLayout) {
-		this.searchByIdntfrLayout = searchByIdntfrLayout;
+	public void setSearchByIdntfr(FormLayout searchByIdLayout) {
+		this.searchByIdLayout = searchByIdLayout;
 	}
 
 	public ArrayList<T> getSearchByIdntfrResult() {
-		return searchByIdntfrResult;
+		return searchByIdResult;
 	}
 
-	public void setSearchByIdntfrResult(ArrayList<T> searchByIdntfrResult) {
-		this.searchByIdntfrResult = searchByIdntfrResult;
+	public void setSearchByIdntfrResult(ArrayList<T> searchByIdResult) {
+		this.searchByIdResult = searchByIdResult;
 	}
 
 	public FormLayout getSearchByKeyLayout() {
@@ -108,28 +105,12 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		this.searchByKeyLayout = searchByKeyLayout;
 	}
 
-	public ArrayList<T> getSearchByKeyResult() {
-		return searchByKeyResult;
-	}
-
-	public void setSearchByKeyResult(ArrayList<T> searchByKeyResult) {
-		this.searchByKeyResult = searchByKeyResult;
-	}
-
 	public FormLayout getSearchByCriteriaLayout() {
 		return searchByCriteriaLayout;
 	}
 
 	public void setSearchByCriteriaLayout(FormLayout searchByCriteriaLayout) {
 		this.searchByCriteriaLayout = searchByCriteriaLayout;
-	}
-
-	public ArrayList<T> getSearchByCriteriaResult() {
-		return searchByCriteriaResult;
-	}
-
-	public void setSearchByCriteriaResult(ArrayList<T> searchByCriteriaResult) {
-		this.searchByCriteriaResult = searchByCriteriaResult;
 	}
 
 	public HorizontalLayout getSearchByObjectLayout() {
@@ -140,12 +121,12 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		this.searchByObjectLayout = searchByObjectLayout;
 	}
 
-	public ArrayList<T> getSearchByObjectResult() {
-		return searchByObjectResult;
+	public HashMap<String, String> getSearchConstraint() {
+		return searchConstraint;
 	}
 
-	public void setSearchByObjectResult(ArrayList<T> searchByObjectResult) {
-		this.searchByObjectResult = searchByObjectResult;
+	public void setSearchConstraint(HashMap<String, String> searchConstraint) {
+		this.searchConstraint = searchConstraint;
 	}
 
 	public ArrayList<T> getSearchResult() {
@@ -180,6 +161,14 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		this.dBTableName = dBTableName;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public T getSelectedItem() {
 		return selectedItem;
 	}
@@ -200,7 +189,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		root.removeAllComponents();
 
 		//define measurements of the components 
-		String width = "180px", height = "-1px";
+		//String width = "180px", height = "-1px";
 
 		resultTableLayout = new VerticalLayout();	
 		resultTableLayout.setSizeUndefined();
@@ -217,66 +206,19 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 			}
 		});
 
-
-		searchByIdntfrLayout = new FormLayout();
-
-		final TextField idSearchTF = new TextField(propertyManager.getLabelDtl("identificator"));
-		idSearchTF.setImmediate(true);
-		idSearchTF.setWidth(width);
-		idSearchTF.setHeight(height);
-		searchByIdntfrLayout.addComponent(idSearchTF);		
-
-		idSearchTF.addValueChangeListener(new Property.ValueChangeListener(){
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String value = event.getProperty().getValue().toString();
-				idSearchTF.setData(value);
-				searchByIdntfrResult = searchByIdntfr(value);
-			}
-
-		});
-
-		searchByKeyLayout = new FormLayout();
-
-		final TextField keySearchTF = new TextField(propertyManager.getLabelDtl("searchByKey"));
-		keySearchTF.setImmediate(true);
-		keySearchTF.setWidth(width);
-		keySearchTF.setHeight(height);
-		searchByKeyLayout.addComponent(keySearchTF);		
-
-		keySearchTF.addValueChangeListener(new Property.ValueChangeListener(){
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String value = event.getProperty().getValue().toString();
-				keySearchTF.setData(value);
-				searchByKeyResult = searchByKey(value);
-			}
-
-		});
-
-		searchByObjectResult = searchByObject(dBTableName, "");
-
+		searchByKeyLayout = buildSearchByKeyLayout();
 		searchByCriteriaLayout = buildSearchByCriteriaLayout();
-
+		searchByIdLayout = buildSearchByIdLayout();
 		searchByObjectLayout = buildSearchByObject(); 
 
-		searchByIdntfrLayout.setSizeUndefined();
+		searchByIdLayout.setSizeUndefined();
 		searchByKeyLayout.setSizeFull();
 		searchByCriteriaLayout.setSizeUndefined();
 		searchByObjectLayout.setSizeUndefined();
 
-		root.addComponent(searchByIdntfrLayout);
-
+		root.addComponent(searchByIdLayout);
 		root.addComponent(searchByKeyLayout);
-
 		root.addComponent(searchByCriteriaLayout);
-
 		root.addComponent(searchByObjectLayout);
 
 		searchButton = new Button(propertyManager.getButtonDtl("search"));
@@ -287,17 +229,14 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 			public void buttonClick(ClickEvent event) {
 
-				searchByCriteriaResult = search();
-
 				searchResult = new ArrayList<T>();
-				searchResult.addAll(searchByIdntfrResult);
-				searchResult.addAll(searchByKeyResult);
-				searchResult.addAll(searchByCriteriaResult);
-				searchResult.addAll(searchByObjectResult);
+				searchResult.addAll(searchByIdResult);
 
 				Set<T> hs = new HashSet<T>(searchResult);
 				searchResult.clear();
 				searchResult.addAll(hs);
+				
+				System.out.println(searchConstraint);
 
 				resultTable.setContainerDataSource(createContainer());
 
@@ -317,7 +256,63 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return root;
 	};
 
-	public HorizontalLayout buildSearchByObject(){
+	private FormLayout buildSearchByIdLayout(){
+
+		FormLayout searchByIdLayout = new FormLayout();
+
+		final TextField  idSearchTF = new TextField(getPropertyManager().getLabelDtl("identificator"));
+		idSearchTF.setImmediate(true);
+		idSearchTF.setWidth("180px");
+		idSearchTF.setHeight("-1px");
+		searchByIdLayout.addComponent(idSearchTF);		
+		addToSearchConstraint(idSearchTF, getId());
+
+		idSearchTF.addValueChangeListener(new Property.ValueChangeListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				String value = event.getProperty().getValue().toString();
+				idSearchTF.setData(value);
+				searchByIdResult = searchById(value);
+			}
+
+		});
+
+		return searchByIdLayout;
+	}
+
+	private FormLayout buildSearchByKeyLayout(){
+
+		FormLayout searchByKeyLayout = new FormLayout();
+
+		final TextField keySearchTF = new TextField(getPropertyManager().getLabelDtl("searchByKey"));
+		keySearchTF.setImmediate(true);
+		keySearchTF.setWidth("180px");
+		keySearchTF.setHeight("-1px");
+		searchByKeyLayout.addComponent(keySearchTF);	
+		addToSearchConstraint(keySearchTF, "keySearch");
+
+		/*
+		keySearchTF.addValueChangeListener(new Property.ValueChangeListener(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				String value = event.getProperty().getValue().toString();
+				keySearchTF.setData(value);
+				searchByKeyResult = searchByKey(value);
+			}
+
+		});
+		 */
+
+		return searchByKeyLayout;
+	}
+
+	private HorizontalLayout buildSearchByObject(){
 
 		HorizontalLayout searchByObjectLayout = new HorizontalLayout();
 		searchByObjectLayout.setSizeUndefined();
@@ -357,19 +352,19 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return searchByKeyResult;
 	}
 
-	private ArrayList<T> searchByIdntfr(String value){
-		ArrayList<T> searchByIdntfrResult = new ArrayList<T>();
+	private ArrayList<T> searchById(String value){
+		ArrayList<T> searchByIdResult = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
 		T object = (T)getDao().findById(dBTableName, value);
-		searchByIdntfrResult.add(object);
-		return searchByIdntfrResult;
+		searchByIdResult.add(object);
+		return searchByIdResult;
 	}
 
 	private ArrayList<T> searchByObject(String table, String idntfr){
 		return new ArrayList<T>();
 	};
 
-	public PagedTable createTable() {
+	private PagedTable createTable() {
 		final PagedTable pagedTable = new PagedTable();
 		pagedTable.setContainerDataSource(createContainer());
 		//pagedTable.setRowHeaderMode(Table.RowHeaderMode.ICON_ONLY);
@@ -382,12 +377,29 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return pagedTable;
 	}
 
-	public abstract ArrayList<T> search();
+	public HashMap<String, String> addToSearchConstraint(final TextField textField, final String key){
 
-	public abstract FormLayout buildSearchByCriteriaLayout();
+		textField.addValueChangeListener(new Property.ValueChangeListener(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				String value = event.getProperty().getValue().toString();
+				textField.setData(value);
+				searchConstraint.put(key, value);
+			}
 
-	public abstract IndexedContainer createContainer();
+		});
+		return searchConstraint;
+	}
 
-	public abstract String[] getTableHeader();
+
+
+	protected abstract ArrayList<T> search();
+
+	protected abstract FormLayout buildSearchByCriteriaLayout();
+
+	protected abstract IndexedContainer createContainer();
+
+	protected abstract String[] getTableHeader();
 
 }

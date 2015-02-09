@@ -21,16 +21,16 @@ public class PropertyManager {
 
 	public PropertyManager(VaadinRequest request){
 		try{
-			this.setLanguage(request.getLocale().getLanguage());
-			this.setServletContext(VaadinServlet.getCurrent().getServletContext());
+			this.language = request.getLocale().getLanguage();
+			this.servletContext = VaadinServlet.getCurrent().getServletContext();
 		}catch (Exception ex) {
 			System.out.println("Can not create instance of class ManageProperty!");
 		}
 	}
 
 	public PropertyManager(String language, ServletContext servletContext){
-		this.setLanguage(language);
-		this.setServletContext(servletContext);
+		this.language = language;
+		this.servletContext = servletContext;
 	}
 
 	public String getExceptionDtl(String propertyName){
@@ -51,7 +51,7 @@ public class PropertyManager {
 		String propertyValue = "";
 		try {
 			//load a properties file from class path, inside static method
-			InputStream in = getServletContext().getResourceAsStream("/LANGUAGES/" + getLanguage() + "/" + fileName);
+			InputStream in = servletContext.getResourceAsStream("/LANGUAGES/" + getLanguage() + "/" + fileName);
 			prop.load(in);
 			propertyValue = prop.getProperty(propertyName);
 		} catch (IOException ex) {
@@ -66,14 +66,6 @@ public class PropertyManager {
 
 	public void setLanguage(String language) {
 		this.language = language;
-	}
-
-	public ServletContext getServletContext() {
-		return servletContext;
-	}
-
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
 	}
 
 }

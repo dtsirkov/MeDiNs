@@ -2,6 +2,8 @@ package web.classes;
 
 import java.util.HashMap;
 
+import org.hibernate.Transaction;
+
 import pojo.classes.*;
 import web.forms.Form;
 
@@ -65,46 +67,40 @@ public class ValidationClass {
 	}
 
 	public boolean validate(String mode){
-		if(this.getValidationMethod().equals("validatePerson")){
-			return validatePerson(mode);
+		Transaction trans = getDao().getTransaction();
+		try{
+
+			if(getValidationMethod().equals("validatePerson")){
+				setValidated(validatePerson(mode));
+			}
+
+			trans.commit();
+
+		}catch(Exception e){
+			System.out.println("Error in validation method.");
+			trans.rollback();
 		}
 		return isValidated();
 	}
 
 	private boolean validatePerson(String mode){		
-		try{
 
-			Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
-			Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
-			PersonContactLink personContactLink = new PersonContactLink(person, contact);
+		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
+		PersonContactLink personContactLink = new PersonContactLink(person, contact);
 
-			Object[] objectsToCreate  = {
-					person,
-					contact, 
-					personContactLink
-			};
+		Object[] objects  = {
+				person,
+				contact, 
+				personContactLink
+		};
 
-			Object[] objectsToUpdate  = {
-					person,
-					contact
-			};
 
-			Object[] objects;
-			if(mode.equals("update")){
-				objects = objectsToUpdate;
-			}else{
-				objects = objectsToCreate;
-			}
-
-			for(int i = 0; i < objects.length; i++){
-				dao.attachDirty(objects[i]);
-			}
-			setValidated(true);
-
-		}catch(Exception e){
-			System.out.println("Error in personValidateMethod");
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
 		}
-		return isValidated();
+
+		return true;
 	}
 
 }

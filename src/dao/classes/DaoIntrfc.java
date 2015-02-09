@@ -3,13 +3,15 @@ package dao.classes;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Transaction;
+
 import pojo.classes.Enumerations;
 
 public interface DaoIntrfc {
 
 	public void persist(Object transientInstance);
 
-	public void attachDirty(Object instance);
+	public void saveOrUpdate(Object instance);
 
 	public void delete(Object persistentInstance);
 
@@ -26,5 +28,7 @@ public interface DaoIntrfc {
 	public Map<Enumerations, String> getEnumeration(String type);
 	
 	public String toString(Object pojoObject);
+	
+	public Transaction getTransaction();
 
 }

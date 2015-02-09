@@ -43,6 +43,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	private final Session session = (new SessionFactoryConfig()).getSession();
 
 	private String language;
+	private Transaction transaction;
 
 	public Session getSession() {
 		return session;
@@ -58,6 +59,17 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		return language;
 	}
 
+	public Transaction getTransaction() {
+		if (transaction != null && transaction.isActive()){
+			return transaction;
+		}
+		return session.beginTransaction();
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
+
 	public void setLanguage(String language) {
 		this.language = language;
 	}
@@ -65,23 +77,17 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	public void persist(Object transientInstance) {
 		log.info("persisting " +  getClassName(transientInstance) + " instance");
 		try {
-			//Session session = sessionFactory.getCurrentSession();
-			Transaction trans = session.beginTransaction();
 			session.persist(transientInstance);
-			trans.commit();
 		} catch (RuntimeException re) {
 			log.error("Persist failed!", re);
 			throw re;
 		}
 	}
 
-	public void attachDirty(Object instance) {
+	public void saveOrUpdate(Object instance) {
 		log.info("attaching dirty " + getClassName(instance) + " instance");
 		try {
-			//Session session = sessionFactory.getCurrentSession();
-			Transaction trans = session.beginTransaction();
 			session.saveOrUpdate(instance);
-			trans.commit();
 			log.info("attach successful");
 		} catch (RuntimeException re) {
 			log.error("Attach failed!", re);
@@ -89,25 +95,10 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		}
 	}
 
-	/*public void attachClean(Object instance) {
-		log.info("attaching clean Object instance");
-		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
-			log.info("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}*/
-
-	@Override
 	public void delete(Object persistentInstance) {
 		log.info("deleting " + getClassName(persistentInstance) + " instance");
 		try {
-			//Session session = sessionFactory.getCurrentSession();
-			Transaction trans = session.beginTransaction();
 			session.delete(persistentInstance);
-			trans.commit();
 			log.info("delete successful");
 		} catch (RuntimeException re) {
 			log.error("Delete failed!", re);
@@ -118,10 +109,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	public Object merge(Object detachedInstance) {
 		log.info("merging " + getClassName(detachedInstance) + " instance");
 		try {
-			//Session session = sessionFactory.getCurrentSession();
-			Transaction trans = session.beginTransaction();
 			Object result = session.merge(detachedInstance);
-			trans.commit();
 			log.info("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -169,7 +157,6 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 			criteria.add(example);
 			for (Object propertyName : hm.keySet()) {
 				List<Object> valueLs = hm.get(propertyName);
-				//System.out.println("Key = " + propertyName);
 				criteria.add(Restrictions.in((String)propertyName, valueLs));
 			}
 			@SuppressWarnings("unchecked")

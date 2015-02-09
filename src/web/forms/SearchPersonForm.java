@@ -50,6 +50,7 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		personFirstNameTF.setHeight(height);
 		personFirstNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personFirstNameTF);
+		addToSearchConstraint(personFirstNameTF, "firstName");
 
 		// personLastNameTF
 		TextField personLastNameTF = new TextField(propertyManager.getLabelDtl("personLastName"));
@@ -58,9 +59,12 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		personLastNameTF.setHeight(height);
 		personLastNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personLastNameTF);
+		addToSearchConstraint(personLastNameTF, "lastName");
+		
+		getSearchByKeyLayout().setVisible(false);
 
 		setSearchByCriteriaLayout(formLayout);
-
+		setId("socialNumber");
 		return formLayout;
 	}
 
@@ -81,8 +85,14 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 	}
 
 	public String[] getTableHeader(){
+		
+		PropertyManager propertyManager = getPropertyManager();
+		
+		String firstName = propertyManager.getLabelDtl("personFirstName");
+		String lastName = propertyManager.getLabelDtl("personLastName");
+		String socialNumber = propertyManager.getLabelDtl("personSocialNumber");
 
-		return new String[] { "First Name", "Last Name", "Social Number" };
+		return new String[] { firstName, lastName, socialNumber};
 
 	}
 

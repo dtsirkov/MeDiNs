@@ -5,7 +5,10 @@ import web.classes.PropertyManager;
 import web.forms.LoginForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -33,12 +36,20 @@ public class LoginView extends AbstractView{
 	}
 
 	public Layout buildLayout() {
-	
+		/*
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.addStyleName("personcreate");
+		Embedded homeEm = new Embedded("", new ThemeResource("icons/home.png"));
+		homeEm.setWidth(null);
+		layout.addComponent(homeEm);
+		layout.setComponentAlignment(homeEm, Alignment.MIDDLE_RIGHT);
+		 */
+
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		DaoIntrfc dao = getDao();	
-		
+
 		//create main layout
 		VerticalLayout layout = new VerticalLayout();	
 

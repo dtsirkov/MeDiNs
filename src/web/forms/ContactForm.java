@@ -2,8 +2,6 @@ package web.forms;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 import pojo.classes.Contacts;
 import pojo.classes.Enumerations;
@@ -16,7 +14,6 @@ import web.views.AbstractView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
