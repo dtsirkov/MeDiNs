@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -13,6 +14,7 @@ import java.util.Random;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
@@ -248,6 +250,26 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		}
 		return stringBuilder.toString();
 	}
+	
+	public static List getSearchedObjectsList(String searchedObjectClassName,Map<String, String> constr,Session session){		
+		String searchSQL = "from "+searchedObjectClassName+" where ";
+		Iterator<String> constrIterator = constr.keySet().iterator();
+		while (constrIterator.hasNext()) {
+			String key =constrIterator.next();			
+			String concat = key + " like :"+key;
+			searchSQL+= concat;
+			if (constrIterator.hasNext()==true)
+				searchSQL +=" and ";		
+	}  
+		Query query = session.createQuery(searchSQL);
+		Iterator<String> constrIterator2 = constr.keySet().iterator();
+		while (constrIterator2.hasNext()) {
+			String key =constrIterator2.next();
+			String value=constr.get(key);
+			query.setParameter(key, value);
+		}
+		return query.list();		
+}
 
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException{
 
@@ -267,4 +289,6 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		daoImpl.persist(person);
 
 	}
+	
+	
 }
