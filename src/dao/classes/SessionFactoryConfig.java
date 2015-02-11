@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistryBuilder;
 
@@ -24,14 +25,9 @@ public class SessionFactoryConfig {
 	protected static SessionFactory getSessionFactory() {
 		try {
 			log.info("Trying to create a test connection with the database.");
-			InputStream in = DaoImpl.class.getResourceAsStream("/hibernate.cfg.xml");
-			Configuration configuration = new Configuration();
-			configuration.addInputStream(in);
-			configuration.configure();
-			ServiceRegistryBuilder serviceRegistryBuilder = 
-					new ServiceRegistryBuilder().applySettings(configuration.getProperties());
-			SessionFactory sessionFactory = 
-					configuration.buildSessionFactory(serviceRegistryBuilder.buildServiceRegistry());
+			  Configuration configuration = new Configuration().addResource("hibernate.cfg.xml").configure();
+			     StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+			     SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
 			sessionFactory.openSession();
 			//Session session = sessionFactory.openSession();
 			//session.close();
