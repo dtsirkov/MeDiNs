@@ -34,6 +34,7 @@ import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
 import web.forms.Form;
+import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
 public abstract class AbstractActivityView extends AbstractView {
@@ -123,7 +124,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		final Label title = new Label(propertyManager.getLabelDtl(label));
 		title.addStyleName("title");
 		titleBar.addComponent(title);
-		
+
 		// home image
 		Embedded homeEm = new Embedded("", new ThemeResource("images/home.png"));
 		homeEm.setHeight("50px");
@@ -337,7 +338,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 
 			private static final long serialVersionUID = 1L;
-
+			private boolean searchFormFlag = true;
 			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
 				//CustomComponent validationForm;
@@ -387,23 +388,37 @@ public abstract class AbstractActivityView extends AbstractView {
 								}
 								customComponent.buildLayout(mode);
 
-								//add stepTitleLayout
-								stepTitle.setValue(propertyManager.getLabelDtl(value));					
-								detailsbox.addComponent(stepTitleLayout);
-								detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
 
-								//add customComponentLayout
-								customComponent.setSizeUndefined();
-								customComponentLayout.removeAllComponents();
-								customComponentLayout.addComponent(customComponent);
-								customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
-								detailsbox.addComponent(customComponentLayout);
-								detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
-								//add buttonsLayout 
-								detailsbox.addComponent(buttonsLayout);
-								detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+								if(!(customComponent instanceof SearchForm) || searchFormFlag){
 
+									if(customComponent instanceof SearchForm)
+										searchFormFlag = false;
+
+									//add stepTitleLayout
+									stepTitle.setValue(propertyManager.getLabelDtl(value));					
+									detailsbox.addComponent(stepTitleLayout);
+									detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
+
+									//add customComponentLayout
+									customComponent.setSizeUndefined();
+									customComponentLayout.removeAllComponents();
+									customComponentLayout.addComponent(customComponent);
+									customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
+									detailsbox.addComponent(customComponentLayout);
+									detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
+
+									//add buttonsLayout 
+									detailsbox.addComponent(buttonsLayout);
+									detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+
+								}else{
+
+									Label noStepSelected = new Label(propertyManager.getLabelDtl("noReExecution"));
+									noStepSelected.addStyleName("stepTitle");
+									detailsbox.addComponent(noStepSelected);
+
+								}
 							}
 						}	
 					}

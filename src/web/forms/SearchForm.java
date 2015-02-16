@@ -24,6 +24,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -181,7 +182,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
-		PropertyManager propertyManager = getPropertyManager();
+		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao = getDao();
 
@@ -235,10 +236,13 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 				Set<T> hs = new HashSet<T>(searchResult);
 				searchResult.clear();
 				searchResult.addAll(hs);
-				
+
 				System.out.println(searchConstraint);
 
 				resultTable.setContainerDataSource(createContainer());
+
+				if(searchResult.isEmpty())
+					Notification.show(propertyManager.getLabelDtl("stepObjectFound"));
 
 			}
 		});
@@ -356,7 +360,8 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		ArrayList<T> searchByIdResult = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
 		T object = (T)getDao().findById(dBTableName, value);
-		searchByIdResult.add(object);
+		if (object != null)
+			searchByIdResult.add(object);
 		return searchByIdResult;
 	}
 

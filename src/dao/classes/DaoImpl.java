@@ -65,7 +65,8 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		if (transaction != null && transaction.isActive()){
 			return transaction;
 		}
-		return session.beginTransaction();
+		transaction = session.beginTransaction();
+		return transaction;
 	}
 
 	public void setTransaction(Transaction transaction) {
