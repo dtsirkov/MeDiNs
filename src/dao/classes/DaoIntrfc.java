@@ -3,6 +3,7 @@ package dao.classes;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pojo.classes.Enumerations;
@@ -30,5 +31,7 @@ public interface DaoIntrfc {
 	public String toString(Object pojoObject);
 	
 	public Transaction getTransaction();
+	
+	public List getSearchedObjectsList(String searchedObjectClassName,Map<String, String> constr,Session session);
 
 }

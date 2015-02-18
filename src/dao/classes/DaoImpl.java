@@ -252,7 +252,7 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		return stringBuilder.toString();
 	}
 	
-	public static List getSearchedObjectsList(String searchedObjectClassName,Map<String, String> constr,Session session){		
+	public List getSearchedObjectsList(String searchedObjectClassName,Map<String, String> constr,Session session){		
 		String searchSQL = "from "+searchedObjectClassName+" where ";
 		Iterator<String> constrIterator = constr.keySet().iterator();
 		while (constrIterator.hasNext()) {
