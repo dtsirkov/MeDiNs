@@ -18,7 +18,6 @@ import pojo.classes.Enumerations;
 import pojo.classes.PersonContactLink;
 import pojo.classes.Persons;
 import web.StepIntrfc;
-import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
 
@@ -33,8 +32,6 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 
 	public FormLayout buildSearchByCriteriaLayout(){
 
-		//get component validator
-		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 
@@ -48,7 +45,6 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		personFirstNameTF.setImmediate(true);
 		personFirstNameTF.setWidth(width);
 		personFirstNameTF.setHeight(height);
-		personFirstNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personFirstNameTF);
 		addToSearchConstraint(personFirstNameTF, "firstName");
 
@@ -57,7 +53,6 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		personLastNameTF.setImmediate(true);
 		personLastNameTF.setWidth(width);
 		personLastNameTF.setHeight(height);
-		personLastNameTF.addValidator(componentValidator.getOnlyLettersValidator("OnlyLettersAllowed"));
 		formLayout.addComponent(personLastNameTF);
 		addToSearchConstraint(personLastNameTF, "lastName");
 		

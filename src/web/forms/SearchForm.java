@@ -3,11 +3,8 @@ package web.forms;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import web.MedinsUI;
-import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.components.PagedTable;
 import web.views.AbstractView;
@@ -179,8 +176,6 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 		//get main layout
 		VerticalLayout root = (VerticalLayout)getLayout();
-		//get component validator
-		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
@@ -230,18 +225,18 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 			public void buttonClick(ClickEvent event) {
 
-				searchResult = new ArrayList<T>();
-				searchResult.addAll(searchByIdResult);
-
-				Set<T> hs = new HashSet<T>(searchResult);
-				searchResult.clear();
-				searchResult.addAll(hs);
-
 				System.out.println(searchConstraint);
+
+				List resultList = dao.searchByConstaint(dBTableName, searchConstraint);
+
+				if(resultList.isEmpty())
+					searchResult = new ArrayList<T>();
+				else
+					searchResult = new ArrayList<T>(resultList);
 
 				resultTable.setContainerDataSource(createContainer());
 
-				if(searchResult.isEmpty())
+				if(!searchConstraint.isEmpty() && searchResult.isEmpty())
 					Notification.show(propertyManager.getLabelDtl("stepObjectFound"));
 
 			}
@@ -297,21 +292,6 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		keySearchTF.setHeight("-1px");
 		searchByKeyLayout.addComponent(keySearchTF);	
 		addToSearchConstraint(keySearchTF, "keySearch");
-
-		/*
-		keySearchTF.addValueChangeListener(new Property.ValueChangeListener(){
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String value = event.getProperty().getValue().toString();
-				keySearchTF.setData(value);
-				searchByKeyResult = searchByKey(value);
-			}
-
-		});
-		 */
 
 		return searchByKeyLayout;
 	}
@@ -396,8 +376,6 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		});
 		return searchConstraint;
 	}
-
-
 
 	protected abstract ArrayList<T> search();
 

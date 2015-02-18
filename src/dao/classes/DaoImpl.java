@@ -227,11 +227,47 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		return object.getClass().getName();
 	}
 
+	public List<?> searchByConstaint(String dBTableName, Map<String, String> constraint){	
+		@SuppressWarnings("rawtypes")
+		List result = new ArrayList();
+		try{
+
+			if(!constraint.isEmpty()){
+
+				String key, value, concat;
+				String searchQuery = "from " + dBTableName + " where ";
+				Iterator<String> queryIterator = constraint.keySet().iterator();
+				Iterator<String> constrIterator = constraint.keySet().iterator();
+
+				while (queryIterator.hasNext()) {
+					key = queryIterator.next();			
+					concat = key + " like :" + key;
+					searchQuery += concat;
+					if (queryIterator.hasNext())
+						searchQuery += " and ";		
+				}  
+				Query query = session.createQuery(searchQuery);
+				while (constrIterator.hasNext()) {
+					key = constrIterator.next();
+					value = constraint.get(key);
+					query.setParameter(key, value);
+				}
+
+				result =  query.list();	
+			}
+
+		} catch (RuntimeException re) {
+			log.error("Method searchByConstaint/2 of class DaoImpl failed!", re);	
+		}
+
+		return result;
+	}
+
 	public String toString(Object pojoObject) {
 		StringBuilder stringBuilder = new StringBuilder();
 		try {
-			@SuppressWarnings("all")
-			Class className = Class.forName(pojoObject.getClass().getName());		
+			//@SuppressWarnings("all")
+			Class<?> className = Class.forName(pojoObject.getClass().getName());		
 			Method methodsArray[] = className.getDeclaredMethods();		
 			Object propertyValue;
 			String valueStr;
@@ -251,26 +287,6 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		}
 		return stringBuilder.toString();
 	}
-	
-	public static List getSearchedObjectsList(String searchedObjectClassName,Map<String, String> constr,Session session){		
-		String searchSQL = "from "+searchedObjectClassName+" where ";
-		Iterator<String> constrIterator = constr.keySet().iterator();
-		while (constrIterator.hasNext()) {
-			String key =constrIterator.next();			
-			String concat = key + " like :"+key;
-			searchSQL+= concat;
-			if (constrIterator.hasNext()==true)
-				searchSQL +=" and ";		
-	}  
-		Query query = session.createQuery(searchSQL);
-		Iterator<String> constrIterator2 = constr.keySet().iterator();
-		while (constrIterator2.hasNext()) {
-			String key =constrIterator2.next();
-			String value=constr.get(key);
-			query.setParameter(key, value);
-		}
-		return query.list();		
-}
 
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException{
 
@@ -290,6 +306,6 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		daoImpl.persist(person);
 
 	}
-	
-	
+
+
 }

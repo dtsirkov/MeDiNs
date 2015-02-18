@@ -8,6 +8,8 @@ import org.hibernate.Transaction;
 import pojo.classes.Enumerations;
 
 public interface DaoIntrfc {
+	
+	public Transaction getTransaction();
 
 	public void persist(Object transientInstance);
 
@@ -27,8 +29,8 @@ public interface DaoIntrfc {
 
 	public Map<Enumerations, String> getEnumeration(String type);
 	
-	public String toString(Object pojoObject);
+	public List<?> searchByConstaint(String dBTableName, Map<String, String> constraint);
 	
-	public Transaction getTransaction();
+	public String toString(Object pojoObject);
 
 }
