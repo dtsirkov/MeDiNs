@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
+import web.activities.CreateCase;
 import web.activities.CreatePerson;
 import web.activities.UpdatePerson;
 import web.classes.Activity;
@@ -53,15 +54,21 @@ public class MedinsUI extends UI {
 
 		DomainSelectionView domainSelectionView =  new DomainSelectionView(this);
 
+		//person organization domain
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
 		Activity createPersonActivity = new Activity(new CreatePerson(this));
 		personOrganizationDomain.addActivity(createPersonActivity);
 		Activity updatePersonActivity = new Activity(new UpdatePerson(this));
 		personOrganizationDomain.addActivity(updatePersonActivity);
+		
+		//case domain
+		Domain caseDomain = new Domain("caseDomain");
+		Activity createCaseActivity = new Activity(new CreateCase(this));
+		caseDomain.addActivity(createCaseActivity);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 		
-		domainList.add(new Domain("caseDomain"));
+		domainList.add(caseDomain);
 		domainList.add(personOrganizationDomain);
 		domainList.add(new Domain("medicalDomain"));
 		domainList.add(new Domain("treatmentDomain"));
