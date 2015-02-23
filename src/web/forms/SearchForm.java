@@ -3,7 +3,9 @@ package web.forms;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import web.classes.PropertyManager;
 import web.components.PagedTable;
@@ -223,11 +225,24 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 			private static final long serialVersionUID = 1L;
 
+			String key, value;
+			Map<String, String> searchConstraintFiltered;
+			Iterator<String> constraintIterator;
+
 			public void buttonClick(ClickEvent event) {
+				
+				searchConstraintFiltered = new HashMap<String, String>();
+				constraintIterator = searchConstraint.keySet().iterator();
+				
+				while (constraintIterator.hasNext()) {
+					key = constraintIterator.next();	
+					value = searchConstraint.get(key);
+					if (!value.equals(""))
+						searchConstraintFiltered.put(key, value);
+				} 
 
 				System.out.println(searchConstraint);
-
-				List resultList = dao.searchByConstaint(dBTableName, searchConstraint);
+				List resultList = dao.searchByConstaint(dBTableName, searchConstraintFiltered);
 
 				if(resultList.isEmpty())
 					searchResult = new ArrayList<T>();
@@ -236,7 +251,7 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 				resultTable.setContainerDataSource(createContainer());
 
-				if(!searchConstraint.isEmpty() && searchResult.isEmpty())
+				if(searchResult.isEmpty())
 					Notification.show(propertyManager.getLabelDtl("stepObjectFound"));
 
 			}
