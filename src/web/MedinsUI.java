@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 
 import web.activities.CreateCase;
+import web.activities.CreateCase2;
 import web.activities.CreatePerson;
 import web.activities.UpdatePerson;
 import web.classes.Activity;
@@ -64,7 +65,9 @@ public class MedinsUI extends UI {
 		//case domain
 		Domain caseDomain = new Domain("caseDomain");
 		Activity createCaseActivity = new Activity(new CreateCase(this));
+		Activity createCaseActivity2 = new Activity(new CreateCase2(this));
 		caseDomain.addActivity(createCaseActivity);
+		caseDomain.addActivity(createCaseActivity2);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 		

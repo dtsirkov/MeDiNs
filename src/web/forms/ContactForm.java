@@ -46,7 +46,7 @@ public class ContactForm extends Form implements StepIntrfc{
 
 	public Layout buildLayout(String mode) {
 
-		//gem main layout
+		//get main layout
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();

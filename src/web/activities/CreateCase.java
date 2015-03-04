@@ -1,7 +1,10 @@
 package web.activities;
 
+import web.forms.CasePersonForm;
 import web.forms.Form;
 import web.forms.PersonForm;
+import web.forms.PersonTouristVisitForm;
+import web.forms.PolicyForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
 
@@ -28,7 +31,9 @@ public class CreateCase extends AbstractActivityView{
 	public Layout buildLayout(){
 
 		Form[] requiredSteps = {
-				new PersonForm(this, "stepCreatePerson"),
+				new CasePersonForm(this, "stepCreatePerson"),
+				new PersonTouristVisitForm(this,"stepTouristVisit"),
+				new PolicyForm(this,"stepPolicy"),
 				new ValidationForm(this, "stepValidate")
 		};
 		setRequiredSteps(requiredSteps);

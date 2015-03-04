@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 import web.CustomComponentIntrfc;
 import web.StepIntrfc;
