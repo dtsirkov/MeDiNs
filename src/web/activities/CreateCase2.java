@@ -1,6 +1,6 @@
 package web.activities;
 
-import web.forms.CasePersonForm;
+import web.forms.ContactForm;
 import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
@@ -14,15 +14,13 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 
-public class CreateCase extends AbstractActivityView{
+public class CreateCase2 extends AbstractActivityView{
 
 	private static final long serialVersionUID = 1L;
 
-	public CreateCase(UI ui) {
-
+	public CreateCase2(UI ui) {
 		super(ui);
-		setLabel("createCase");
-
+		setLabel("createCase2");
 	}
 
 	@Override
@@ -31,9 +29,10 @@ public class CreateCase extends AbstractActivityView{
 	}
 
 	public Layout buildLayout(){
-
+		
 		Form[] requiredSteps = {
-				//new CasePersonForm(this, "stepCreatePerson"),
+				new PersonForm(this, "stepCreatePerson"), 
+				new ContactForm(this, "stepCreateContact"),
 				new PersonTouristVisitForm(this,"stepTouristVisit"),
 				new PolicyForm(this,"stepPolicy"),
 				new MedicalReportForm(this,"stepMedicalReport"),
@@ -45,9 +44,9 @@ public class CreateCase extends AbstractActivityView{
 		Form[] optionalSteps = {};
 		setOptionalSteps(optionalSteps);
 
-		setValidationMethod("validateCase");
+		setValidationMethod("validatePerson");
 		setMode("create");
-
+		
 		return super.buildLayout();
 	}
 

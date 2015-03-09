@@ -18,8 +18,8 @@ public class MedicalCases implements java.io.Serializable {
 	private Policies policies;
 	private Enumerations enumerationsByStatus1;
 	private Date caseDate;
-	private int referanceNumber1;
-	private int referanceNumber2;
+	private String referanceNumber1;
+	private String referanceNumber2;
 	private Set invoiceses = new HashSet(0);
 
 	public MedicalCases() {
@@ -28,7 +28,7 @@ public class MedicalCases implements java.io.Serializable {
 	public MedicalCases(Enumerations enumerationsByStatus2, CaseInfo caseInfo,
 			Persons persons, Policies policies,
 			Enumerations enumerationsByStatus1, Date caseDate,
-			int referanceNumber1, int referanceNumber2) {
+			String referanceNumber1, String referanceNumber2) {
 		this.enumerationsByStatus2 = enumerationsByStatus2;
 		this.caseInfo = caseInfo;
 		this.persons = persons;
@@ -42,7 +42,7 @@ public class MedicalCases implements java.io.Serializable {
 	public MedicalCases(Enumerations enumerationsByStatus2, CaseInfo caseInfo,
 			Persons persons, Policies policies,
 			Enumerations enumerationsByStatus1, Date caseDate,
-			int referanceNumber1, int referanceNumber2, Set invoiceses) {
+			String referanceNumber1, String referanceNumber2, Set invoiceses) {
 		this.enumerationsByStatus2 = enumerationsByStatus2;
 		this.caseInfo = caseInfo;
 		this.persons = persons;
@@ -110,19 +110,19 @@ public class MedicalCases implements java.io.Serializable {
 		this.caseDate = caseDate;
 	}
 
-	public int getReferanceNumber1() {
+	public String getReferanceNumber1() {
 		return this.referanceNumber1;
 	}
 
-	public void setReferanceNumber1(int referanceNumber1) {
+	public void setReferanceNumber1(String referanceNumber1) {
 		this.referanceNumber1 = referanceNumber1;
 	}
 
-	public int getReferanceNumber2() {
+	public String getReferanceNumber2() {
 		return this.referanceNumber2;
 	}
 
-	public void setReferanceNumber2(int referanceNumber2) {
+	public void setReferanceNumber2(String referanceNumber2) {
 		this.referanceNumber2 = referanceNumber2;
 	}
 

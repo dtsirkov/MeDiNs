@@ -16,18 +16,20 @@ public class TouristVisit implements java.io.Serializable {
 	private String resort;
 	private String hotel;
 	private String room;
+	private String contactNumber; 
 
 	public TouristVisit() {
 	}
 
 	public TouristVisit(Persons persons, Date from, Date to, String resort,
-			String hotel, String room) {
+			String hotel, String room,String contactNumber) {
 		this.persons = persons;
 		this.from = from;
 		this.to = to;
 		this.resort = resort;
 		this.hotel = hotel;
 		this.room = room;
+		this.contactNumber=contactNumber;
 	}
 
 	public Integer getId() {
@@ -84,6 +86,14 @@ public class TouristVisit implements java.io.Serializable {
 
 	public void setRoom(String room) {
 		this.room = room;
+	}
+
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
 	}
 
 }
