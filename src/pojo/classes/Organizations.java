@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Organizations implements java.io.Serializable {
 
-	private String number;
+	private Integer number;
 	private Enumerations enumerations;
 	private String name;
 	private String logo;
@@ -24,18 +24,16 @@ public class Organizations implements java.io.Serializable {
 	public Organizations() {
 	}
 
-	public Organizations(String number, Enumerations enumerations, String name) {
-		this.number = number;
+	public Organizations(Enumerations enumerations, String name) {
 		this.enumerations = enumerations;
 		this.name = name;
 	}
 
-	public Organizations(String number, Enumerations enumerations, String name,
+	public Organizations(Enumerations enumerations, String name,
 			String logo, String iban, String bankDetails,
 			Set personOrganizationLinks, Set organizationContactLinks,
 			Set policiesesForInsuaranceCompany,
 			Set policiesesForAssistanceCompany) {
-		this.number = number;
 		this.enumerations = enumerations;
 		this.name = name;
 		this.logo = logo;
@@ -47,14 +45,13 @@ public class Organizations implements java.io.Serializable {
 		this.policiesesForAssistanceCompany = policiesesForAssistanceCompany;
 	}
 
-	public String getNumber() {
+	public Integer getNumber() {
 		return this.number;
 	}
 
-	public void setNumber(String number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
-
 	public Enumerations getEnumerations() {
 		return this.enumerations;
 	}

@@ -32,14 +32,22 @@ public class TouristVisit implements java.io.Serializable {
 		this.contactNumber=contactNumber;
 	}
 
+	public TouristVisit(TouristVisit touristVisit) {
+		this.persons = touristVisit.getPersons();
+		this.from = touristVisit.getFrom();
+		this.to = touristVisit.getTo();
+		this.resort = touristVisit.getResort();
+		this.hotel = touristVisit.getHotel();
+		this.room = touristVisit.getRoom();
+		this.contactNumber=touristVisit.contactNumber;
+	}	
+
 	public Integer getId() {
 		return this.id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public Persons getPersons() {
 		return this.persons;
 	}

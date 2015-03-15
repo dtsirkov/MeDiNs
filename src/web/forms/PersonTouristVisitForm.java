@@ -7,10 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import pojo.classes.Persons;
 import pojo.classes.TouristVisit;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractSelect;
@@ -42,6 +45,7 @@ import web.views.AbstractView;
 public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 	private static final long serialVersionUID = 1L;
+	private TouristVisit touristVisit;
 
 	public PersonTouristVisitForm(AbstractView view, String label) {
 		super(view, label, new FormLayout());
@@ -67,10 +71,9 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		}else{
 			//set initial values
 			touristVisit = new TouristVisit();
-			touristVisit.setFrom(new Date());
-			touristVisit.setTo(new Date());
+			touristVisit.setFrom(null);
+			touristVisit.setTo(null);
 			touristVisit.setHotel("");
-			touristVisit.setId(0);
 			touristVisit.setPersons(new Persons());
 			touristVisit.setResort("");
 			touristVisit.setRoom("");	
@@ -86,10 +89,11 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		hlVacation.setSpacing(true);
 
 		// popupDateFieldStart
-		PopupDateField popupDateFieldStart = new PopupDateField();
-		popupDateFieldStart.setImmediate(false);
+		final PopupDateField popupDateFieldStart = new PopupDateField();
+		popupDateFieldStart.setImmediate(true);
 		popupDateFieldStart.setWidth("110px");
 		popupDateFieldStart.setHeight("23px");
+		popupDateFieldStart.setRequired(true);
 		hlVacation.addComponent(popupDateFieldStart);
 
 		// label_5
@@ -101,10 +105,11 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		hlVacation.addComponent(label_5);
 
 		// popupDateFieldEnd
-		PopupDateField popupDateFieldEnd = new PopupDateField();
-		popupDateFieldEnd.setImmediate(false);
+		final PopupDateField popupDateFieldEnd = new PopupDateField();
+		popupDateFieldEnd.setImmediate(true);
 		popupDateFieldEnd.setWidth("110px");
 		popupDateFieldEnd.setHeight("-1px");
+		popupDateFieldEnd.setRequired(true);
 		hlVacation.addComponent(popupDateFieldEnd);
 
 		formLayout.addComponent(hlVacation);
@@ -118,16 +123,11 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		comboBoxResort.setImmediate(true);
 		comboBoxResort.setWidth("280px");
 		comboBoxResort.setHeight("-1px");
+		comboBoxResort.setRequired(true);
 		comboBoxResort.setNewItemsAllowed(true);
+		comboBoxResort.setNullSelectionAllowed(true);
+		comboBoxResort.setNullSelectionItemId("");
 		hlResort.addComponent(comboBoxResort);
-
-		/*		// buttonAddResort
-		Button buttonAddResort = new Button();
-		buttonAddResort.setCaption("Add new");
-		buttonAddResort.setImmediate(false);
-		buttonAddResort.setWidth("-1px");
-		buttonAddResort.setHeight("-1px");
-		hlResort.addComponent(buttonAddResort);*/
 
 		formLayout.addComponent(hlResort);
 
@@ -141,23 +141,17 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		comboBoxHotel.setWidth("280px");
 		comboBoxHotel.setHeight("-1px");
 		comboBoxHotel.setNewItemsAllowed(true);
+		comboBoxHotel.setNullSelectionAllowed(true);
+		comboBoxHotel.setNullSelectionItemId("");
 		hlHotel.addComponent(comboBoxHotel);
-
-		/*		// buttonAddHotel
-		Button buttonAddHotel = new Button();
-		buttonAddHotel.setCaption("Add new");
-		buttonAddHotel.setImmediate(false);
-		buttonAddHotel.setWidth("-1px");
-		buttonAddHotel.setHeight("-1px");
-		hlHotel.addComponent(buttonAddHotel);*/
 
 		formLayout.addComponent(hlHotel);
 
 		// textFieldRoomNumber
-		HorizontalLayout hlRoom=new HorizontalLayout();
+		HorizontalLayout hlRoom = new HorizontalLayout();
 		hlRoom.setCaption(propertyManager.getLabelDtl("Room number")+": ");
 
-		TextField textFieldRoomNumber = new TextField();
+		final TextField textFieldRoomNumber = new TextField();
 		textFieldRoomNumber.setImmediate(false);
 		textFieldRoomNumber.setWidth("90px");
 		textFieldRoomNumber.setHeight("-1px");
@@ -165,62 +159,22 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		formLayout.addComponent(hlRoom);
 
 		// textFieldContactNumber
-		HorizontalLayout hlContactNumber=new HorizontalLayout();
+		HorizontalLayout hlContactNumber = new HorizontalLayout();
 		hlContactNumber.setCaption(propertyManager.getLabelDtl("Phone number")+": ");
 
-		TextField textFieldContactNumber = new TextField();
+		final TextField textFieldContactNumber = new TextField();
 		textFieldContactNumber.setImmediate(false);
 		textFieldContactNumber.setWidth("150px");
 		textFieldContactNumber.setHeight("-1px");
 		hlContactNumber.addComponent(textFieldContactNumber);
 		formLayout.addComponent(hlContactNumber);
-		/*
-		final UI ui=getView().getUI();
 
-		//Define sub window
-		final Window subWindow = new Window("Sub-window");
-		subWindow.setWidth("450px");
-		subWindow.setHeight("500px");
-		VerticalLayout subWLayout=new VerticalLayout();
-		final OrganizationForm orgForm=new OrganizationForm();
-		subWLayout.addComponent(orgForm);
-		subWindow.setContent(subWLayout);		
-		subWindow.center();
-
-
-		//getting mode for new org form
-		final String modeOrg=mode;
-		//button's ClickListener for adding new organization
-		buttonAddResort.addClickListener(new Button.ClickListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			public void buttonClick(ClickEvent event) {
-				//Define sub window
-				final Window subWindow = new Window("Sub-window");
-				subWindow.setWidth("450px");
-				subWindow.setHeight("500px");
-				VerticalLayout subWLayout=new VerticalLayout();
-				OrganizationForm orgForm=new OrganizationForm();				
-				orgForm.setMode(modeOrg);
-				subWLayout.addComponent(orgForm);
-				subWindow.setContent(subWLayout);		
-				subWindow.center();
-				subWindow.setCaption("Add new resort");
-				ui.addWindow(subWindow);
-
-				//Close subwindow
-				Button cancel=orgForm.getButtonCancel();
-				cancel.addClickListener(new ClickListener() {
-					public void buttonClick(ClickEvent event) {
-						subWindow.close();
-					}
-				});
-
-
-			}
-		});
-		 */
+		//Get combobox data
+		List<String> hotels = getOrganizationNameList(dao,"hotel");
+		if (!hotels.isEmpty())
+		{
+			comboBoxHotel.addItems(hotels.toArray());
+		}
 
 		// Custom handling for new items
 		comboBoxHotel.setNewItemHandler(new NewItemHandler() {
@@ -228,10 +182,13 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 			@Override
 			public void addNewItem(String newItemCaption) {
-				comboBoxHotel.addItem(newItemCaption);
-				// Remember to set the selection to the new item
-				comboBoxHotel.select(newItemCaption);
-				Notification.show(propertyManager.getLabelDtl("Added new Hotel")+" " +newItemCaption);
+				if (!newItemCaption.equals(""))
+				{
+					comboBoxHotel.addItem(newItemCaption);
+					// Remember to set the selection to the new item
+					comboBoxHotel.select(newItemCaption);
+					Notification.show(propertyManager.getLabelDtl("Added new Hotel")+" " +newItemCaption);
+				}
 			}
 		});
 		comboBoxResort.setNewItemHandler(new NewItemHandler() {
@@ -239,18 +196,158 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 			@Override
 			public void addNewItem(String newItemCaption) {
-				comboBoxResort.addItem(newItemCaption);
-				// Remember to set the selection to the new item
-				comboBoxResort.select(newItemCaption);
-				Notification.show(propertyManager.getLabelDtl("Added new Resort")+" " +newItemCaption);
+				if (!newItemCaption.equals(""))
+				{
+					comboBoxResort.addItem(newItemCaption);
+					// Remember to set the selection to the new item
+					comboBoxResort.select(newItemCaption);
+					Notification.show(propertyManager.getLabelDtl("Added new Resort")+" " +newItemCaption);
+				}
 			}
 		});
+
+		//add listeners
+		popupDateFieldStart.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						touristVisit.setFrom((Date)event.getProperty().getValue());
+						popupDateFieldStart.setData((Date)event.getProperty().getValue());
+						popupDateFieldStart.setComponentError(null);
+						setTouristVisit(touristVisit);
+					}
+				});
+
+		popupDateFieldEnd.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						touristVisit.setTo((Date)event.getProperty().getValue());
+						popupDateFieldEnd.setData((Date)event.getProperty().getValue());
+						popupDateFieldEnd.setComponentError(null);
+						setTouristVisit(touristVisit);
+					}
+				});
+
+		comboBoxResort.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						String value=event.getProperty().getValue().toString();
+						if (!value.equals("")){
+							touristVisit.setResort(event.getProperty().getValue().toString());
+							comboBoxResort.setData(event.getProperty().getValue().toString());
+							comboBoxResort.setComponentError(null);
+							setTouristVisit(touristVisit);
+						}
+					}
+				});
+
+		comboBoxHotel.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {	
+						String value=event.getProperty().getValue().toString();
+						if (!value.equals("")){
+							touristVisit.setHotel(event.getProperty().getValue().toString());
+							comboBoxHotel.setData(event.getProperty().getValue().toString());
+							comboBoxHotel.setComponentError(null);
+							setTouristVisit(touristVisit);
+						}
+					}
+				});
+
+		textFieldRoomNumber.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						touristVisit.setRoom(event.getProperty().getValue().toString());
+						textFieldRoomNumber.setData(event.getProperty().getValue().toString());
+						textFieldRoomNumber.setComponentError(null);
+						setTouristVisit(touristVisit);
+					}
+				});
+
+		textFieldContactNumber.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						touristVisit.setContactNumber(event.getProperty().getValue().toString());
+						textFieldContactNumber.setData(event.getProperty().getValue().toString());
+						textFieldContactNumber.setComponentError(null);
+						setTouristVisit(touristVisit);
+					}
+				});
+
+		//retrieve and bind data to fields
+		if(mode.equals("update") || getData() != null){
+			popupDateFieldStart.setValue(touristVisit.getFrom());
+			popupDateFieldEnd.setValue(touristVisit.getTo());
+
+			comboBoxResort.addItem(touristVisit.getResort());
+			comboBoxResort.select(touristVisit.getResort());
+
+			comboBoxHotel.addItem(touristVisit.getHotel());
+			comboBoxHotel.select(touristVisit.getHotel());
+
+			textFieldRoomNumber.setValue(touristVisit.getRoom());
+			textFieldContactNumber.setValue(touristVisit.getContactNumber());
+		}
+
 		return formLayout;
 	}
+
+
+	public TouristVisit getTouristVisit() {
+		return touristVisit;
+	}
+
+	public void setTouristVisit(TouristVisit touristVisit) {
+		this.touristVisit = touristVisit;
+	}
+
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
+		//get access to DB
+		DaoIntrfc dao = getDao();
+
+		TouristVisit touristVisit = getTouristVisit();
+		dao.evict(touristVisit);
+
+		//Persons person=(Persons) steps.get("stepCreatePerson").getData();
+		//touristVisit.setPersons(person);
+		steps.get("stepTouristVisit").setData(touristVisit);
 
 		return true;
+	}
+
+	public List<String> getOrganizationNameList(DaoIntrfc dao,String typeOrganization){
+		Map<Enumerations, String> typeOrg = dao.getEnumeration("organization");
+		Enumerations orgEnum=new Enumerations();
+
+		for (Map.Entry<Enumerations, String> entry : typeOrg.entrySet()) {
+			Enumerations enumeration = entry.getKey();			
+			String label = entry.getValue();
+			if (label.equalsIgnoreCase(typeOrganization)){
+				orgEnum=enumeration;
+				break;
+			}
+		} 
+
+		Organizations hotels=new Organizations();
+		hotels.setEnumerations(orgEnum);
+
+		List<Object> orgs=dao.findByExample(hotels);
+
+		List<String> hotelList=new ArrayList<String>();
+
+		for (Object organization:orgs){
+			Organizations org=(Organizations) organization;
+			hotelList.add(org.getName());
+			System.out.println(org.getName());
+		}		
+
+		return hotelList;
 	}
 
 }

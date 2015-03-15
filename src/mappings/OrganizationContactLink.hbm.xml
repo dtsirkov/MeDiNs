@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo.classes.OrganizationContactLink" table="organization_contact_link">
-        <id name="id" type="java.lang.Integer">
-            <column name="id" />
-            <generator class="identity" />
-        </id>
-        <many-to-one name="organizations" class="pojo.classes.Organizations" fetch="select">
-            <column name="organization_id" length="45" not-null="true" />
-        </many-to-one>
-        <many-to-one name="contacts" class="pojo.classes.Contacts" fetch="select">
-            <column name="contact_id" not-null="true" />
-        </many-to-one>
-    </class>
+ <class name="pojo.classes.OrganizationContactLink" table="organization_contact_link">
+  <id length="11" name="id" type="java.lang.Integer">
+   <column length="45" name="id"/>
+   <generator class="identity"/>
+  </id>
+  <many-to-one class="pojo.classes.Organizations" fetch="select" name="organizations">
+   <column name="organization_id" not-null="true"/>
+  </many-to-one>
+  <many-to-one class="pojo.classes.Contacts" fetch="select" name="contacts">
+   <column name="contact_id" not-null="true"/>
+  </many-to-one>
+ </class>
 </hibernate-mapping>
