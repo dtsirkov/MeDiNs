@@ -1,12 +1,9 @@
 package web.activities;
 
-import web.forms.CasePersonForm;
-import web.forms.DiagnosisForm;
+
+import web.forms.ContactForm;
 import web.forms.Form;
-import web.forms.MedicalReportForm;
-import web.forms.PersonForm;
-import web.forms.PersonTouristVisitForm;
-import web.forms.PolicyForm;
+import web.forms.OrganizationForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
 
@@ -14,14 +11,14 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 
-public class CreateCase extends AbstractActivityView{
+public class CreateOrganization extends AbstractActivityView{
 
 	private static final long serialVersionUID = 1L;
 
-	public CreateCase(UI ui) {
+	public CreateOrganization(UI ui) {
 
 		super(ui);
-		setLabel("createCase");
+		setLabel("createOrganization");
 
 	}
 
@@ -33,11 +30,8 @@ public class CreateCase extends AbstractActivityView{
 	public Layout buildLayout(){
 
 		Form[] requiredSteps = {
-				//new CasePersonForm(this, "stepCreatePerson"),
-				//new PersonTouristVisitForm(this,"stepTouristVisit"),
-				new PolicyForm(this,"stepPolicy"),
-				new MedicalReportForm(this,"stepMedicalReport"),
-				new DiagnosisForm(this,"stepDiagnosis"),
+				new OrganizationForm(this, "stepOrganization"),
+				new ContactForm(this, "stepCreateContact"), 
 				new ValidationForm(this, "stepValidate")
 		};
 		setRequiredSteps(requiredSteps);
@@ -45,7 +39,7 @@ public class CreateCase extends AbstractActivityView{
 		Form[] optionalSteps = {};
 		setOptionalSteps(optionalSteps);
 
-		setValidationMethod("validateCase");
+		setValidationMethod("validateOrganization");
 		setMode("create");
 
 		return super.buildLayout();

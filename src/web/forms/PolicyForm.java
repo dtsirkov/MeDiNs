@@ -1,8 +1,12 @@
 package web.forms;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import pojo.classes.Persons;
 import pojo.classes.Policies;
@@ -30,7 +34,6 @@ import dao.classes.DaoIntrfc;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
-import web.components.OrganizationForm;
 import web.views.AbstractView;
 
 public class PolicyForm extends Form implements StepIntrfc {
@@ -62,10 +65,8 @@ public class PolicyForm extends Form implements StepIntrfc {
 			//set initial values
 			policy = new Policies();
 			policy.setNumber("");
-			Organizations organizationsByAssistanceCompany = null;
-			policy.setOrganizationsByAssistanceCompany(organizationsByAssistanceCompany);
-			Organizations organizationsByInsuaranceCompany = null;
-			policy.setOrganizationsByInsuaranceCompany(organizationsByInsuaranceCompany);
+			policy.setOrganizationsByAssistanceCompany(null);
+			policy.setOrganizationsByInsuaranceCompany(null);
 			policy.setValidFrom(null);
 			policy.setValidTo(null);
 			setData(policy);
@@ -127,17 +128,17 @@ public class PolicyForm extends Form implements StepIntrfc {
 		hlInsCompany.setSpacing(true);
 
 		// cbInsCompany
-		ComboBox cbInsCompany = new ComboBox();
+		final ComboBox cbInsCompany = new ComboBox();
 		cbInsCompany.setImmediate(true);
 		cbInsCompany.setWidth("-1px");
 		cbInsCompany.setHeight("-1px");
 		cbInsCompany.setRequired(true);
 
-		Button buttonAddOrg=new Button("Add");
+		Button buttonAddInsComp=new Button("Add");
 
 		hlInsCompany.addComponent(cbInsCompany);
-		hlInsCompany.addComponent(buttonAddOrg);
-		
+		hlInsCompany.addComponent(buttonAddInsComp);
+
 		formLayout.addComponent(hlInsCompany);
 
 		HorizontalLayout hlAssistCompany = new HorizontalLayout();
@@ -145,12 +146,16 @@ public class PolicyForm extends Form implements StepIntrfc {
 		hlAssistCompany.setSpacing(true);
 
 		// cbAssistCompany
-		ComboBox cbAssistCompany = new ComboBox();
+		final ComboBox cbAssistCompany = new ComboBox();
 		cbAssistCompany.setImmediate(true);
 		cbAssistCompany.setWidth("-1px");
 		cbAssistCompany.setHeight("-1px");
 		cbAssistCompany.setRequired(true);
+
+		Button buttonAddAssistComp=new Button("Add");
+
 		hlAssistCompany.addComponent(cbAssistCompany);	
+		hlAssistCompany.addComponent(buttonAddAssistComp);
 
 		formLayout.addComponent(hlAssistCompany);
 
@@ -189,55 +194,44 @@ public class PolicyForm extends Form implements StepIntrfc {
 					}
 				});
 
-
-		//add button click for adding new org
-		final UI ui=getView().getUI();
-
-		//Define sub window
-		final Window subWindow = new Window("Sub-window");
-		subWindow.setWidth("450px");
-		subWindow.setHeight("500px");
-		VerticalLayout subWLayout=new VerticalLayout();
-		final OrganizationForm orgForm=new OrganizationForm();
-		subWLayout.addComponent(orgForm);
-		subWindow.setContent(subWLayout);		
-		subWindow.center();
-
-
-		//getting mode for new org form
-		final String modeOrg=mode;
-		//button's ClickListener for adding new organization
-		buttonAddOrg.addClickListener(new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			public void buttonClick(ClickEvent event) {
-				//Define sub window
-				final Window subWindow = new Window("Sub-window");
-				subWindow.setWidth("450px");
-				subWindow.setHeight("500px");
-				VerticalLayout subWLayout = new VerticalLayout();
-				OrganizationForm orgForm = new OrganizationForm();				
-				orgForm.setMode(modeOrg);
-				subWLayout.addComponent(orgForm);
-				subWindow.setContent(subWLayout);		
-				subWindow.center();
-				subWindow.setCaption("Add new insurance company");
-				ui.addWindow(subWindow);
-
-				//Close subwindow
-				Button cancel = orgForm.getButtonCancel();
-				cancel.addClickListener(new ClickListener() {
+		cbInsCompany.addValueChangeListener(
+				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
-
-					public void buttonClick(ClickEvent event) {
-						subWindow.close();
+					public void valueChange(ValueChangeEvent event) {	
+						Object selection=cbAssistCompany.getValue();														
+						if (selection != null){
+							Organizations value=(Organizations) cbInsCompany.getValue();
+							policy.setOrganizationsByInsuaranceCompany(value);
+							cbInsCompany.setData(value);
+							cbInsCompany.setComponentError(null);
+							setPolicy(policy);
+						}
 					}
 				});
+		
+		cbAssistCompany.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {	
+						Object selection=cbAssistCompany.getValue();								
+						if (selection != null){
+							Organizations value=(Organizations) cbAssistCompany.getValue();
+							policy.setOrganizationsByAssistanceCompany(value);
+							cbAssistCompany.setData(value);
+							cbAssistCompany.setComponentError(null);
+							setPolicy(policy);
+						}
+					}
+				});
+		
+		//insert comboboxes data
+		Map<Organizations,String> insCompCombobox=getOrganizationList(dao,"ins_comp");
+		if (!insCompCombobox.isEmpty())
+			cbAssistCompany.setData(insCompCombobox.values().toArray());
 
-
-			}
-		});
-
+		Map<Organizations,String> assistCompCombobox=getOrganizationList(dao,"assist_comp");
+		if (!assistCompCombobox.isEmpty())
+			cbAssistCompany.setData(assistCompCombobox.values().toArray());
 
 		//retrieve and bind data to fields
 		if(getData() != null){
@@ -258,6 +252,35 @@ public class PolicyForm extends Form implements StepIntrfc {
 	public void setPolicy(Policies policy) {
 		this.policy = policy;
 	}
+
+	public Map<Organizations,String> getOrganizationList(DaoIntrfc dao,String typeOrganization){
+		Map<Enumerations, String> typeOrg = dao.getEnumeration("organization");
+		Enumerations orgEnum=new Enumerations();
+
+		for (Map.Entry<Enumerations, String> entry : typeOrg.entrySet()) {
+			Enumerations enumeration = entry.getKey();			
+			String label = entry.getValue();
+			if (label.equalsIgnoreCase(typeOrganization)){
+				orgEnum=enumeration;
+				break;
+			}
+		} 
+
+		Organizations organizations=new Organizations();
+		organizations.setEnumerations(orgEnum);
+
+		List<Object> orgs=dao.findByExample(organizations);	
+
+		Map<Organizations,String> organizatonMap=new HashMap<Organizations,String>();
+
+		for(Object org:orgs)
+		{
+			Organizations orgOrig=(Organizations) org;
+			organizatonMap.put(orgOrig,orgOrig.getName());
+		}
+		return organizatonMap;
+	}
+
 
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
