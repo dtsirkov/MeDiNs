@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import web.activities.CreateCase;
 import web.activities.CreateCase2;
+import web.activities.CreateOrganization;
 import web.activities.CreatePerson;
 import web.activities.UpdatePerson;
 import web.classes.Activity;
@@ -61,6 +62,8 @@ public class MedinsUI extends UI {
 		personOrganizationDomain.addActivity(createPersonActivity);
 		Activity updatePersonActivity = new Activity(new UpdatePerson(this));
 		personOrganizationDomain.addActivity(updatePersonActivity);
+		Activity createOrganizationActivity = new Activity(new CreateOrganization(this));
+		personOrganizationDomain.addActivity(createOrganizationActivity);
 		
 		//case domain
 		Domain caseDomain = new Domain("caseDomain");

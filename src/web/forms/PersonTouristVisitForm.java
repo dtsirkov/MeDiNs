@@ -39,7 +39,6 @@ import dao.classes.DaoIntrfc;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
-import web.components.OrganizationForm;
 import web.views.AbstractView;
 
 public class PersonTouristVisitForm extends Form implements StepIntrfc {
@@ -233,8 +232,8 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {
-						String value=event.getProperty().getValue().toString();
-						if (!value.equals("")){
+						Object value=comboBoxResort.getValue();
+						if (value != null){
 							touristVisit.setResort(event.getProperty().getValue().toString());
 							comboBoxResort.setData(event.getProperty().getValue().toString());
 							comboBoxResort.setComponentError(null);
@@ -247,8 +246,8 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {	
-						String value=event.getProperty().getValue().toString();
-						if (!value.equals("")){
+						Object value=comboBoxHotel.getValue();								
+						if (value != null){
 							touristVisit.setHotel(event.getProperty().getValue().toString());
 							comboBoxHotel.setData(event.getProperty().getValue().toString());
 							comboBoxHotel.setComponentError(null);
