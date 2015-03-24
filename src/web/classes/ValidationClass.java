@@ -70,8 +70,17 @@ public class ValidationClass {
 		Transaction trans = getDao().getTransaction();
 		try{
 
-			if(getValidationMethod().equals("validatePerson")){
+			String validationMethod=getValidationMethod();
+			/*if(getValidationMethod().equals("validatePerson")){
 				setValidated(validatePerson(mode));
+			}*/
+			switch(validationMethod){
+			case "validatePerson":
+				setValidated(validatePerson(mode));
+				break;
+			case "validateOrganization":
+				setValidated(validateOrganization(mode));
+				break;
 			}
 
 			trans.commit();
@@ -91,6 +100,25 @@ public class ValidationClass {
 
 		Object[] objects  = {
 				person,
+				contact, 
+				personContactLink
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
+
+	private boolean validateOrganization(String mode){		
+
+		Organizations organization = (Organizations)getRequiredSteps().get("stepOrganization").getData();
+		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
+		OrganizationContactLink personContactLink = new OrganizationContactLink(organization, contact);
+
+		Object[] objects  = {
+				organization,
 				contact, 
 				personContactLink
 		};

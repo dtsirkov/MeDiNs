@@ -28,7 +28,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 
 	private static final long serialVersionUID = 1L;
 
-	private Organizations org;
+	private Organizations organization;
 
 	public OrganizationForm(AbstractView view, String label) {
 		super(view, label, new FormLayout());
@@ -48,8 +48,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 		DaoIntrfc dao = getDao();	
 
 		//get object that will be bind to the components
-		final Organizations organization;
-		final Contacts contact;
+		//final Organizations organization;
 		if(mode.equals("update") || getData() != null){
 			organization = (Organizations) getData();
 		}else{
@@ -60,21 +59,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 			organization.setEnumerations(null);
 			organization.setLogo("");
 			organization.setIban("");
-
-			contact=new Contacts();
-			contact.setAddress("");
-			contact.setCity("");
-			contact.setCountry("");
-			contact.setEmail("");
-			contact.setEnumerationsByActive(null);
-			contact.setEnumerationsByPrefered(null);
-			contact.setMobile("");
-			contact.setPhone("");
-			contact.setZip("");
 		}
-
-		//define measurements of the components 
-		String width = "180px", height = "-1px";
 
 		//remove all current components
 		formLayout.removeAllComponents();
@@ -136,7 +121,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 						organization.setName(event.getProperty().getValue().toString());
 						textFieldName.setData(event.getProperty().getValue().toString());
 						textFieldName.setComponentError(null);
-						setOrg(organization);
+						//setOrganization(organization);
 					}
 				});
 		
@@ -156,7 +141,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 						organization.setEnumerations(enumeration);
 						comboBoxOrgType.setData(string);
 						comboBoxOrgType.setComponentError(null);
-						setOrg(organization);
+						//setOrganization(organization);
 						}
 					}
 				});
@@ -169,7 +154,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 						organization.setIban(event.getProperty().getValue().toString());
 						textFieldIBAN.setData(event.getProperty().getValue().toString());
 						textFieldIBAN.setComponentError(null);
-						setOrg(organization);
+						//setOrganization(organization);
 					}
 				});
 
@@ -180,14 +165,14 @@ public class OrganizationForm extends Form implements StepIntrfc {
 						organization.setBankDetails(event.getProperty().getValue().toString());
 						textFieldBankDetails.setData(event.getProperty().getValue().toString());
 						textFieldBankDetails.setComponentError(null);
-						setOrg(organization);
+						//setOrganization(organization);
 					}
 				});
 		
 		//retrieve and bind data to fields
 		if(mode.equals("update") || getData() != null){
 			textFieldName.setValue(organization.getName());
-			comboBoxOrgType.setData(organization.getEnumerations());
+			comboBoxOrgType.select(orgTypeEnum.get(organization.getEnumerations()));
 			textFieldIBAN.setValue(organization.getIban());
 			textFieldBankDetails.setValue(organization.getBankDetails());
 		}
@@ -195,12 +180,12 @@ public class OrganizationForm extends Form implements StepIntrfc {
 		return formLayout;
 	}
 
-	public Organizations getOrg() {
-		return org;
+	public Organizations getOrganization() {
+		return organization;
 	}
 
-	public void setOrg(Organizations org) {
-		this.org = org;
+	public void setOrganization(Organizations organization) {
+		this.organization = organization;
 	}
 
 	@Override
@@ -208,7 +193,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		Organizations organization = getOrg();
+		Organizations organization = getOrganization();
 		dao.evict(organization);
 
 		steps.get("stepOrganization").setData(organization);

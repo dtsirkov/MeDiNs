@@ -5,6 +5,7 @@ import java.util.Map;
 
 import pojo.classes.Contacts;
 import pojo.classes.Enumerations;
+import pojo.classes.Organizations;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
@@ -22,9 +23,6 @@ import dao.classes.DaoIntrfc;
 
 public class ContactForm extends Form implements StepIntrfc{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private TextField addressTF;
 	private TextField zipCodeTF;
@@ -36,6 +34,7 @@ public class ContactForm extends Form implements StepIntrfc{
 	private ComboBox typeCB;
 	private ComboBox activeCB;
 	private ComboBox preferedCB;
+	private Contacts contact;
 
 	public ContactForm(AbstractView view, String label) {
 
@@ -56,7 +55,7 @@ public class ContactForm extends Form implements StepIntrfc{
 		DaoIntrfc dao = getDao();	
 
 		//get object that will be bind to the components
-		final Contacts contact;
+		//final Contacts contact;
 		if(mode.equals("update") || getData() != null){
 			contact = (Contacts)getData();
 		}else{
@@ -342,9 +341,24 @@ public class ContactForm extends Form implements StepIntrfc{
 		return formLayout;
 	}
 
+	public Contacts getContact() {
+		return contact;
+	}
+
+	public void setContact(Contacts contact) {
+		this.contact = contact;
+	}
+	
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
-		// TODO Auto-generated method stub
+		//get access to DB
+		DaoIntrfc dao = getDao();
+
+		Contacts contact = getContact();
+		dao.evict(contact);
+
+		steps.get("stepCreateContact").setData(contact);
+		
 		return true;
 	}
 }
