@@ -392,6 +392,21 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return searchConstraint;
 	}
 
+	public HashMap<String, String> addToSearchConstraint(final ComboBox comboBox, final String key){
+
+		comboBox.addValueChangeListener(new Property.ValueChangeListener(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				String value = event.getProperty().getValue().toString();
+				comboBox.setData(value);
+				searchConstraint.put(key, value);
+			}
+
+		});
+		return searchConstraint;
+	}
+	
 	protected abstract ArrayList<T> search();
 
 	protected abstract FormLayout buildSearchByCriteriaLayout();

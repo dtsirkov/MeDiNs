@@ -64,7 +64,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		final DaoIntrfc dao = getDao();
 
 		//get object that will be bind to the components
-		final TouristVisit touristVisit;
+		//final TouristVisit touristVisit;
 		if(mode.equals("update") || getData() != null){
 			touristVisit = (TouristVisit)getData();
 		}else{
@@ -213,7 +213,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setFrom((Date)event.getProperty().getValue());
 						popupDateFieldStart.setData((Date)event.getProperty().getValue());
 						popupDateFieldStart.setComponentError(null);
-						setTouristVisit(touristVisit);
+						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -224,7 +224,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setTo((Date)event.getProperty().getValue());
 						popupDateFieldEnd.setData((Date)event.getProperty().getValue());
 						popupDateFieldEnd.setComponentError(null);
-						setTouristVisit(touristVisit);
+						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -237,7 +237,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 							touristVisit.setResort(event.getProperty().getValue().toString());
 							comboBoxResort.setData(event.getProperty().getValue().toString());
 							comboBoxResort.setComponentError(null);
-							setTouristVisit(touristVisit);
+							//setTouristVisit(touristVisit);
 						}
 					}
 				});
@@ -251,7 +251,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 							touristVisit.setHotel(event.getProperty().getValue().toString());
 							comboBoxHotel.setData(event.getProperty().getValue().toString());
 							comboBoxHotel.setComponentError(null);
-							setTouristVisit(touristVisit);
+							//setTouristVisit(touristVisit);
 						}
 					}
 				});
@@ -263,7 +263,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setRoom(event.getProperty().getValue().toString());
 						textFieldRoomNumber.setData(event.getProperty().getValue().toString());
 						textFieldRoomNumber.setComponentError(null);
-						setTouristVisit(touristVisit);
+						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -274,7 +274,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setContactNumber(event.getProperty().getValue().toString());
 						textFieldContactNumber.setData(event.getProperty().getValue().toString());
 						textFieldContactNumber.setComponentError(null);
-						setTouristVisit(touristVisit);
+						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -343,7 +343,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		for (Object organization:orgs){
 			Organizations org=(Organizations) organization;
 			hotelList.add(org.getName());
-			System.out.println(org.getName());
+			//System.out.println(org.getName());
 		}		
 
 		return hotelList;

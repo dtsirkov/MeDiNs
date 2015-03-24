@@ -58,7 +58,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		final Policies policy;
+		//final Policies policy;
 		if(mode.equals("update") || getData() != null){
 			policy = (Policies)getData();
 		}else{
@@ -168,7 +168,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setNumber(event.getProperty().getValue().toString());
 						textFieldPn.setData(event.getProperty().getValue().toString());
 						textFieldPn.setComponentError(null);
-						setPolicy(policy);
+						//setPolicy(policy);
 					}
 				});
 
@@ -179,7 +179,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setValidFrom((Date)event.getProperty().getValue());
 						popupDateFieldFrom.setData((Date)event.getProperty().getValue());
 						popupDateFieldFrom.setComponentError(null);
-						setPolicy(policy);
+						//setPolicy(policy);
 					}
 				});
 
@@ -190,7 +190,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setValidTo((Date)event.getProperty().getValue());
 						popupDateFieldTill.setData((Date)event.getProperty().getValue());
 						popupDateFieldTill.setComponentError(null);
-						setPolicy(policy);
+						//setPolicy(policy);
 					}
 				});
 
@@ -204,7 +204,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 							policy.setOrganizationsByInsuaranceCompany(value);
 							cbInsCompany.setData(value);
 							cbInsCompany.setComponentError(null);
-							setPolicy(policy);
+							//setPolicy(policy);
 						}
 					}
 				});
@@ -219,7 +219,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 							policy.setOrganizationsByAssistanceCompany(value);
 							cbAssistCompany.setData(value);
 							cbAssistCompany.setComponentError(null);
-							setPolicy(policy);
+							//setPolicy(policy);
 						}
 					}
 				});
