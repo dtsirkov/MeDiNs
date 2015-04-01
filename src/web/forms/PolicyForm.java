@@ -39,7 +39,6 @@ import web.views.AbstractView;
 public class PolicyForm extends Form implements StepIntrfc {
 
 	private static final long serialVersionUID = 1L;
-	private Policies policy;
 
 	public PolicyForm(AbstractView view, String label) {
 		super(view, label, new FormLayout());
@@ -58,7 +57,8 @@ public class PolicyForm extends Form implements StepIntrfc {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		//final Policies policy;
+		//get object that will be bind to the components
+		final Policies policy;
 		if(mode.equals("update") || getData() != null){
 			policy = (Policies)getData();
 		}else{
@@ -245,14 +245,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 
 	}
 
-	public Policies getPolicy() {
-		return policy;
-	}
-
-	public void setPolicy(Policies policy) {
-		this.policy = policy;
-	}
-
 	public Map<Organizations,String> getOrganizationList(DaoIntrfc dao,String typeOrganization){
 		Map<Enumerations, String> typeOrg = dao.getEnumeration("organization");
 		Enumerations orgEnum=new Enumerations();
@@ -287,7 +279,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		Policies policy = getPolicy();
+		Policies policy = (Policies) getData();
 		dao.evict(policy);
 
 		steps.get("stepPolicy").setData(policy);

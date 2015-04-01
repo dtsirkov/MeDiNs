@@ -34,7 +34,6 @@ public class ContactForm extends Form implements StepIntrfc{
 	private ComboBox typeCB;
 	private ComboBox activeCB;
 	private ComboBox preferedCB;
-	private Contacts contact;
 
 	public ContactForm(AbstractView view, String label) {
 
@@ -55,8 +54,8 @@ public class ContactForm extends Form implements StepIntrfc{
 		DaoIntrfc dao = getDao();	
 
 		//get object that will be bind to the components
-		//final Contacts contact;
-		if(mode.equals("update") || getData() != null){
+		final Contacts contact;
+		if((mode.equals("update") && getData() != null) || getData() !=null) {
 			contact = (Contacts)getData();
 		}else{
 			//set initial values
@@ -341,24 +340,16 @@ public class ContactForm extends Form implements StepIntrfc{
 		return formLayout;
 	}
 
-	public Contacts getContact() {
-		return contact;
-	}
-
-	public void setContact(Contacts contact) {
-		this.contact = contact;
-	}
-	
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		Contacts contact = getContact();
+		Contacts contact = (Contacts) getData();
 		dao.evict(contact);
 
 		steps.get("stepCreateContact").setData(contact);
-		
+
 		return true;
 	}
 }

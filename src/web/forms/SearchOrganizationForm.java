@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Alignment;
@@ -20,6 +23,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 
+import beans.ComboxBean;
 import dao.classes.DaoIntrfc;
 
 import pojo.classes.Contacts;
@@ -81,8 +85,12 @@ public class SearchOrganizationForm extends SearchForm<Organizations> implements
 		//get enumerations 
 		final Map<Enumerations, String> orgTypeEnum = dao.getEnumeration("organization");
 
-		//add values in combo boxes
-		comboBoxOrgType.addItems(orgTypeEnum.values().toArray());
+		//add values in combo box
+		// Have a bean container to put the beans in
+		final BeanItemContainer<ComboxBean> container = new BeanItemContainer<ComboxBean>(ComboxBean.class);
+		container.addAll(ComboxBean.getComboxBeanList(orgTypeEnum));
+		comboBoxOrgType.setContainerDataSource(container);
+		comboBoxOrgType.setItemCaptionPropertyId("label");
 		addToSearchConstraint(comboBoxOrgType, "type");
 
 		getSearchByKeyLayout().setVisible(false);
@@ -128,11 +136,25 @@ public class SearchOrganizationForm extends SearchForm<Organizations> implements
 		Organizations selectedOrganization = (Organizations) getSelectedItem();
 		dao.evict(selectedOrganization);
 
-		steps.get("stepSearchOrganization").setData(selectedOrganization);
+		steps.get("stepOrganization").setData(selectedOrganization);
+		
+		Map<Object, List<Object>> hmOrganization = new HashMap<Object, List<Object>>();
+		List<Object> organizationLs = new ArrayList<Object>();
+		organizationLs.add(selectedOrganization);
+		hmOrganization.put("organizations", organizationLs);
+		List<Object> organizationAddressLinks = dao.findByExample(new OrganizationContactLink(), hmOrganization);
 
-		Contacts contact = new Contacts();
-		dao.evict(contact);
-		steps.get("stepCreateContact").setData(contact);
+		Enumerations enumeration;
+		Contacts contact;
+		for(Object organizationAddressLink : organizationAddressLinks){
+			dao.evict(organizationAddressLink);
+			contact = ((OrganizationContactLink) organizationAddressLink).getContacts();
+			enumeration = contact.getEnumerationsByActive();
+			if(enumeration.getCode().equals("yes")){
+				dao.evict(contact);
+				steps.get("stepCreateContact").setData(contact);
+			}
+		}
 
 		processed = true;
 		return processed;

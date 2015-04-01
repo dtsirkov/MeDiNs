@@ -29,6 +29,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.event.ItemClickEvent;
 
+import beans.ComboxBean;
 import dao.classes.DaoIntrfc;
 
 @Theme("pagedtabletheme")
@@ -398,9 +399,9 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				String value = event.getProperty().getValue().toString();
+				ComboxBean value = (ComboxBean) event.getProperty().getValue();
 				comboBox.setData(value);
-				searchConstraint.put(key, value);
+				searchConstraint.put(key, value.getValue());
 			}
 
 		});
