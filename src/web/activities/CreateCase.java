@@ -33,7 +33,7 @@ public class CreateCase extends AbstractActivityView{
 	public Layout buildLayout(){
 
 		Form[] requiredSteps = {
-				//new CasePersonForm(this, "stepCreatePerson"),
+				new CasePersonForm(this, "stepCreatePerson"),
 				new PersonTouristVisitForm(this,"stepTouristVisit"),
 				new PolicyForm(this,"stepPolicy"),
 				new MedicalReportForm(this,"stepMedicalReport"),

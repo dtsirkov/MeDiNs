@@ -44,7 +44,6 @@ import web.views.AbstractView;
 public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 	private static final long serialVersionUID = 1L;
-	private TouristVisit touristVisit;
 
 	public PersonTouristVisitForm(AbstractView view, String label) {
 		super(view, label, new FormLayout());
@@ -64,7 +63,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		final DaoIntrfc dao = getDao();
 
 		//get object that will be bind to the components
-		//final TouristVisit touristVisit;
+		final TouristVisit touristVisit;
 		if(mode.equals("update") || getData() != null){
 			touristVisit = (TouristVisit)getData();
 		}else{
@@ -296,21 +295,12 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		return formLayout;
 	}
 
-
-	public TouristVisit getTouristVisit() {
-		return touristVisit;
-	}
-
-	public void setTouristVisit(TouristVisit touristVisit) {
-		this.touristVisit = touristVisit;
-	}
-
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		TouristVisit touristVisit = getTouristVisit();
+		TouristVisit touristVisit = (TouristVisit) getData();
 		dao.evict(touristVisit);
 
 		//Persons person=(Persons) steps.get("stepCreatePerson").getData();
