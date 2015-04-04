@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
+import ui.MyUI;
 import web.activities.CreateCase;
 import web.activities.CreateCase2;
 import web.activities.CreateOrganization;
@@ -29,7 +30,7 @@ import dao.classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
-public class MedinsUI extends UI {
+public class MedinsUI extends MyUI {
 	
 	private static PropertyManager propertyManager;
 	
