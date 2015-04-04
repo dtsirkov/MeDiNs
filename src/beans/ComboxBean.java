@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,26 @@ public class ComboxBean {
 			outList.add(new ComboxBean(key.getCode(),value));
 		}
 		return outList;		
+	}
+
+	public static Map<String, String> getCodeDisplayMap(Map<Enumerations, String> enumMap){
+		Map<String, String> codeDisplayMap = new HashMap<String, String>();
+		Iterator<Enumerations> it = enumMap.keySet().iterator();
+		while (it.hasNext()) {
+			Enumerations key = it.next();
+			codeDisplayMap.put(key.getCode(), enumMap.get(key));
+		}
+		return codeDisplayMap;
+	}
+
+	public static Map<String, String> getDisplayCodeMap(Map<Enumerations, String> enumMap){
+		Map<String, String> displayCodeMap = new HashMap<String, String>();
+		Iterator<Enumerations> it = enumMap.keySet().iterator();
+		while (it.hasNext()) {
+			Enumerations key = it.next();
+			displayCodeMap.put(enumMap.get(key), key.getCode());
+		}
+		return displayCodeMap;
 	}
 
 }
