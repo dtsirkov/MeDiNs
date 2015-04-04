@@ -57,6 +57,7 @@ public class OrganizationForm extends Form implements StepIntrfc {
 			organization.setEnumerations(null);
 			organization.setLogo("");
 			organization.setIban("");
+			setData(organization);
 		}
 
 		//remove all current components

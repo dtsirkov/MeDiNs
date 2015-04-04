@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.hibernate.Hibernate;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -28,9 +31,7 @@ import dao.classes.DaoIntrfc;
 
 import pojo.classes.Contacts;
 import pojo.classes.Enumerations;
-import pojo.classes.OrganizationContactLink;
 import pojo.classes.Organizations;
-import pojo.classes.PersonContactLink;
 import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.PropertyManager;
@@ -134,31 +135,28 @@ public class SearchOrganizationForm extends SearchForm<Organizations> implements
 		DaoIntrfc dao = getDao();
 
 		Organizations selectedOrganization = (Organizations) getSelectedItem();
-		dao.evict(selectedOrganization);
 
 		steps.get("stepOrganization").setData(selectedOrganization);
 		
-		Map<Object, List<Object>> hmOrganization = new HashMap<Object, List<Object>>();
-		List<Object> organizationLs = new ArrayList<Object>();
-		organizationLs.add(selectedOrganization);
-		hmOrganization.put("organizations", organizationLs);
-		List<Object> organizationAddressLinks = dao.findByExample(new OrganizationContactLink(), hmOrganization);
+		//load objects
+		Set<Contacts> contactses=selectedOrganization.getContactses();
+		contactses.size();
 
 		Enumerations enumeration;
-		Contacts contact;
-		for(Object organizationAddressLink : organizationAddressLinks){
-			dao.evict(organizationAddressLink);
-			contact = ((OrganizationContactLink) organizationAddressLink).getContacts();
+		for(Contacts contact : contactses){
+			dao.evict(contact);
 			enumeration = contact.getEnumerationsByActive();
 			if(enumeration.getCode().equals("yes")){
 				dao.evict(contact);
 				steps.get("stepCreateContact").setData(contact);
 			}
 		}
-
+		
+		//evict objects
+		dao.evict(selectedOrganization);
+		
 		processed = true;
 		return processed;
-
 	}
 
 	@Override

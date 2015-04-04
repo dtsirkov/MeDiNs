@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ public class EnumerationTypes implements java.io.Serializable {
 
 	private String type;
 	private String description;
-	private Set enumerationses = new HashSet(0);
+	private Set<Enumerations> enumerationses = new HashSet<Enumerations>(0);
 
 	public EnumerationTypes() {
 	}
@@ -21,7 +21,8 @@ public class EnumerationTypes implements java.io.Serializable {
 		this.type = type;
 	}
 
-	public EnumerationTypes(String type, String description, Set enumerationses) {
+	public EnumerationTypes(String type, String description,
+			Set<Enumerations> enumerationses) {
 		this.type = type;
 		this.description = description;
 		this.enumerationses = enumerationses;
@@ -43,11 +44,11 @@ public class EnumerationTypes implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Set getEnumerationses() {
+	public Set<Enumerations> getEnumerationses() {
 		return this.enumerationses;
 	}
 
-	public void setEnumerationses(Set enumerationses) {
+	public void setEnumerationses(Set<Enumerations> enumerationses) {
 		this.enumerationses = enumerationses;
 	}
 

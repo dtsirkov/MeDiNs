@@ -254,7 +254,6 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 				if(searchResult.isEmpty())
 					Notification.show(propertyManager.getLabelDtl("stepObjectFound"));
-
 			}
 		});
 

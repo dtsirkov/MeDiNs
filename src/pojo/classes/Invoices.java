@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 public class Invoices implements java.io.Serializable {
 
 	private Integer id;
-	private MedicalCases medicalCases;
+	private CaseInfo caseInfo;
 	private int number;
 	private Date date;
 	private int invoicedBy;
@@ -22,10 +22,10 @@ public class Invoices implements java.io.Serializable {
 	public Invoices() {
 	}
 
-	public Invoices(MedicalCases medicalCases, int number, Date date,
-			int invoicedBy, int invoicedTo, float policyExcess,
-			float dueAmount, String storagePath) {
-		this.medicalCases = medicalCases;
+	public Invoices(CaseInfo caseInfo, int number, Date date, int invoicedBy,
+			int invoicedTo, float policyExcess, float dueAmount,
+			String storagePath) {
+		this.caseInfo = caseInfo;
 		this.number = number;
 		this.date = date;
 		this.invoicedBy = invoicedBy;
@@ -43,12 +43,12 @@ public class Invoices implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public MedicalCases getMedicalCases() {
-		return this.medicalCases;
+	public CaseInfo getCaseInfo() {
+		return this.caseInfo;
 	}
 
-	public void setMedicalCases(MedicalCases medicalCases) {
-		this.medicalCases = medicalCases;
+	public void setCaseInfo(CaseInfo caseInfo) {
+		this.caseInfo = caseInfo;
 	}
 
 	public int getNumber() {

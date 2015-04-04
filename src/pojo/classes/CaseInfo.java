@@ -1,7 +1,8 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,31 +12,58 @@ import java.util.Set;
 public class CaseInfo implements java.io.Serializable {
 
 	private Integer id;
-	private Treatments treatments;
-	private CaseInfo caseInfo;
+	private Enumerations enumerationsByStatus2;
+	private MedicalReport medicalReport;
 	private Persons persons;
-	private Medicaments medicaments;
-	private Set medicalCaseses = new HashSet(0);
-	private Set caseInfos = new HashSet(0);
-	private Set documentations = new HashSet(0);
+	private Policies policies;
+	private Enumerations enumerationsByStatus1;
+	private Date caseDate;
+	private String referanceNumber1;
+	private String referanceNumber2;
+	private Integer responsiblePerson;
+	private Integer createdBy;
+	private Integer lastUpdateBy;
+	private Set<Services> serviceses = new HashSet<Services>(0);
+	private Set<Documentation> documentations = new HashSet<Documentation>(0);
+	private Set<Invoices> invoiceses = new HashSet<Invoices>(0);
 
 	public CaseInfo() {
 	}
 
-	public CaseInfo(Persons persons) {
+	public CaseInfo(Enumerations enumerationsByStatus2,
+			MedicalReport medicalReport, Persons persons, Policies policies,
+			Enumerations enumerationsByStatus1, Date caseDate,
+			String referanceNumber1) {
+		this.enumerationsByStatus2 = enumerationsByStatus2;
+		this.medicalReport = medicalReport;
 		this.persons = persons;
+		this.policies = policies;
+		this.enumerationsByStatus1 = enumerationsByStatus1;
+		this.caseDate = caseDate;
+		this.referanceNumber1 = referanceNumber1;
 	}
 
-	public CaseInfo(Treatments treatments, CaseInfo caseInfo, Persons persons,
-			Medicaments medicaments, Set medicalCaseses, Set caseInfos,
-			Set documentations) {
-		this.treatments = treatments;
-		this.caseInfo = caseInfo;
+	public CaseInfo(Enumerations enumerationsByStatus2,
+			MedicalReport medicalReport, Persons persons, Policies policies,
+			Enumerations enumerationsByStatus1, Date caseDate,
+			String referanceNumber1, String referanceNumber2,
+			Integer responsiblePerson, Integer createdBy, Integer lastUpdateBy,
+			Set<Services> serviceses, Set<Documentation> documentations,
+			Set<Invoices> invoiceses) {
+		this.enumerationsByStatus2 = enumerationsByStatus2;
+		this.medicalReport = medicalReport;
 		this.persons = persons;
-		this.medicaments = medicaments;
-		this.medicalCaseses = medicalCaseses;
-		this.caseInfos = caseInfos;
+		this.policies = policies;
+		this.enumerationsByStatus1 = enumerationsByStatus1;
+		this.caseDate = caseDate;
+		this.referanceNumber1 = referanceNumber1;
+		this.referanceNumber2 = referanceNumber2;
+		this.responsiblePerson = responsiblePerson;
+		this.createdBy = createdBy;
+		this.lastUpdateBy = lastUpdateBy;
+		this.serviceses = serviceses;
 		this.documentations = documentations;
+		this.invoiceses = invoiceses;
 	}
 
 	public Integer getId() {
@@ -46,20 +74,20 @@ public class CaseInfo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Treatments getTreatments() {
-		return this.treatments;
+	public Enumerations getEnumerationsByStatus2() {
+		return this.enumerationsByStatus2;
 	}
 
-	public void setTreatments(Treatments treatments) {
-		this.treatments = treatments;
+	public void setEnumerationsByStatus2(Enumerations enumerationsByStatus2) {
+		this.enumerationsByStatus2 = enumerationsByStatus2;
 	}
 
-	public CaseInfo getCaseInfo() {
-		return this.caseInfo;
+	public MedicalReport getMedicalReport() {
+		return this.medicalReport;
 	}
 
-	public void setCaseInfo(CaseInfo caseInfo) {
-		this.caseInfo = caseInfo;
+	public void setMedicalReport(MedicalReport medicalReport) {
+		this.medicalReport = medicalReport;
 	}
 
 	public Persons getPersons() {
@@ -70,36 +98,92 @@ public class CaseInfo implements java.io.Serializable {
 		this.persons = persons;
 	}
 
-	public Medicaments getMedicaments() {
-		return this.medicaments;
+	public Policies getPolicies() {
+		return this.policies;
 	}
 
-	public void setMedicaments(Medicaments medicaments) {
-		this.medicaments = medicaments;
+	public void setPolicies(Policies policies) {
+		this.policies = policies;
 	}
 
-	public Set getMedicalCaseses() {
-		return this.medicalCaseses;
+	public Enumerations getEnumerationsByStatus1() {
+		return this.enumerationsByStatus1;
 	}
 
-	public void setMedicalCaseses(Set medicalCaseses) {
-		this.medicalCaseses = medicalCaseses;
+	public void setEnumerationsByStatus1(Enumerations enumerationsByStatus1) {
+		this.enumerationsByStatus1 = enumerationsByStatus1;
 	}
 
-	public Set getCaseInfos() {
-		return this.caseInfos;
+	public Date getCaseDate() {
+		return this.caseDate;
 	}
 
-	public void setCaseInfos(Set caseInfos) {
-		this.caseInfos = caseInfos;
+	public void setCaseDate(Date caseDate) {
+		this.caseDate = caseDate;
 	}
 
-	public Set getDocumentations() {
+	public String getReferanceNumber1() {
+		return this.referanceNumber1;
+	}
+
+	public void setReferanceNumber1(String referanceNumber1) {
+		this.referanceNumber1 = referanceNumber1;
+	}
+
+	public String getReferanceNumber2() {
+		return this.referanceNumber2;
+	}
+
+	public void setReferanceNumber2(String referanceNumber2) {
+		this.referanceNumber2 = referanceNumber2;
+	}
+
+	public Integer getResponsiblePerson() {
+		return this.responsiblePerson;
+	}
+
+	public void setResponsiblePerson(Integer responsiblePerson) {
+		this.responsiblePerson = responsiblePerson;
+	}
+
+	public Integer getCreatedBy() {
+		return this.createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getLastUpdateBy() {
+		return this.lastUpdateBy;
+	}
+
+	public void setLastUpdateBy(Integer lastUpdateBy) {
+		this.lastUpdateBy = lastUpdateBy;
+	}
+
+	public Set<Services> getServiceses() {
+		return this.serviceses;
+	}
+
+	public void setServiceses(Set<Services> serviceses) {
+		this.serviceses = serviceses;
+	}
+
+	public Set<Documentation> getDocumentations() {
 		return this.documentations;
 	}
 
-	public void setDocumentations(Set documentations) {
+	public void setDocumentations(Set<Documentation> documentations) {
 		this.documentations = documentations;
+	}
+
+	public Set<Invoices> getInvoiceses() {
+		return this.invoiceses;
+	}
+
+	public void setInvoiceses(Set<Invoices> invoiceses) {
+		this.invoiceses = invoiceses;
 	}
 
 }

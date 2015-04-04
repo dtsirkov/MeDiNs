@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 
@@ -16,38 +16,40 @@ public class TouristVisit implements java.io.Serializable {
 	private String resort;
 	private String hotel;
 	private String room;
-	private String contactNumber; 
+	private String phoneNumber;
 
 	public TouristVisit() {
 	}
 
 	public TouristVisit(Persons persons, Date from, Date to, String resort,
-			String hotel, String room,String contactNumber) {
+			String hotel, String room) {
 		this.persons = persons;
 		this.from = from;
 		this.to = to;
 		this.resort = resort;
 		this.hotel = hotel;
 		this.room = room;
-		this.contactNumber=contactNumber;
 	}
 
-	public TouristVisit(TouristVisit touristVisit) {
-		this.persons = touristVisit.getPersons();
-		this.from = touristVisit.getFrom();
-		this.to = touristVisit.getTo();
-		this.resort = touristVisit.getResort();
-		this.hotel = touristVisit.getHotel();
-		this.room = touristVisit.getRoom();
-		this.contactNumber=touristVisit.contactNumber;
-	}	
+	public TouristVisit(Persons persons, Date from, Date to, String resort,
+			String hotel, String room, String phoneNumber) {
+		this.persons = persons;
+		this.from = from;
+		this.to = to;
+		this.resort = resort;
+		this.hotel = hotel;
+		this.room = room;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public Integer getId() {
 		return this.id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public Persons getPersons() {
 		return this.persons;
 	}
@@ -96,12 +98,12 @@ public class TouristVisit implements java.io.Serializable {
 		this.room = room;
 	}
 
-	public String getContactNumber() {
-		return contactNumber;
+	public String getPhoneNumber() {
+		return this.phoneNumber;
 	}
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 }

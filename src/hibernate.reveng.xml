@@ -4,15 +4,17 @@
 <hibernate-reverse-engineering>
   <table-filter match-schema="medins_schema" match-name=".*"/>
   <table-filter match-catalog="medins_schema" match-name="case_info"/>
+  <table-filter match-catalog="medins_schema" match-name="case_info_services_link"/>
   <table-filter match-catalog="medins_schema" match-name="contacts"/>
-  <table-filter match-catalog="medins_schema" match-name="decease_treatment_link"/>
-  <table-filter match-catalog="medins_schema" match-name="deceases"/>
+  <table-filter match-catalog="medins_schema" match-name="country"/>
+  <table-filter match-catalog="medins_schema" match-name="diagnosis"/>
   <table-filter match-catalog="medins_schema" match-name="documentation"/>
   <table-filter match-catalog="medins_schema" match-name="enumeration_labels"/>
   <table-filter match-catalog="medins_schema" match-name="enumeration_types"/>
   <table-filter match-catalog="medins_schema" match-name="enumerations"/>
   <table-filter match-catalog="medins_schema" match-name="invoices"/>
-  <table-filter match-catalog="medins_schema" match-name="medical_cases"/>
+  <table-filter match-catalog="medins_schema" match-name="medical_report"/>
+  <table-filter match-catalog="medins_schema" match-name="medical_report_diagnosis_link"/>
   <table-filter match-catalog="medins_schema" match-name="medicaments"/>
   <table-filter match-catalog="medins_schema" match-name="organization_contact_link"/>
   <table-filter match-catalog="medins_schema" match-name="organizations"/>
@@ -20,7 +22,8 @@
   <table-filter match-catalog="medins_schema" match-name="person_organization_link"/>
   <table-filter match-catalog="medins_schema" match-name="persons"/>
   <table-filter match-catalog="medins_schema" match-name="policies"/>
+  <table-filter match-catalog="medins_schema" match-name="services"/>
   <table-filter match-catalog="medins_schema" match-name="tourist_visit"/>
-  <table-filter match-catalog="medins_schema" match-name="treatment_medicament_link"/>
   <table-filter match-catalog="medins_schema" match-name="treatments"/>
+  <table-filter match-catalog="medins_schema" match-name="users"/>
 </hibernate-reverse-engineering>

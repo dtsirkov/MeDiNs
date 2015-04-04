@@ -293,17 +293,11 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		Date birthDate = new Date();
 		DaoImpl daoImpl = new DaoImpl();
 
-		Enumerations jobTitle = (Enumerations)daoImpl.findById("Enumerations", "md");
-		Enumerations title = (Enumerations)daoImpl.findById("Enumerations", "mrs");
-		Enumerations role = (Enumerations)daoImpl.findById("Enumerations", "employe");
-		Enumerations sex = (Enumerations)daoImpl.findById("Enumerations", "female");
+		Enumerations jobTitle = (Enumerations) daoImpl.findById("Enumerations", "md");
 
 		Random rand = new Random();
 		Integer number = Math.abs(rand.nextInt());
 		String numberStr = number.toString();
-
-		Persons person = new Persons(numberStr, jobTitle, title, role, sex, "firstName", "lastName", birthDate);
-		daoImpl.persist(person);
 
 	}
 

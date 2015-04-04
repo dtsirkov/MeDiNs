@@ -14,8 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionImplementor;
 
+import pojo.classes.Country;
 import pojo.classes.Enumerations;
 import pojo.classes.Persons;
+
+import beans.ComboxBean;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -37,18 +40,11 @@ public class PersonSearchtest {
 		
 		DaoImpl daoImpl=new DaoImpl("BG");
 		Session  session=daoImpl.getSession();
-		Map<Enumerations, String> organizationEnum = daoImpl.getEnumeration("organization");
-		Iterator<Enumerations> it=organizationEnum.keySet().iterator();
-		while (it.hasNext()) {
-			Enumerations key =it.next();
-			String value=organizationEnum.get(key);
-			System.out.println(key+" "+value);
-		}
 		
+		Country country=new Country();
 		
-		/*List ls=getSearchedObjectsList("Persons",constr,session);
-		Persons prsn=(Persons) ls.get(0);
-		System.out.println(prsn.getSocialNumber().toString());*/
+		List<Object> ls=daoImpl.findByExample(country);
+
 		session.close();
 		
 	}
