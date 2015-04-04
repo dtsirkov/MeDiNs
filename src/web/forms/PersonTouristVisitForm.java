@@ -75,7 +75,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 			touristVisit.setPersons(new Persons());
 			touristVisit.setResort("");
 			touristVisit.setRoom("");	
-			touristVisit.setContactNumber("");
+			touristVisit.setPhoneNumber("");
 			setData(touristVisit);
 		}
 
@@ -270,7 +270,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {
-						touristVisit.setContactNumber(event.getProperty().getValue().toString());
+						touristVisit.setPhoneNumber(event.getProperty().getValue().toString());
 						textFieldContactNumber.setData(event.getProperty().getValue().toString());
 						textFieldContactNumber.setComponentError(null);
 						//setTouristVisit(touristVisit);
@@ -289,7 +289,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 			comboBoxHotel.select(touristVisit.getHotel());
 
 			textFieldRoomNumber.setValue(touristVisit.getRoom());
-			textFieldContactNumber.setValue(touristVisit.getContactNumber());
+			textFieldContactNumber.setValue(touristVisit.getPhoneNumber());
 		}
 
 		return formLayout;

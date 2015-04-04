@@ -1,6 +1,8 @@
 package web.classes;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.Transaction;
 
@@ -96,12 +98,15 @@ public class ValidationClass {
 
 		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
 		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
-		PersonContactLink personContactLink = new PersonContactLink(person, contact);
+		Set<Contacts> contactses=person.getContactses();
+		//load children
+		contactses.size();
+		contactses.add(contact);
+		person.setContactses(contactses);
 
 		Object[] objects  = {
-				person,
-				contact, 
-				personContactLink
+				contact,
+				person
 		};
 
 		for(int i = 0; i < objects.length; i++){
@@ -115,12 +120,15 @@ public class ValidationClass {
 
 		Organizations organization = (Organizations)getRequiredSteps().get("stepOrganization").getData();
 		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
-		OrganizationContactLink personContactLink = new OrganizationContactLink(organization, contact);
-
+		Set<Contacts> contactses=organization.getContactses();
+		//load children
+		contactses.size();
+		contactses.add(contact);
+		organization.setContactses(contactses);
+		
 		Object[] objects  = {
-				organization,
-				contact, 
-				personContactLink
+				contact,
+				organization
 		};
 
 

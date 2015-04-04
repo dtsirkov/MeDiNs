@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -20,11 +20,11 @@ public class Persons implements java.io.Serializable {
 	private String middleName;
 	private String lastName;
 	private Date birthDate;
-	private Set personOrganizationLinks = new HashSet(0);
-	private Set medicalCaseses = new HashSet(0);
-	private Set personContactLinks = new HashSet(0);
-	private Set touristVisits = new HashSet(0);
-	private Set caseInfos = new HashSet(0);
+	private Set<Organizations> organizationses = new HashSet<Organizations>(0);
+	private Set<Contacts> contactses = new HashSet<Contacts>(0);
+	private Set<CaseInfo> caseInfos = new HashSet<CaseInfo>(0);
+	private Set<Users> userses = new HashSet<Users>(0);
+	private Set<TouristVisit> touristVisits = new HashSet<TouristVisit>(0);
 
 	public Persons() {
 	}
@@ -47,8 +47,9 @@ public class Persons implements java.io.Serializable {
 			Enumerations enumerationsByTitle, Enumerations enumerationsByRole,
 			Enumerations enumerationsBySex, String firstName,
 			String middleName, String lastName, Date birthDate,
-			Set personOrganizationLinks, Set medicalCaseses,
-			Set personContactLinks, Set touristVisits, Set caseInfos) {
+			Set<Organizations> organizationses, Set<Contacts> contactses,
+			Set<CaseInfo> caseInfos, Set<Users> userses,
+			Set<TouristVisit> touristVisits) {
 		this.socialNumber = socialNumber;
 		this.enumerationsByJobTitle = enumerationsByJobTitle;
 		this.enumerationsByTitle = enumerationsByTitle;
@@ -58,11 +59,11 @@ public class Persons implements java.io.Serializable {
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
-		this.personOrganizationLinks = personOrganizationLinks;
-		this.medicalCaseses = medicalCaseses;
-		this.personContactLinks = personContactLinks;
-		this.touristVisits = touristVisits;
+		this.organizationses = organizationses;
+		this.contactses = contactses;
 		this.caseInfos = caseInfos;
+		this.userses = userses;
+		this.touristVisits = touristVisits;
 	}
 
 	public String getSocialNumber() {
@@ -137,44 +138,44 @@ public class Persons implements java.io.Serializable {
 		this.birthDate = birthDate;
 	}
 
-	public Set getPersonOrganizationLinks() {
-		return this.personOrganizationLinks;
+	public Set<Organizations> getOrganizationses() {
+		return this.organizationses;
 	}
 
-	public void setPersonOrganizationLinks(Set personOrganizationLinks) {
-		this.personOrganizationLinks = personOrganizationLinks;
+	public void setOrganizationses(Set<Organizations> organizationses) {
+		this.organizationses = organizationses;
 	}
 
-	public Set getMedicalCaseses() {
-		return this.medicalCaseses;
+	public Set<Contacts> getContactses() {
+		return this.contactses;
 	}
 
-	public void setMedicalCaseses(Set medicalCaseses) {
-		this.medicalCaseses = medicalCaseses;
+	public void setContactses(Set<Contacts> contactses) {
+		this.contactses = contactses;
 	}
 
-	public Set getPersonContactLinks() {
-		return this.personContactLinks;
-	}
-
-	public void setPersonContactLinks(Set personContactLinks) {
-		this.personContactLinks = personContactLinks;
-	}
-
-	public Set getTouristVisits() {
-		return this.touristVisits;
-	}
-
-	public void setTouristVisits(Set touristVisits) {
-		this.touristVisits = touristVisits;
-	}
-
-	public Set getCaseInfos() {
+	public Set<CaseInfo> getCaseInfos() {
 		return this.caseInfos;
 	}
 
-	public void setCaseInfos(Set caseInfos) {
+	public void setCaseInfos(Set<CaseInfo> caseInfos) {
 		this.caseInfos = caseInfos;
+	}
+
+	public Set<Users> getUserses() {
+		return this.userses;
+	}
+
+	public void setUserses(Set<Users> userses) {
+		this.userses = userses;
+	}
+
+	public Set<TouristVisit> getTouristVisits() {
+		return this.touristVisits;
+	}
+
+	public void setTouristVisits(Set<TouristVisit> touristVisits) {
+		this.touristVisits = touristVisits;
 	}
 
 }

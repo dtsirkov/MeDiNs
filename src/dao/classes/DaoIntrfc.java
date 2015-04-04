@@ -3,11 +3,14 @@ package dao.classes;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pojo.classes.Enumerations;
 
 public interface DaoIntrfc {
+	
+	public Session getSession();
 	
 	public Transaction getTransaction();
 

@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ public class Policies implements java.io.Serializable {
 	private Organizations organizationsByInsuaranceCompany;
 	private Date validFrom;
 	private Date validTo;
-	private Set medicalCaseses = new HashSet(0);
+	private Set<CaseInfo> caseInfos = new HashSet<CaseInfo>(0);
 
 	public Policies() {
 	}
@@ -35,13 +35,13 @@ public class Policies implements java.io.Serializable {
 	public Policies(String number,
 			Organizations organizationsByAssistanceCompany,
 			Organizations organizationsByInsuaranceCompany, Date validFrom,
-			Date validTo, Set medicalCaseses) {
+			Date validTo, Set<CaseInfo> caseInfos) {
 		this.number = number;
 		this.organizationsByAssistanceCompany = organizationsByAssistanceCompany;
 		this.organizationsByInsuaranceCompany = organizationsByInsuaranceCompany;
 		this.validFrom = validFrom;
 		this.validTo = validTo;
-		this.medicalCaseses = medicalCaseses;
+		this.caseInfos = caseInfos;
 	}
 
 	public String getNumber() {
@@ -86,12 +86,12 @@ public class Policies implements java.io.Serializable {
 		this.validTo = validTo;
 	}
 
-	public Set getMedicalCaseses() {
-		return this.medicalCaseses;
+	public Set<CaseInfo> getCaseInfos() {
+		return this.caseInfos;
 	}
 
-	public void setMedicalCaseses(Set medicalCaseses) {
-		this.medicalCaseses = medicalCaseses;
+	public void setCaseInfos(Set<CaseInfo> caseInfos) {
+		this.caseInfos = caseInfos;
 	}
 
 }

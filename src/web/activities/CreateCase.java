@@ -1,7 +1,7 @@
 package web.activities;
 
 import web.forms.CasePersonForm;
-import web.forms.DiagnosisForm;
+//import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
 import web.forms.PersonForm;
@@ -37,7 +37,7 @@ public class CreateCase extends AbstractActivityView{
 				new PersonTouristVisitForm(this,"stepTouristVisit"),
 				new PolicyForm(this,"stepPolicy"),
 				new MedicalReportForm(this,"stepMedicalReport"),
-				new DiagnosisForm(this,"stepDiagnosis"),
+				//new DiagnosisForm(this,"stepDiagnosis"),
 				new ValidationForm(this, "stepValidate")
 		};
 		setRequiredSteps(requiredSteps);

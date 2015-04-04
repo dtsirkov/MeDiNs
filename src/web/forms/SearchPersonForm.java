@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -15,7 +16,6 @@ import dao.classes.DaoIntrfc;
 
 import pojo.classes.Contacts;
 import pojo.classes.Enumerations;
-import pojo.classes.PersonContactLink;
 import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.PropertyManager;
@@ -55,7 +55,7 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		personLastNameTF.setHeight(height);
 		formLayout.addComponent(personLastNameTF);
 		addToSearchConstraint(personLastNameTF, "lastName");
-		
+
 		getSearchByKeyLayout().setVisible(false);
 
 		setSearchByCriteriaLayout(formLayout);
@@ -80,9 +80,9 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 	}
 
 	public String[] getTableHeader(){
-		
+
 		PropertyManager propertyManager = getPropertyManager();
-		
+
 		String firstName = propertyManager.getLabelDtl("personFirstName");
 		String lastName = propertyManager.getLabelDtl("personLastName");
 		String socialNumber = propertyManager.getLabelDtl("personSocialNumber");
@@ -108,24 +108,18 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 
 		steps.get("stepCreatePerson").setData(selectedPerson);
 
-		Map<Object, List<Object>> hmPerson = new HashMap<Object, List<Object>>();
-		List<Object> personsLs = new ArrayList<Object>();
-		personsLs.add(selectedPerson);
-		hmPerson.put("persons", personsLs);
-		List<Object> personAddressLinks = dao.findByExample(new PersonContactLink(), hmPerson);
+		Set<Contacts> contactses=selectedPerson.getContactses();
 
 		Enumerations enumeration;
-		Contacts contact = new Contacts();
-		for(Object personAddressLink : personAddressLinks){
-			dao.evict(personAddressLink);
-			contact = ((PersonContactLink) personAddressLink).getContacts();
+		for(Contacts contact : contactses){
+			dao.evict(contact);
 			enumeration = contact.getEnumerationsByActive();
 			if(enumeration.getCode().equals("yes")){
 				dao.evict(contact);
 				steps.get("stepCreateContact").setData(contact);
 			}
 		}
-		
+
 		processed = true;
 		return processed;
 
