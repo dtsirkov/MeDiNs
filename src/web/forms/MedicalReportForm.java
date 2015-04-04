@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
-import web.classes.Test;
 import web.views.AbstractView;
 import autogenerate.GenerateTableInPanel;
 import beans.TreatmentBean;
