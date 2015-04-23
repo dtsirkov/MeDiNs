@@ -13,6 +13,9 @@ public @interface MyColumn {
 	public boolean isSearchable() default false;
 	public boolean isExactMatch() default false;
 	public boolean isIgnoreCase() default true;
+	public boolean isVisible() default false;
+	public boolean isVisibleByUser() default true;
+	public boolean isCollapsed() default false;
 	public int width() default -1;
 	public String format() default "";
 }

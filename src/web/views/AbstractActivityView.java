@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.hibernate.Transaction;
+import org.hibernate.TransactionException;
 
 
 import com.vaadin.data.Property;
@@ -494,14 +495,28 @@ public abstract class AbstractActivityView extends AbstractView {
 
 			public void buttonClick(ClickEvent event) {
 
-				ValidationClass validationClass = new ValidationClass(validationMethod, hmRequiredSteps, hmOptionalSteps);
-				validationClass.setDao(dao);
+				boolean validated = false;
+				Transaction trans = getDao().getTransaction();
+				try{
+					validated = AbstractActivityView.this.validate(hmRequiredSteps, hmOptionalSteps);
+					trans.commit();
+				}catch(Exception e){
+					System.out.println("Error in validation method.");
+					trans.rollback();
+				}
 				String validationResult = "not_validated";
-				if(validationClass.validate(mode)){
+
+				//ValidationClass validationClass = new ValidationClass(validationMethod, hmRequiredSteps, hmOptionalSteps);
+				//validationClass.setDao(dao);
+				//String validationResult = "not_validated";
+				//if(validationClass.validate(mode)){
+
+				if(validated){
 					validationResult = "validated";
 				}else{
 					validatedSteps.remove((requiredSteps[requiredSteps.length-1]).getLabel());
 				}
+
 				menu.expandItemsRecursively((requiredStepsDisplay[0]).getLabel());
 				menu.unselect((requiredStepsDisplay[requiredSteps.length]).getLabel());
 				menu.setReadOnly(true);
@@ -544,8 +559,12 @@ public abstract class AbstractActivityView extends AbstractView {
 
 			@Override
 			public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
-				transaction.rollback();
-				navigator.navigateTo("domainSelectionView");	
+				try{
+					transaction.rollback();
+					navigator.navigateTo("domainSelectionView");
+				}catch(TransactionException e){
+					navigator.navigateTo("domainSelectionView");
+				}
 			}
 		});
 
@@ -554,5 +573,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		return root;
 
 	}
+
+	//validation method
+	protected abstract boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps);
 
 }

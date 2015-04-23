@@ -1,8 +1,13 @@
 package components;
 
+
 import table.TableInfo;
+import ui.MyUI;
+import web.classes.ComponentValidator;
+import web.forms.Form;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -10,13 +15,13 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public abstract class MyEdit extends CustomComponent {
+public class MyEdit extends CustomComponent {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4020534777141098215L;
@@ -37,7 +42,7 @@ public abstract class MyEdit extends CustomComponent {
 	private HorizontalLayout actionsLayout;
 
 	/** The dynamic layout. */
-	private Layout dynamicLayout;
+	private Form editForm;
 
 	/**
 	 * Instantiates a new MyEdit object.
@@ -45,21 +50,35 @@ public abstract class MyEdit extends CustomComponent {
 	 * @param tableInfo
 	 *            The table info
 	 */
-	public MyEdit(final TableInfo tableInfo) {
+	public MyEdit(final TableInfo tableInfo, final Object itemId) {
 		mainLayout = new VerticalLayout();
 		mainLayout.setSizeFull();
+		mainLayout.setSpacing(true);
+		mainLayout.setMargin(true);
 		txtId = new TextField();
 		txtId.setEnabled(false);
 		txtId.setVisible(false);
 		mainLayout.addComponent(txtId);
 
-		dynamicLayout = generateContent();
-		mainLayout.addComponent(dynamicLayout);
-		mainLayout.setExpandRatio(dynamicLayout, 1.0f);
-		mainLayout
-		.setComponentAlignment(dynamicLayout, Alignment.MIDDLE_CENTER);
+		BeanItem<?> beanItem = null;
+		String mode = "";
+		if (itemId != null) {
+			beanItem = tableInfo.getBeanItemContainer().getItem(itemId);
+			setIdentification(beanItem);
+			tableInfo.getEditForm().setData(beanItem.getBean());
+			mode = "update";
+		}
+
+		editForm = tableInfo.getEditForm();
+		editForm.buildLayout(mode);
+		editForm.setSizeUndefined();
+
+		mainLayout.addComponent(editForm);
+		mainLayout.setExpandRatio(editForm, 1.0f);
+		mainLayout.setComponentAlignment(editForm, Alignment.MIDDLE_CENTER);
 
 		generateActionsLayout();
+
 		saveBtn.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -1609549147129628107L;
 
@@ -89,15 +108,8 @@ public abstract class MyEdit extends CustomComponent {
 		cancelBtn = new CancelButton(true);
 		actionsLayout.addComponent(cancelBtn);
 		mainLayout.addComponent(actionsLayout);
-		mainLayout.setComponentAlignment(actionsLayout, Alignment.BOTTOM_LEFT);
+		mainLayout.setComponentAlignment(actionsLayout, Alignment.BOTTOM_RIGHT);
 	}
-
-	/**
-	 * Generate components.
-	 * 
-	 * @return The layout
-	 */
-	public abstract Layout generateContent();
 
 	/**
 	 * Save action.
@@ -105,7 +117,20 @@ public abstract class MyEdit extends CustomComponent {
 	 * @param tableInfo
 	 *            The table info
 	 */
-	public abstract void saveAction(TableInfo tableInfo);
+	public final void saveAction(TableInfo tableInfo){
+		ComponentValidator componentValidator = new ComponentValidator(tableInfo.getPropertyManager());
+		boolean isValid = componentValidator.validate(tableInfo.getEditForm(), "EmptyValueException");
+		BeanItemContainer<?> bic = tableInfo.getBeanItemContainer();
+		if(isValid){
+
+			tableInfo.getTable().refreshRowCache();
+
+			BeanItem<?> beanItem  = bic.addItem(tableInfo.getEditForm().getData());
+			setIdentification(beanItem);
+			((MyUI) UI.getCurrent()).removeActiveEditPopupWindow();
+
+		}
+	};
 
 	/**
 	 * Gets the identification.

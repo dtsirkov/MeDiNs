@@ -3,6 +3,7 @@ package components;
 import table.MyTable;
 import table.TableInfo;
 import ui.MyUI;
+import web.forms.Form;
 
 import autogenerate.GenerateTableInfo;
 
@@ -10,7 +11,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
-import com.vaadin.data.Container.Filter;
 import com.vaadin.data.util.BeanItemContainer;
 
 public abstract class CommandButton extends MyButton {
@@ -26,9 +26,9 @@ public abstract class CommandButton extends MyButton {
 	 * @param classForName The string value of the entity class path. 
 	 * @param mainViewPanel The component which is supposed to contain the table.
 	 */
-	public CommandButton(final ThemeResource themeResource, final Class<?> clazz, BeanItemContainer<?> beanItemContainer, final Panel mainViewPanel) {
+	public CommandButton(final ThemeResource themeResource, final Class<?> clazz, BeanItemContainer<?> beanItemContainer, final Form form, final Panel mainViewPanel) {
 		super(themeResource);
-		this.addClickListener(commandListener(clazz, beanItemContainer, mainViewPanel));
+		this.addClickListener(commandListener(clazz, beanItemContainer, form, mainViewPanel));
 	}
 
 	/**
@@ -38,7 +38,7 @@ public abstract class CommandButton extends MyButton {
 	 * @param mainViewPanel The component which is supposed to contain the table.
 	 * @return The action dedicated to the command button when it is clicked.
 	 */
-	private ClickListener commandListener(final Class<?> clazz, final BeanItemContainer<?> beanItemContainer, final Panel mainViewPanel) {
+	private ClickListener commandListener(final Class<?> clazz, final BeanItemContainer<?> beanItemContainer, final Form form, final Panel mainViewPanel) {
 		return new ClickListener() {
 			private static final long serialVersionUID = -5812537411555467805L;
 
@@ -57,7 +57,7 @@ public abstract class CommandButton extends MyButton {
 				} catch (ClassNotFoundException e) {
 					annotations.MyTable classAnnotation = clazz.getAnnotation(annotations.MyTable.class);
 					if (classAnnotation != null) {
-						tableInfo = new GenerateTableInfo(clazz, beanItemContainer, true, true);
+						tableInfo = new GenerateTableInfo(clazz, beanItemContainer, form, true, true);
 					} else {
 						e.printStackTrace();
 					}

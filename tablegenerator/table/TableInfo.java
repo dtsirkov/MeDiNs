@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.classes.PropertyManager;
+import web.forms.Form;
+
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Table;
 
 import components.MyEdit;
 import components.MyImport;
@@ -16,88 +20,100 @@ import components.MyImport;
  * Filename: TableInfo.java <br>
  */
 public abstract class TableInfo implements Serializable {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5093351693855012202L;
-	
+
+	/** The table. */
+	private Table table;
+
 	/** The id. */
 	private int id;
-	
+
+	/** The propertyManager. */
+	private PropertyManager propertyManager;
+
 	/** The caption. */
 	private String caption;
-	
+
 	/** The clazz. */
 	private Class<?> clazz;
-	
-	/** The jpa container. */
+
+	/** The BeanItemContainer. */
 	private BeanItemContainer<?> beanItemContainer;
-	
+
+	/** The Form. */
+	private Form editForm;
+
 	/** The nested properties. */
 	private String[] nestedProperties = new String[] {};
-	
+
 	/** The JPA filters. */
 	private Filter[] jPAFilters = new Filter[] {};
-	
+
 	/** The columns. */
 	private List<MyColumn> columns = new ArrayList<MyColumn>();
-	
+
 	/** The generated columns. */
 	private List<CustomColumn> generatedColumns;
-	
+
 	/** The is search enabled. */
 	private boolean isSearchable = true;
-	
+
+	/** The is Column Collapsing Allowed enabled. */
+	private boolean isColumnCollapsingAllowed = false;
+
 	/** The is immediate search. */
 	private boolean isImmediateSearch = true;
-	
+
 	/** The is popup. */
 	private boolean isPopup = false;
-	
+
 	/** The popup width. */
 	private int popupEditWidth;
 	private int popupListWidth;
 
 	private int popupImportWidth;
-	
+
 	/** The popup height. */
 	private int popupEditHeight;
 	private int popupListHeight;
 	private int popupImportHeight;
-	
+
 	/** The popup resizable. */
-	private boolean popupEditResizable = false;
-	private boolean popupListResizable = false;
-	private boolean popupImportResizable = false;
+	private boolean popupEditResizable = true;
+	private boolean popupListResizable = true;
+	private boolean popupImportResizable = true;
 
 	/** The popup caption. */
 	private String popupEditCaption;
 	private String popupListCaption;
 	private String popupImportCaption;
-	
+
 	/** The is editable. */
 	private boolean isEditable = true;
-	
+
 	/** The is deletable. */
 	private boolean isDeletable = true;
-	
+
 	/** The is nested. */
 	private boolean isNested = false;
-	
+
 	/** The is inline edit. */
 	private boolean isInlineEdit = false;
-	
+
 	/** The is inline edit. */
 	private boolean isImportable = false;
-	
+
 	/** The is export enabled. */
 	private boolean isExportEnabled = true;
-	
+
 	/** The is selection export. */
 	private boolean isSelectionExport = false;
-	
+
 	/** The selectable. */
 	private boolean selectable = true;
-	
+
 	/** The multi select. */
 	private boolean multiSelect = true;
 
@@ -115,10 +131,29 @@ public abstract class TableInfo implements Serializable {
 	 * @return 
 	 */
 	public abstract MyEdit getEditComponent(Object itemId);
-	
+
 	public abstract MyImport getImportComponent();
-	
+
 	public abstract MyEdit getNewComponent();
+
+	/**
+	 * Gets the table.
+	 * 
+	 * @return The table
+	 */
+	public final Table getTable() {
+		return table;
+	}
+
+	/**
+	 * Sets the table.
+	 * 
+	 * @param pTable
+	 *            The new table
+	 */
+	public final void setTable(final Table pTable) {
+		this.table = pTable;
+	}
 
 	/**
 	 * Gets the id.
@@ -137,6 +172,25 @@ public abstract class TableInfo implements Serializable {
 	 */
 	public final void setId(final int pId) {
 		this.id = pId;
+	}
+
+	/**
+	 * Gets the propertyManager.
+	 * 
+	 * @return The propertyManager
+	 */
+	public PropertyManager getPropertyManager() {
+		return propertyManager;
+	}
+
+	/**
+	 * Sets the propertyManager.
+	 * 
+	 * @param pPropertyManager
+	 *            The new pPropertyManager
+	 */
+	public void setPropertyManager(PropertyManager pPropertyManager) {
+		this.propertyManager = pPropertyManager;
 	}
 
 	/**
@@ -190,13 +244,31 @@ public abstract class TableInfo implements Serializable {
 	/**
 	 * Sets the BeanItemContainer container.
 	 * 
-	 * @param pJpaContainer
+	 * @param pBeanItemContainer
 	 *            The new BeanItemContainer container
 	 */
-	public void setBeanItemContainer(BeanItemContainer<?> beanItemContainer) {
-		this.beanItemContainer = beanItemContainer;
+	public void setBeanItemContainer(BeanItemContainer<?> pBeanItemContainer) {
+		this.beanItemContainer = pBeanItemContainer;
 	}
 
+	/**
+	 * Gets the Form editForm.
+	 * 
+	 * @return The Form
+	 */
+	public Form getEditForm() {
+		return editForm;
+	}
+
+	/**
+	 * Sets the editForm.
+	 * 
+	 * @param pEditForm
+	 *            The new editForm
+	 */
+	public void setEditForm(Form pEditForm) {
+		this.editForm = pEditForm;
+	}
 
 	/**
 	 * Gets the nested properties.
@@ -476,11 +548,11 @@ public abstract class TableInfo implements Serializable {
 	public final void setInlineEdit(final boolean pIsInlineEdit) {
 		this.isInlineEdit = pIsInlineEdit;
 	}
-	
+
 	/**
 	 * Checks if is search enabled.
 	 * 
-	 * @return true, if search is anebled
+	 * @return true, if search is enabled
 	 */
 	public final boolean isSearchable() {
 		return isSearchable;
@@ -495,6 +567,26 @@ public abstract class TableInfo implements Serializable {
 	 */
 	public final void setSearchable(final boolean isSearchable) {
 		this.isSearchable = isSearchable;
+	}
+
+	/**
+	 * Checks if is column collapsing allowed.
+	 * 
+	 * @return true, if search is column collapsing allowed
+	 */
+	public final boolean isColumnCollapsingAllowed() {
+		return isColumnCollapsingAllowed;
+	}
+
+	/**
+	 * Sets the isColumnCollapsingAllowed. 
+	 * If <code>false</code> the column collapsing is disabled. 
+	 * 
+	 * @param pIsColumnCollapsingAllowed
+	 *            The new isColumnCollapsingAllowed
+	 */
+	public final void setColumnCollapsingAllowed(final boolean pIsColumnCollapsingAllowed) {
+		this.isColumnCollapsingAllowed = pIsColumnCollapsingAllowed;
 	}
 
 	/**

@@ -2,9 +2,12 @@ package web.classes;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Transaction;
+
 
 import pojo.classes.*;
 import web.forms.Form;
@@ -72,7 +75,7 @@ public class ValidationClass {
 		Transaction trans = getDao().getTransaction();
 		try{
 
-			String validationMethod=getValidationMethod();
+			String validationMethod = getValidationMethod();
 			/*if(getValidationMethod().equals("validatePerson")){
 				setValidated(validatePerson(mode));
 			}*/
@@ -82,6 +85,9 @@ public class ValidationClass {
 				break;
 			case "validateOrganization":
 				setValidated(validateOrganization(mode));
+				break;
+			case "validateCase":
+				setValidated(validateCase(mode));
 				break;
 			}
 
@@ -125,7 +131,7 @@ public class ValidationClass {
 		contactses.size();
 		contactses.add(contact);
 		organization.setContactses(contactses);
-		
+
 		Object[] objects  = {
 				contact,
 				organization
@@ -134,6 +140,38 @@ public class ValidationClass {
 
 		for(int i = 0; i < objects.length; i++){
 			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
+
+	private boolean validateCase(String mode){		
+
+		CaseInfo caseInfo = (CaseInfo)getRequiredSteps().get("stepValidate").getData();
+		@SuppressWarnings("unchecked")
+		Set<Services> services = (Set<Services>)getRequiredSteps().get("stepServices").getData();
+
+		Set<Services> oldServicesSet = caseInfo.getServiceses();
+		oldServicesSet.size();
+
+		Iterator<Services> serviceIterator = oldServicesSet.iterator();
+		while(serviceIterator.hasNext()){
+			dao.delete(serviceIterator.next());
+		}
+
+		caseInfo.setServiceses(services);
+
+		Set<Object> objectSet = new HashSet<Object>(services);
+		objectSet.add(caseInfo);
+
+		Iterator<Object> iterator = objectSet.iterator();
+		Object object;
+		while(iterator.hasNext()){
+			object = iterator.next();
+			System.out.println(object);
+			if(object != null){
+				dao.saveOrUpdate(object);
+			}
 		}
 
 		return true;

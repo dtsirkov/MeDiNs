@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ui.MyUI;
+import web.classes.PropertyManager;
 import windows.EditPopupWindow;
 import windows.Type;
 
@@ -139,6 +140,7 @@ public abstract class MyTable extends CustomComponent {
 		}
 
 		generateTable();
+		tableInfo.setTable(table);
 
 		actionButtonsHL = new HorizontalLayout();
 		actionButtonsHL.setWidth("100.0%");
@@ -275,20 +277,20 @@ public abstract class MyTable extends CustomComponent {
 	private void generateTable() {
 
 		table = new Table();
+		table.setPageLength(0);
 		table.setSizeFull();
+		table.setSelectable(tableInfo.isSelectable());
+		table.setMultiSelect(tableInfo.isMultiSelect());
+		table.setImmediate(true);
+		table.setFooterVisible(false);
+		
+		table.setColumnReorderingAllowed(true);
+		table.setColumnCollapsingAllowed(tableInfo.isColumnCollapsingAllowed());
+		table.setContainerDataSource(tableInfo.getBeanItemContainer());
+
 		mainLayout.addComponent(table);
 		mainLayout.setExpandRatio(table, 1.0f);
 		mainLayout.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
-
-		table.setSelectable(tableInfo.isSelectable());
-		table.setMultiSelect(tableInfo.isMultiSelect());
-
-		table.setImmediate(true);
-
-		table.setFooterVisible(false);
-		table.setPageLength(0);
-		table.setColumnReorderingAllowed(true);
-		table.setContainerDataSource(tableInfo.getBeanItemContainer());
 
 		if (tableInfo.getNestedProperties().length > 0) {
 			for (String nestedProp : tableInfo.getNestedProperties()) {
@@ -296,16 +298,22 @@ public abstract class MyTable extends CustomComponent {
 			}
 		}
 
+		PropertyManager propertyManager = tableInfo.getPropertyManager();
+
 		Object[] visibleColumns = new Object[tableInfo.getColumns().size()];
 		for (int i = 0; i < tableInfo.getColumns().size(); i++) {
 			MyColumn column = tableInfo.getColumns().get(i);
 			visibleColumns[i] = column.getId();
-			table.setColumnHeader(column.getId(), column.getName());
+			table.setColumnHeader(column.getId(), propertyManager.getLabelDtl(column.getName()));
+			table.setColumnCollapsed(column.getId(), column.isCollapsed());
+			table.setColumnExpandRatio(column.getId(), 1);
 			if (column.getWidth() > 0) {
 				table.setColumnWidth(column.getId(), column.getWidth());
 			}
 		}
 		table.setVisibleColumns(visibleColumns);
+
+		String column = "";
 
 		if (tableInfo.getGeneratedColumns() != null) {
 			for (CustomColumn gc : tableInfo.getGeneratedColumns()) {
@@ -317,16 +325,18 @@ public abstract class MyTable extends CustomComponent {
 
 		if (tableInfo.isEditable()) {
 			ColumnGenerator editColumn = generateEditColumn();
-			table.addGeneratedColumn("Edit", editColumn);
-			table.setColumnAlignment("Edit", Align.CENTER);
-			table.setColumnWidth("Edit", 60);
+			column = propertyManager.getLabelDtl("editColumn");
+			table.addGeneratedColumn(column, editColumn);
+			table.setColumnAlignment(column, Align.CENTER);
+			table.setColumnWidth(column, 60);
 		}
 
 		if (tableInfo.isDeletable()) {
 			ColumnGenerator deleteColumn = generateDeleteColumn();
-			table.addGeneratedColumn("Delete", deleteColumn);
-			table.setColumnAlignment("Delete", Align.CENTER);
-			table.setColumnWidth("Delete", 60);
+			column = propertyManager.getLabelDtl("deleteColumn");
+			table.addGeneratedColumn(column, deleteColumn);
+			table.setColumnAlignment(column, Align.CENTER);
+			table.setColumnWidth(column, 60);
 		}
 
 

@@ -8,10 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import layout.GeneratedEdit;
-
 import table.MyColumn;
 import table.TableInfo;
+import web.MedinsUI;
+import web.classes.PropertyManager;
+import web.forms.Form;
 
 
 import annotations.MyTable;
@@ -29,10 +30,10 @@ import components.MyImport;
 public class GenerateTableInfo extends TableInfo {
 	private static final long serialVersionUID = -28713779327451123L;
 
-	public GenerateTableInfo(Class<?> clazz, BeanItemContainer<?> beanItemContainer, boolean shallGenerate, boolean includeId) {
+	public GenerateTableInfo(Class<?> clazz, BeanItemContainer<?> beanItemContainer, Form editForm, boolean shallGenerate, boolean includeId) {
 
 		this.setClazz(clazz);
-		//this.setJPAFilters(filters);
+		this.setEditForm(editForm);
 
 		MyTable myTable = clazz.getAnnotation(MyTable.class);
 		Table table = clazz.getAnnotation(Table.class);
@@ -40,16 +41,20 @@ public class GenerateTableInfo extends TableInfo {
 		String caption = "";
 		String popupCaption = "";
 
-		boolean isSearchable = false;
+		boolean isSearchable = false, isColumnCollapsingAllowed = false;
 		int width = -1;
 		int height = -1;
 
+		PropertyManager propertyManager = MedinsUI.getPropertyManager();
+		this.setPropertyManager(propertyManager);
+
 		if (myTable != null) {
-			caption = myTable.caption();
-			popupCaption = myTable.popupCaption();
+			caption = propertyManager.getLabelDtl(myTable.caption());
+			popupCaption = propertyManager.getLabelDtl(myTable.popupCaption());
 			width = myTable.width();
 			height = myTable.height();
 			isSearchable = myTable.isSearchable();
+			isColumnCollapsingAllowed = myTable.isColumnCollapsingAllowed();
 		} else {
 			popupCaption = MyUtil.getCaption(table.name());
 			caption = popupCaption + "s";
@@ -63,6 +68,7 @@ public class GenerateTableInfo extends TableInfo {
 		this.setPopupEditWidth(width);
 		this.setPopupEditHeight(height);
 		this.setSearchable(isSearchable);
+		this.setColumnCollapsingAllowed(isColumnCollapsingAllowed);
 		this.setBeanItemContainer(beanItemContainer);
 
 		if (shallGenerate) {
@@ -70,6 +76,8 @@ public class GenerateTableInfo extends TableInfo {
 			List<String> nested = new ArrayList<String>();
 
 			boolean containsAnnot = false;
+			String columnLabel = "";
+			boolean adminisrator = false;
 			for (Field f : clazz.getDeclaredFields()) {
 				annotations.MyColumn myColumn = f.getAnnotation(annotations.MyColumn.class);
 				if (myColumn != null) {
@@ -78,13 +86,35 @@ public class GenerateTableInfo extends TableInfo {
 					if ("".equals(id)) {
 						id = f.getName();
 					}
-					String name = myColumn.name();
-					if ("".equals(name)) {
-						tableColumn = new MyColumn(id, myColumn.isSearchable(), myColumn.isExactMatch(), myColumn.isIgnoreCase(), myColumn.width(), myColumn.format());
-					} else {
-						tableColumn = new MyColumn(id, myColumn.name(), myColumn.isSearchable(), myColumn.isExactMatch(), myColumn.isIgnoreCase(), myColumn.width(), myColumn.format());
+					columnLabel = propertyManager.getButtonDtl(myColumn.name());
+					if ("".equals(columnLabel)) {
+						tableColumn = new MyColumn(
+								id, 
+								myColumn.isSearchable(), 
+								myColumn.isExactMatch(), 
+								myColumn.isIgnoreCase(), 
+								myColumn.isCollapsed(),
+								myColumn.width(), 
+								myColumn.format()
+								);
+					} else {		
+						System.out.println(columnLabel);
+						tableColumn = new MyColumn(
+								id, 
+								columnLabel, 
+								myColumn.isSearchable(), 
+								myColumn.isExactMatch(), 
+								myColumn.isIgnoreCase(), 
+								myColumn.isCollapsed(),
+								myColumn.width(), 
+								myColumn.format()
+								);
 					}
-					columnsList.add(tableColumn);
+					if(adminisrator == true && myColumn.isVisible()){
+						columnsList.add(tableColumn);
+					}else if(myColumn.isVisible() && myColumn.isVisibleByUser()){
+						columnsList.add(tableColumn);
+					}
 					if (myColumn.id().contains(".")) {
 						nested.add(myColumn.id());
 					}
@@ -93,6 +123,7 @@ public class GenerateTableInfo extends TableInfo {
 			}
 
 			if (!containsAnnot) {
+				String fName = "", columnName = "";
 				for (Field f : clazz.getDeclaredFields()) {
 					Column column = f.getAnnotation(Column.class);
 					Id id = f.getAnnotation(Id.class);
@@ -101,10 +132,12 @@ public class GenerateTableInfo extends TableInfo {
 					// OneToMany o2m = f.getAnnotation(OneToMany.class);
 
 					// TODO better to find a way to get isSearchable, isExactMatch, isIgnoreCase and width from MyColumn annotation
+					fName = propertyManager.getLabelDtl(f.getName());
+					columnName = propertyManager.getLabelDtl(MyUtil.getCaption(column.name()));
 					if (id != null && column != null && includeId) {
-						columnsList.add(new MyColumn(f.getName(), MyUtil.getCaption(column.name()), true, false, true, -1, ""));
+						columnsList.add(new MyColumn(fName, columnName, true, false, true, -1, ""));
 					} else if (id == null && column != null) {
-						columnsList.add(new MyColumn(f.getName(), MyUtil.getCaption(column.name()), true, false, true, -1, ""));
+						columnsList.add(new MyColumn(fName, columnName, true, false, true, -1, ""));
 					}
 				}
 			}
@@ -116,12 +149,12 @@ public class GenerateTableInfo extends TableInfo {
 
 	@Override
 	public MyEdit getEditComponent(Object itemId) {
-		return new GeneratedEdit(this, itemId);
+		return new MyEdit(this, itemId);
 	}
 
 	@Override
 	public MyEdit getNewComponent() {
-		return new GeneratedEdit(this, null);
+		return new MyEdit(this, null);
 	}
 
 	@Override

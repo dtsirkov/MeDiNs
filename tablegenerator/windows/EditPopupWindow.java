@@ -15,10 +15,10 @@ public class EditPopupWindow extends Window {
 	private static final long serialVersionUID = -328730814145776633L;
 
 	/** The Constant MIN_HEIGHT. */
-	private static final int MIN_HEIGHT = 60;
+	//private static final int MIN_HEIGHT = 60;
 
 	/** The Constant MIN_WIDTH. */
-	private static final int MIN_WIDTH = 20;
+	//private static final int MIN_WIDTH = 20;
 
 	public EditPopupWindow(final TableInfo tableInfo, Type type) {
 		this(tableInfo, null, type);
@@ -35,30 +35,21 @@ public class EditPopupWindow extends Window {
 		setResizable(tableInfo.isPopupEditResizable());
 		switch (type) {
 		case NEW:
-			setWidth(tableInfo.getPopupEditWidth() + MIN_WIDTH, Unit.PIXELS);
-			setHeight(tableInfo.getPopupEditHeight() + MIN_HEIGHT, Unit.PIXELS);
 			setContent(tableInfo.getNewComponent());
-			getContent().setWidth(tableInfo.getPopupEditWidth(), Unit.PIXELS);
-			getContent().setHeight(tableInfo.getPopupEditHeight(), Unit.PIXELS);
+			getContent().setSizeUndefined();
 			break;
 		case EDIT:
-			setWidth(tableInfo.getPopupEditWidth() + MIN_WIDTH, Unit.PIXELS);
-			setHeight(tableInfo.getPopupEditHeight() + MIN_HEIGHT, Unit.PIXELS);
 			setContent(tableInfo.getEditComponent(itemId));
-			getContent().setWidth(tableInfo.getPopupEditWidth(), Unit.PIXELS);
-			getContent().setHeight(tableInfo.getPopupEditHeight(), Unit.PIXELS);
+			getContent().setSizeUndefined();
 			break;
 		case IMPORT:
-			setWidth(tableInfo.getPopupImportWidth() + MIN_WIDTH, Unit.PIXELS);
-			setHeight(tableInfo.getPopupImportHeight() + MIN_HEIGHT, Unit.PIXELS);
 			setContent(tableInfo.getImportComponent());
-			getContent().setWidth(tableInfo.getPopupImportWidth(), Unit.PIXELS);
-			getContent().setHeight(tableInfo.getPopupImportHeight(), Unit.PIXELS);
+			getContent().setSizeUndefined();
 			break;
 		default:
 			break;
 		}
 	}
 
-	
+
 }

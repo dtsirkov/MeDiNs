@@ -14,4 +14,5 @@ public @interface MyTable {
 	public int height() default 200;
 	public String persistanceName() default "";
 	public boolean isSearchable() default false;
+	public boolean isColumnCollapsingAllowed() default false;
 }

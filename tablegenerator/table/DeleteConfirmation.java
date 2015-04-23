@@ -3,8 +3,10 @@ package table;
 import java.util.Collection;
 
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 import ui.MyUI;
+import web.MedinsUI;
 
 import com.vaadin.ui.Table;
 
@@ -15,32 +17,22 @@ import com.vaadin.ui.Table;
  */
 public final class DeleteConfirmation {
 
-	/** The caption. */
-	private static String caption = "Test";
-	
-	/** The message. */
-	private static String message = "Test";
-	
-	/** The ok caption. */
-	private static String okCaption = "Yes";
-	
-	/** The cancel caption. */
-	private static String cancelCaption = "No";
-	
 	/**
 	 * Instantiates a new DeleteConfirmation object.
 	 */
-	private DeleteConfirmation() {
-	}
-	
+	private DeleteConfirmation() {}
+
 	/**
 	 * Shows the dialog whether the user is sure about deleting the selected items from the given table.
 	 * 
 	 * @param table The table that the selected items are supposed to be deleted from.
 	 */
 	public static void show(final Table table) {
-		ConfirmDialog.show(MyUI.getCurrent(), caption, message, okCaption, cancelCaption, new ConfirmDialog.Listener() {
-			
+
+		createCustomConfirmDialog();
+
+		ConfirmDialog.show(MyUI.getCurrent(), new ConfirmDialog.Listener() {
+
 			private static final long serialVersionUID = 2498283846710824877L;
 
 			@SuppressWarnings("unchecked")
@@ -69,7 +61,10 @@ public final class DeleteConfirmation {
 	 * @param itemId The id which is supposed to be deleted.
 	 */
 	public static void show(final Table table, final Object itemId) {
-		ConfirmDialog.show(MyUI.getCurrent(), caption, message, okCaption, cancelCaption, new ConfirmDialog.Listener() {
+
+		createCustomConfirmDialog();
+
+		ConfirmDialog.show(MyUI.getCurrent(), new ConfirmDialog.Listener() {
 			private static final long serialVersionUID = 2498283846710824877L;
 			@Override
 			public void onClose(final ConfirmDialog dialog) {
@@ -78,6 +73,35 @@ public final class DeleteConfirmation {
 				}
 			}
 		});
+	}
+
+	private static void createCustomConfirmDialog(){
+		ConfirmDialog.Factory df = new DefaultConfirmDialogFactory() {
+
+			private static final long serialVersionUID = 4610330837671531327L;
+
+			String MY_CAPTION = MedinsUI.getPropertyManager().getLabelDtl("delete");
+			String MY_MESSAGE = MedinsUI.getPropertyManager().getLabelDtl("deleteMessage");
+			String MY_OK_CAPTION = MedinsUI.getPropertyManager().getLabelDtl("yes");
+			String MY_NOTOK_CAPTION = MedinsUI.getPropertyManager().getLabelDtl("no");
+			//String MY_CANCEL_CAPTION = MedinsUI.getPropertyManager().getLabelDtl("cancel");
+
+			@Override
+			public ConfirmDialog create(String caption, String message,
+					String okCaption, String notOkCaption, String cancelCaption) {
+				ConfirmDialog confirmDialog;
+				confirmDialog = super.create(caption == null ? MY_CAPTION : caption,
+						message == null ? MY_MESSAGE : message,
+								okCaption == null ? MY_OK_CAPTION : okCaption,
+										notOkCaption == null ? MY_NOTOK_CAPTION : notOkCaption,
+												cancelCaption);
+				confirmDialog.setWidth("300px");
+				//confirmDialog.setStyleName(Reindeer.WINDOW_LIGHT);
+				return confirmDialog;
+			}
+
+		};
+		ConfirmDialog.setFactory(df);
 	}
 
 }
