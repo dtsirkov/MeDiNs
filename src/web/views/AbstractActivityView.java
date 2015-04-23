@@ -33,6 +33,7 @@ import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
+import web.components.Header;
 import web.forms.Form;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
@@ -115,6 +116,10 @@ public abstract class AbstractActivityView extends AbstractView {
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
+		Header header=new Header(getUI());
+		root.addComponent(header);
+		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
+		
 		// Title bar
 		HorizontalLayout titleBar = new HorizontalLayout();
 		titleBar.setWidth("100%");

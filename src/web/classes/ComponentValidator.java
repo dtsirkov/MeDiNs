@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pojo.classes.Users;
+
 
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.EmptyValueException;
@@ -24,7 +26,7 @@ public class ComponentValidator implements java.io.Serializable{
 	public ComponentValidator(PropertyManager propertyManager){
 		this.setPropertyManager(propertyManager);
 	}
-	
+
 	public PropertyManager getPropertyManager() {
 		return propertyManager;
 	}
@@ -78,7 +80,31 @@ public class ComponentValidator implements java.io.Serializable{
 		}
 		return new MyValidator();
 	}
-	
+
+	//validate user existence
+	public final Validator getUserExistValidator(final DaoIntrfc dao, final String errorMessage){
+		class MyValidator implements Validator {
+			private static final long serialVersionUID = 4583840990919281331L;
+			@Override
+			public void validate(Object value) throws InvalidValueException {				
+				if (!isValid(value)){
+					throw new InvalidValueException(propertyManager.getExceptionDtl(errorMessage));
+				}
+			}
+			public boolean isValid(Object value) { 
+				boolean isValid=false;
+				String username=value.toString();
+				Users user=new Users();
+				user.setUsername(username);
+				if (dao.findByExample(user).size() > 0){
+					isValid=true;
+				}
+				return isValid;
+			}
+		}
+		return new MyValidator();
+	}
+
 	//validate only letters as an input
 	public final Validator getOnlyLettersValidator(final String propertyName){
 		class MyValidator implements Validator {
@@ -103,7 +129,7 @@ public class ComponentValidator implements java.io.Serializable{
 				Pattern cyrillicPattern = Pattern.compile(cyrillicExpression);  
 				Matcher cyrillicMatcher = cyrillicPattern.matcher(inputStr);
 				cyrillicMatcher.matches() 
-				*/
+				 */
 				if(matcher.matches() || inputStr.equals("")){  
 					isValid = true;  
 				}  

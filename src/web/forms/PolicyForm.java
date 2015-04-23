@@ -1,21 +1,26 @@
 package web.forms;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import pojo.classes.Persons;
 import pojo.classes.Policies;
 import pojo.classes.TouristVisit;
+import beans.ComboxBean;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -134,11 +139,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 		cbInsCompany.setHeight("-1px");
 		cbInsCompany.setRequired(true);
 
-		Button buttonAddInsComp=new Button("Add");
-
 		hlInsCompany.addComponent(cbInsCompany);
-		hlInsCompany.addComponent(buttonAddInsComp);
-
 		formLayout.addComponent(hlInsCompany);
 
 		HorizontalLayout hlAssistCompany = new HorizontalLayout();
@@ -152,15 +153,10 @@ public class PolicyForm extends Form implements StepIntrfc {
 		cbAssistCompany.setHeight("-1px");
 		cbAssistCompany.setRequired(true);
 
-		Button buttonAddAssistComp=new Button("Add");
-
 		hlAssistCompany.addComponent(cbAssistCompany);	
-		hlAssistCompany.addComponent(buttonAddAssistComp);
-
 		formLayout.addComponent(hlAssistCompany);
 
 		//add listeners
-
 		textFieldPn.addValueChangeListener(
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
@@ -168,7 +164,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setNumber(event.getProperty().getValue().toString());
 						textFieldPn.setData(event.getProperty().getValue().toString());
 						textFieldPn.setComponentError(null);
-						//setPolicy(policy);
 					}
 				});
 
@@ -179,7 +174,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setValidFrom((Date)event.getProperty().getValue());
 						popupDateFieldFrom.setData((Date)event.getProperty().getValue());
 						popupDateFieldFrom.setComponentError(null);
-						//setPolicy(policy);
 					}
 				});
 
@@ -190,7 +184,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 						policy.setValidTo((Date)event.getProperty().getValue());
 						popupDateFieldTill.setData((Date)event.getProperty().getValue());
 						popupDateFieldTill.setComponentError(null);
-						//setPolicy(policy);
 					}
 				});
 
@@ -204,7 +197,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 							policy.setOrganizationsByInsuaranceCompany(value);
 							cbInsCompany.setData(value);
 							cbInsCompany.setComponentError(null);
-							//setPolicy(policy);
 						}
 					}
 				});
@@ -219,60 +211,42 @@ public class PolicyForm extends Form implements StepIntrfc {
 							policy.setOrganizationsByAssistanceCompany(value);
 							cbAssistCompany.setData(value);
 							cbAssistCompany.setComponentError(null);
-							//setPolicy(policy);
 						}
 					}
 				});
 		
-		//insert comboboxes data
-		Map<Organizations,String> insCompCombobox=getOrganizationList(dao,"ins_comp");
-		if (!insCompCombobox.isEmpty())
-			cbAssistCompany.setData(insCompCombobox.values().toArray());
-
-		Map<Organizations,String> assistCompCombobox=getOrganizationList(dao,"assist_comp");
-		if (!assistCompCombobox.isEmpty())
-			cbAssistCompany.setData(assistCompCombobox.values().toArray());
+		//insert combo boxes with data
+		final BeanItemContainer<Organizations> assistCompanyContainer = new BeanItemContainer<Organizations>(Organizations.class);
+		assistCompanyContainer.addAll(getOrganizationList(dao,"assist_comp"));
+		cbAssistCompany.setContainerDataSource(assistCompanyContainer);
+		cbAssistCompany.setItemCaptionPropertyId("name");
+		
+		final BeanItemContainer<Organizations> insCompanyContainer = new BeanItemContainer<Organizations>(Organizations.class);
+		insCompanyContainer.addAll(getOrganizationList(dao,"ins_comp"));
+		cbInsCompany.setContainerDataSource(insCompanyContainer);
+		cbInsCompany.setItemCaptionPropertyId("name");
 
 		//retrieve and bind data to fields
 		if(getData() != null){
 			textFieldPn.setValue(policy.getNumber());
-
 			popupDateFieldFrom.setValue(policy.getValidFrom());
 			popupDateFieldTill.setValue(policy.getValidTo());
+			cbInsCompany.setValue(policy.getOrganizationsByInsuaranceCompany());
+			cbAssistCompany.setValue(policy.getOrganizationsByAssistanceCompany());
 		}
 
 		return formLayout;
 
 	}
 
-	public Map<Organizations,String> getOrganizationList(DaoIntrfc dao,String typeOrganization){
-		Map<Enumerations, String> typeOrg = dao.getEnumeration("organization");
-		Enumerations orgEnum=new Enumerations();
-
-		for (Map.Entry<Enumerations, String> entry : typeOrg.entrySet()) {
-			Enumerations enumeration = entry.getKey();			
-			String label = entry.getValue();
-			if (label.equalsIgnoreCase(typeOrganization)){
-				orgEnum=enumeration;
-				break;
-			}
-		} 
-
-		Organizations organizations=new Organizations();
-		organizations.setEnumerations(orgEnum);
-
-		List<Object> orgs=dao.findByExample(organizations);	
-
-		Map<Organizations,String> organizatonMap=new HashMap<Organizations,String>();
-
-		for(Object org:orgs)
-		{
-			Organizations orgOrig=(Organizations) org;
-			organizatonMap.put(orgOrig,orgOrig.getName());
-		}
-		return organizatonMap;
+	public Set<Organizations> getOrganizationList(DaoIntrfc dao,String typeOrganization){
+		Enumerations enumeration=(Enumerations) dao.findById("Enumerations",typeOrganization);
+		
+		Set<Organizations> orgs=enumeration.getOrganizationses();
+		orgs.size();
+		
+		return orgs;
 	}
-
 
 	@Override
 	public boolean process(HashMap<String, Form> steps) {

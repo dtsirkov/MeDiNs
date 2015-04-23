@@ -11,8 +11,9 @@ import web.forms.Form;
 
 import dao.classes.DaoIntrfc;
 
-public class ValidationClass {
+public class ValidationClass implements java.io.Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private boolean isValidated = false;
 	private String validationMethod;
 	private DaoIntrfc dao;
@@ -83,6 +84,12 @@ public class ValidationClass {
 			case "validateOrganization":
 				setValidated(validateOrganization(mode));
 				break;
+			case "validateUser":
+				setValidated(validateUser(mode));
+				break;
+			case "validateUser2":
+				setValidated(validateUser2(mode));
+				break;
 			}
 
 			trans.commit();
@@ -125,12 +132,11 @@ public class ValidationClass {
 		contactses.size();
 		contactses.add(contact);
 		organization.setContactses(contactses);
-		
+
 		Object[] objects  = {
 				contact,
 				organization
 		};
-
 
 		for(int i = 0; i < objects.length; i++){
 			dao.saveOrUpdate(objects[i]);
@@ -139,4 +145,45 @@ public class ValidationClass {
 		return true;
 	}
 
+	private boolean validateUser(String mode){		
+
+		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
+		Users user = (Users)getRequiredSteps().get("stepCreateUser").getData();
+
+		Set<Contacts> contactses=person.getContactses();
+		//load children
+		contactses.size();
+		contactses.add(contact);
+		person.setContactses(contactses);
+
+		Object[] objects  = {
+				contact,
+				person,
+				user
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
+
+	private boolean validateUser2(String mode){		
+
+		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+		Users user = (Users)getRequiredSteps().get("stepCreateUser").getData();
+
+		Object[] objects  = {
+				person,
+				user
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
 }

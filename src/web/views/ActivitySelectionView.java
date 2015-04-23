@@ -4,6 +4,7 @@ import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
+import web.components.Header;
 import web.forms.ActivitySelectionForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -49,14 +50,13 @@ public class ActivitySelectionView extends AbstractView{
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
-		// Title bar
-		HorizontalLayout titleBar = new HorizontalLayout();
-		titleBar.setWidth("100%");
-		root.addComponent(titleBar);
+		Header header=new Header(getUI());
+		root.addComponent(header);
+		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
 
-		Label title = new Label(propertyManager.getLabelDtl("personCreate"));
+		Label title = new Label(domain.getLabel());
 		title.addStyleName("title");
-		titleBar.addComponent(title);
+		root.addComponent(title);
 
 
 		//grid.setComponentAlignment(loginFormCorporate, Alignment.MIDDLE_LEFT);

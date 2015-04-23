@@ -67,5 +67,16 @@ public class ComboxBean {
 		}
 		return displayCodeMap;
 	}
+	
+	public static ComboxBean getComboxBean(Map<Enumerations, String> enumMap,String value){
+		List<ComboxBean> comboxBeanList=getComboxBeanList(enumMap);
+		ComboxBean out=new ComboxBean(value,"");
+		for(ComboxBean bean:comboxBeanList){
+			if (value.equals(bean.getValue())){
+				out=bean;
+			}	
+		}
+		return out;
+	}
 
 }

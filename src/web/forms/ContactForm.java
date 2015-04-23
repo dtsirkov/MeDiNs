@@ -1,9 +1,12 @@
 package web.forms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import pojo.classes.Contacts;
+import pojo.classes.Country;
 import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import web.StepIntrfc;
@@ -12,14 +15,19 @@ import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
+import beans.ComboxBean;
+
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
+import dao.classes.DaoImpl;
 import dao.classes.DaoIntrfc;
+import pojo.classes.Country;
 
 public class ContactForm extends Form implements StepIntrfc{
 
@@ -51,7 +59,7 @@ public class ContactForm extends Form implements StepIntrfc{
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
-		DaoIntrfc dao = getDao();	
+		DaoImpl dao = (DaoImpl) getDao();	
 
 		//get object that will be bind to the components
 		final Contacts contact;
@@ -161,8 +169,20 @@ public class ContactForm extends Form implements StepIntrfc{
 		final Map<Enumerations, String> contactActiveEnum = dao.getEnumeration("yes no");
 		final Map<Enumerations, String> contactPreferedEnum = dao.getEnumeration("yes no");
 
+		List<Country> Countries=getCountries((DaoImpl) dao);
+
+		//add values in combo box
+		final BeanItemContainer<Country> container = new BeanItemContainer<Country>(Country.class);
+		container.addAll(Countries);
+		countryCB.setContainerDataSource(container);
+		String lang=dao.getLanguage();
+		if (lang.equals("en"))
+			countryCB.setItemCaptionPropertyId("nameEn");
+		if (lang.equals("bg"))
+			countryCB.setItemCaptionPropertyId("nameBg");
+
 		//add values in combo boxes
-		countryCB.addItems(countryEnum.values().toArray());		
+		//countryCB.addItems(countryEnum.values().toArray());		
 		typeCB.addItems(contactTypeEnum.values().toArray());		
 		activeCB.addItems(contactActiveEnum.values().toArray());	
 		preferedCB.addItems(contactPreferedEnum.values().toArray());
@@ -202,18 +222,14 @@ public class ContactForm extends Form implements StepIntrfc{
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {
-						String value = event.getProperty().getValue().toString();
-						String enumeration = "";
-						for (Map.Entry<Enumerations, String> entry : countryEnum.entrySet()) {		
-							if (value.equals(entry.getValue())) {
-								enumeration = entry.getValue();
-							}		
+						Object selection = event.getProperty().getValue();
+						if (selection != null){
+							String countryCode=((Country) selection).getId();
+							contact.setCountry(countryCode);
+							countryCB.setData(selection);
+							countryCB.setComponentError(null);
 						}
-						contact.setCountry(enumeration);
-						countryCB.setData(event.getProperty().getValue().toString());
-						countryCB.setComponentError(null);
-					}
-				});
+					}});
 
 		phoneTF.addValueChangeListener(
 				new Property.ValueChangeListener() {
@@ -325,19 +341,40 @@ public class ContactForm extends Form implements StepIntrfc{
 		activeCB.select(contactActiveEnum.get(contact.getEnumerationsByActive()));
 		preferedCB.select(contactPreferedEnum.get(contact.getEnumerationsByPrefered()));
 
-		//bind data
-		addressTF.setValue(contact.getAddress());
-		zipCodeTF.setValue(contact.getZip());
-		cityTF.setValue(contact.getCity());
-		countryCB.setValue(contact.getCountry());
-		phoneTF.setValue(contact.getPhone());
-		mobileTF.setValue(contact.getMobile());
-		emailTF.setValue(contact.getEmail());
-		typeCB.setValue(contact.getEnumerationsByType());
-		preferedCB.setValue(contact.getEnumerationsByPrefered());
-		activeCB.setValue(contact.getEnumerationsByActive());
+		//retrieve and bind data to fields
+		if(getData() != null){
+			addressTF.setValue(contact.getAddress());
+			zipCodeTF.setValue(contact.getZip());
+			cityTF.setValue(contact.getCity());
+			countryCB.setValue(Country.getCountry(dao, contact.getCountry()));
+			phoneTF.setValue(contact.getPhone());
+			mobileTF.setValue(contact.getMobile());
+			emailTF.setValue(contact.getEmail());
+			typeCB.setValue(contact.getEnumerationsByType());
+			preferedCB.setValue(contact.getEnumerationsByPrefered());
+			activeCB.setValue(contact.getEnumerationsByActive());
+		}
 
 		return formLayout;
+	}
+	
+	public static List<Country> getCountries(DaoIntrfc dao){
+		List<Country> outCountries=new ArrayList<Country>(0);
+
+		Country country=new Country();		
+		List<Object> ls=dao.findByExample(country);
+
+		for(Object c:ls){
+			Country c1=(Country) c;
+			outCountries.add(c1);
+		}
+		return outCountries;		
+	}
+
+	public static Country getCountry(DaoIntrfc dao,String countryCode){
+		Country country=(Country) dao.findById("Country",countryCode);
+		
+		return country;		
 	}
 
 	@Override

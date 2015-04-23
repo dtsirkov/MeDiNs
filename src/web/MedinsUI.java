@@ -10,17 +10,22 @@ import web.activities.CreateCase;
 import web.activities.CreateCase2;
 import web.activities.CreateOrganization;
 import web.activities.CreatePerson;
+import web.activities.CreateUser;
+import web.activities.CreateUser2;
 import web.activities.UpdateOrganization;
 import web.activities.UpdatePerson;
+import web.activities.UpdateUser;
 import web.classes.Activity;
 import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.views.DomainSelectionView;
 import web.views.LoginView;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
@@ -30,15 +35,16 @@ import dao.classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
+@PreserveOnRefresh
 public class MedinsUI extends MyUI {
-	
+
 	private static PropertyManager propertyManager;
-	
+
 	private DaoIntrfc dao;
 	private Navigator navigator;
-	
+
 	public MedinsUI(){
-		
+
 	}
 
 	@WebServlet(value = "/*", asyncSupported = true)
@@ -60,15 +66,28 @@ public class MedinsUI extends MyUI {
 
 		//person organization domain
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
+		
 		Activity createPersonActivity = new Activity(new CreatePerson(this));
 		personOrganizationDomain.addActivity(createPersonActivity);
+		
 		Activity updatePersonActivity = new Activity(new UpdatePerson(this));
 		personOrganizationDomain.addActivity(updatePersonActivity);
+		
 		Activity createOrganizationActivity = new Activity(new CreateOrganization(this));
 		personOrganizationDomain.addActivity(createOrganizationActivity);
+		
 		Activity updateOrganizationActivity = new Activity(new UpdateOrganization(this));
 		personOrganizationDomain.addActivity(updateOrganizationActivity);
 		
+		Activity createUserActivity = new Activity(new CreateUser(this));
+		personOrganizationDomain.addActivity(createUserActivity);
+		
+		Activity createUserActivity2 = new Activity(new CreateUser2(this));
+		personOrganizationDomain.addActivity(createUserActivity2);
+		
+		Activity updateUserActivity = new Activity(new UpdateUser(this));
+		personOrganizationDomain.addActivity(updateUserActivity);
+
 		//case domain
 		Domain caseDomain = new Domain("caseDomain");
 		Activity createCaseActivity = new Activity(new CreateCase(this));
@@ -77,7 +96,7 @@ public class MedinsUI extends MyUI {
 		caseDomain.addActivity(createCaseActivity2);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
-		
+
 		domainList.add(caseDomain);
 		domainList.add(personOrganizationDomain);
 		domainList.add(new Domain("medicalDomain"));
@@ -86,8 +105,41 @@ public class MedinsUI extends MyUI {
 
 		navigator.addView("domainSelectionView", domainSelectionView);
 
-		navigator.navigateTo("loginView");
+		navigator.addViewChangeListener(new ViewChangeListener(){
 
+			@Override
+			public boolean beforeViewChange(ViewChangeEvent event) {
+
+				// Check if a user has logged in
+				boolean isLoggedIn = getSession().getAttribute("user") != null;
+				boolean isLoginView = event.getNewView() instanceof LoginView;
+
+				if (!isLoggedIn && !isLoginView) {
+					// Redirect to login view always if a user has not yet
+					// logged in
+					navigator.navigateTo("loginView");
+					return false;
+
+				} else if (isLoggedIn && isLoginView) {
+					// If someone tries to access to login view while logged in,
+					// then cancel
+					// Navigate to main view
+		            getUI().getNavigator().navigateTo("domainSelectionView");
+					return false;
+				}
+
+				return true;
+			}
+
+			@Override
+			public void afterViewChange(ViewChangeEvent event) {
+
+			}
+		}
+
+				);
+
+		navigator.navigateTo("loginView");
 	}
 
 	public static PropertyManager getPropertyManager() {
