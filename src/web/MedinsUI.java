@@ -5,7 +5,12 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
+import ui.MyUI;
+import web.activities.CreateCase;
+import web.activities.CreateCase2;
+import web.activities.CreateOrganization;
 import web.activities.CreatePerson;
+import web.activities.UpdateOrganization;
 import web.activities.UpdatePerson;
 import web.classes.Activity;
 import web.classes.Domain;
@@ -25,7 +30,7 @@ import dao.classes.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
-public class MedinsUI extends UI {
+public class MedinsUI extends MyUI {
 	
 	private static PropertyManager propertyManager;
 	
@@ -53,15 +58,27 @@ public class MedinsUI extends UI {
 
 		DomainSelectionView domainSelectionView =  new DomainSelectionView(this);
 
+		//person organization domain
 		Domain personOrganizationDomain = new Domain("personOrganizationDomain");
 		Activity createPersonActivity = new Activity(new CreatePerson(this));
 		personOrganizationDomain.addActivity(createPersonActivity);
 		Activity updatePersonActivity = new Activity(new UpdatePerson(this));
 		personOrganizationDomain.addActivity(updatePersonActivity);
+		Activity createOrganizationActivity = new Activity(new CreateOrganization(this));
+		personOrganizationDomain.addActivity(createOrganizationActivity);
+		Activity updateOrganizationActivity = new Activity(new UpdateOrganization(this));
+		personOrganizationDomain.addActivity(updateOrganizationActivity);
+		
+		//case domain
+		Domain caseDomain = new Domain("caseDomain");
+		Activity createCaseActivity = new Activity(new CreateCase(this));
+		Activity createCaseActivity2 = new Activity(new CreateCase2(this));
+		caseDomain.addActivity(createCaseActivity);
+		caseDomain.addActivity(createCaseActivity2);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 		
-		domainList.add(new Domain("caseDomain"));
+		domainList.add(caseDomain);
 		domainList.add(personOrganizationDomain);
 		domainList.add(new Domain("medicalDomain"));
 		domainList.add(new Domain("treatmentDomain"));

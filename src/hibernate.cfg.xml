@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory>
- 
-  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">Muscul4o85@</property>
-  <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/medins_schema</property>
-  <property name="hibernate.connection.username">root</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  <property name="current_session_context_class">thread</property>
-  <property name="show_sql">true</property>
-  
-  <mapping resource="mappings/CaseInfo.hbm.xml"/>
-  <mapping resource="mappings/Contacts.hbm.xml"/>
-  <mapping resource="mappings/Deceases.hbm.xml"/>
-  <mapping resource="mappings/DeceaseTreatmentLink.hbm.xml"/>
-  <mapping resource="mappings/Documentation.hbm.xml"/>
-  <mapping resource="mappings/EnumerationLabels.hbm.xml"/>
-  <mapping resource="mappings/EnumerationTypes.hbm.xml"/>
-  <mapping resource="mappings/Enumerations.hbm.xml"/>
-  <mapping resource="mappings/Invoices.hbm.xml"/>
-  <mapping resource="mappings/MedicalCases.hbm.xml"/>
-  <mapping resource="mappings/Medicaments.hbm.xml"/>
-  <mapping resource="mappings/Organizations.hbm.xml"/>
-  <mapping resource="mappings/OrganizationContactLink.hbm.xml"/>
-  <mapping resource="mappings/PersonContactLink.hbm.xml"/>
-  <mapping resource="mappings/PersonOrganizationLink.hbm.xml"/>
-  <mapping resource="mappings/Persons.hbm.xml"/>
-  <mapping resource="mappings/Policies.hbm.xml"/>
-  <mapping resource="mappings/TouristVisit.hbm.xml"/>
-  <mapping resource="mappings/TreatmentMedicamentLink.hbm.xml"/>
-  <mapping resource="mappings/Treatments.hbm.xml"/>
-  
- </session-factory>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.autocommit">false</property>
+        <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/medins_schema</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <property name="hibernate.show_sql">true</property>
+        <mapping resource="pojo/classes/CaseInfo.hbm.xml" />
+        <mapping resource="pojo/classes/Medicaments.hbm.xml" />
+        <mapping resource="pojo/classes/MedicalReport.hbm.xml" />
+        <mapping resource="pojo/classes/Persons.hbm.xml" />
+        <mapping resource="pojo/classes/Users.hbm.xml" />
+        <mapping resource="pojo/classes/Diagnosis.hbm.xml" />
+        <mapping resource="pojo/classes/Organizations.hbm.xml" />
+        <mapping resource="pojo/classes/TouristVisit.hbm.xml" />
+        <mapping resource="pojo/classes/Documentation.hbm.xml" />
+        <mapping resource="pojo/classes/EnumerationLabels.hbm.xml" />
+        <mapping resource="pojo/classes/EnumerationTypes.hbm.xml" />
+        <mapping resource="pojo/classes/Invoices.hbm.xml" />
+        <mapping resource="pojo/classes/Services.hbm.xml" />
+        <mapping resource="pojo/classes/Policies.hbm.xml" />
+        <mapping resource="pojo/classes/Enumerations.hbm.xml" />
+        <mapping resource="pojo/classes/Country.hbm.xml" />
+        <mapping resource="pojo/classes/Treatments.hbm.xml" />
+        <mapping resource="pojo/classes/Contacts.hbm.xml" />
+    </session-factory>
 </hibernate-configuration>

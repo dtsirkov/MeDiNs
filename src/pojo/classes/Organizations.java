@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,48 +10,48 @@ import java.util.Set;
  */
 public class Organizations implements java.io.Serializable {
 
-	private String number;
+	private Integer number;
 	private Enumerations enumerations;
 	private String name;
 	private String logo;
 	private String iban;
 	private String bankDetails;
-	private Set personOrganizationLinks = new HashSet(0);
-	private Set organizationContactLinks = new HashSet(0);
-	private Set policiesesForInsuaranceCompany = new HashSet(0);
-	private Set policiesesForAssistanceCompany = new HashSet(0);
+	private Set<Policies> policiesesForInsuaranceCompany = new HashSet<Policies>(
+			0);
+	private Set<Persons> personses = new HashSet<Persons>(0);
+	private Set<Contacts> contactses = new HashSet<Contacts>(0);
+	private Set<Policies> policiesesForAssistanceCompany = new HashSet<Policies>(
+			0);
 
 	public Organizations() {
 	}
 
-	public Organizations(String number, Enumerations enumerations, String name) {
-		this.number = number;
+	public Organizations(Enumerations enumerations, String name) {
 		this.enumerations = enumerations;
 		this.name = name;
 	}
 
-	public Organizations(String number, Enumerations enumerations, String name,
-			String logo, String iban, String bankDetails,
-			Set personOrganizationLinks, Set organizationContactLinks,
-			Set policiesesForInsuaranceCompany,
-			Set policiesesForAssistanceCompany) {
-		this.number = number;
+	public Organizations(Enumerations enumerations, String name, String logo,
+			String iban, String bankDetails,
+			Set<Policies> policiesesForInsuaranceCompany,
+			Set<Persons> personses, Set<Contacts> contactses,
+			Set<Policies> policiesesForAssistanceCompany) {
 		this.enumerations = enumerations;
 		this.name = name;
 		this.logo = logo;
 		this.iban = iban;
 		this.bankDetails = bankDetails;
-		this.personOrganizationLinks = personOrganizationLinks;
-		this.organizationContactLinks = organizationContactLinks;
 		this.policiesesForInsuaranceCompany = policiesesForInsuaranceCompany;
+		this.personses = personses;
+		this.contactses = contactses;
 		this.policiesesForAssistanceCompany = policiesesForAssistanceCompany;
 	}
 
-	public String getNumber() {
+	public Integer getNumber() {
 		return this.number;
 	}
 
-	public void setNumber(String number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 
@@ -95,37 +95,37 @@ public class Organizations implements java.io.Serializable {
 		this.bankDetails = bankDetails;
 	}
 
-	public Set getPersonOrganizationLinks() {
-		return this.personOrganizationLinks;
-	}
-
-	public void setPersonOrganizationLinks(Set personOrganizationLinks) {
-		this.personOrganizationLinks = personOrganizationLinks;
-	}
-
-	public Set getOrganizationContactLinks() {
-		return this.organizationContactLinks;
-	}
-
-	public void setOrganizationContactLinks(Set organizationContactLinks) {
-		this.organizationContactLinks = organizationContactLinks;
-	}
-
-	public Set getPoliciesesForInsuaranceCompany() {
+	public Set<Policies> getPoliciesesForInsuaranceCompany() {
 		return this.policiesesForInsuaranceCompany;
 	}
 
 	public void setPoliciesesForInsuaranceCompany(
-			Set policiesesForInsuaranceCompany) {
+			Set<Policies> policiesesForInsuaranceCompany) {
 		this.policiesesForInsuaranceCompany = policiesesForInsuaranceCompany;
 	}
 
-	public Set getPoliciesesForAssistanceCompany() {
+	public Set<Persons> getPersonses() {
+		return this.personses;
+	}
+
+	public void setPersonses(Set<Persons> personses) {
+		this.personses = personses;
+	}
+
+	public Set<Contacts> getContactses() {
+		return this.contactses;
+	}
+
+	public void setContactses(Set<Contacts> contactses) {
+		this.contactses = contactses;
+	}
+
+	public Set<Policies> getPoliciesesForAssistanceCompany() {
 		return this.policiesesForAssistanceCompany;
 	}
 
 	public void setPoliciesesForAssistanceCompany(
-			Set policiesesForAssistanceCompany) {
+			Set<Policies> policiesesForAssistanceCompany) {
 		this.policiesesForAssistanceCompany = policiesesForAssistanceCompany;
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.hibernate.Transaction;
+import org.hibernate.TransactionException;
 
 
 import com.vaadin.data.Property;
@@ -34,6 +35,7 @@ import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
 import web.forms.Form;
+import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
 public abstract class AbstractActivityView extends AbstractView {
@@ -123,7 +125,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		final Label title = new Label(propertyManager.getLabelDtl(label));
 		title.addStyleName("title");
 		titleBar.addComponent(title);
-		
+
 		// home image
 		Embedded homeEm = new Embedded("", new ThemeResource("images/home.png"));
 		homeEm.setHeight("50px");
@@ -337,7 +339,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		menu.addValueChangeListener(new Property.ValueChangeListener() {
 
 			private static final long serialVersionUID = 1L;
-
+			private boolean searchFormFlag = true;
 			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
 				//CustomComponent validationForm;
@@ -387,23 +389,37 @@ public abstract class AbstractActivityView extends AbstractView {
 								}
 								customComponent.buildLayout(mode);
 
-								//add stepTitleLayout
-								stepTitle.setValue(propertyManager.getLabelDtl(value));					
-								detailsbox.addComponent(stepTitleLayout);
-								detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
 
-								//add customComponentLayout
-								customComponent.setSizeUndefined();
-								customComponentLayout.removeAllComponents();
-								customComponentLayout.addComponent(customComponent);
-								customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
-								detailsbox.addComponent(customComponentLayout);
-								detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
-								//add buttonsLayout 
-								detailsbox.addComponent(buttonsLayout);
-								detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+								if(!(customComponent instanceof SearchForm) || searchFormFlag){
 
+									if(customComponent instanceof SearchForm)
+										searchFormFlag = false;
+
+									//add stepTitleLayout
+									stepTitle.setValue(propertyManager.getLabelDtl(value));					
+									detailsbox.addComponent(stepTitleLayout);
+									detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
+
+									//add customComponentLayout
+									customComponent.setSizeUndefined();
+									customComponentLayout.removeAllComponents();
+									customComponentLayout.addComponent(customComponent);
+									customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
+									detailsbox.addComponent(customComponentLayout);
+									detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
+
+									//add buttonsLayout 
+									detailsbox.addComponent(buttonsLayout);
+									detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+
+								}else{
+
+									Label noStepSelected = new Label(propertyManager.getLabelDtl("noReExecution"));
+									noStepSelected.addStyleName("stepTitle");
+									detailsbox.addComponent(noStepSelected);
+
+								}
 							}
 						}	
 					}
@@ -479,14 +495,28 @@ public abstract class AbstractActivityView extends AbstractView {
 
 			public void buttonClick(ClickEvent event) {
 
-				ValidationClass validationClass = new ValidationClass(validationMethod, hmRequiredSteps, hmOptionalSteps);
-				validationClass.setDao(dao);
+				boolean validated = false;
+				Transaction trans = getDao().getTransaction();
+				try{
+					validated = AbstractActivityView.this.validate(hmRequiredSteps, hmOptionalSteps);
+					trans.commit();
+				}catch(Exception e){
+					System.out.println("Error in validation method.");
+					trans.rollback();
+				}
 				String validationResult = "not_validated";
-				if(validationClass.validate(mode)){
+
+				//ValidationClass validationClass = new ValidationClass(validationMethod, hmRequiredSteps, hmOptionalSteps);
+				//validationClass.setDao(dao);
+				//String validationResult = "not_validated";
+				//if(validationClass.validate(mode)){
+
+				if(validated){
 					validationResult = "validated";
 				}else{
 					validatedSteps.remove((requiredSteps[requiredSteps.length-1]).getLabel());
 				}
+
 				menu.expandItemsRecursively((requiredStepsDisplay[0]).getLabel());
 				menu.unselect((requiredStepsDisplay[requiredSteps.length]).getLabel());
 				menu.setReadOnly(true);
@@ -529,8 +559,12 @@ public abstract class AbstractActivityView extends AbstractView {
 
 			@Override
 			public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
-				transaction.rollback();
-				navigator.navigateTo("domainSelectionView");	
+				try{
+					transaction.rollback();
+					navigator.navigateTo("domainSelectionView");
+				}catch(TransactionException e){
+					navigator.navigateTo("domainSelectionView");
+				}
 			}
 		});
 
@@ -539,5 +573,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		return root;
 
 	}
+
+	//validation method
+	protected abstract boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps);
 
 }

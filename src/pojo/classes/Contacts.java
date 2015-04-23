@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +21,8 @@ public class Contacts implements java.io.Serializable {
 	private String phone;
 	private String mobile;
 	private String email;
-	private Set personContactLinks = new HashSet(0);
-	private Set organizationContactLinks = new HashSet(0);
+	private Set<Organizations> organizationses = new HashSet<Organizations>(0);
+	private Set<Persons> personses = new HashSet<Persons>(0);
 
 	public Contacts() {
 	}
@@ -42,8 +42,8 @@ public class Contacts implements java.io.Serializable {
 	public Contacts(Enumerations enumerationsByPrefered,
 			Enumerations enumerationsByActive, Enumerations enumerationsByType,
 			String address, String zip, String city, String country,
-			String phone, String mobile, String email, Set personContactLinks,
-			Set organizationContactLinks) {
+			String phone, String mobile, String email,
+			Set<Organizations> organizationses, Set<Persons> personses) {
 		this.enumerationsByPrefered = enumerationsByPrefered;
 		this.enumerationsByActive = enumerationsByActive;
 		this.enumerationsByType = enumerationsByType;
@@ -54,8 +54,8 @@ public class Contacts implements java.io.Serializable {
 		this.phone = phone;
 		this.mobile = mobile;
 		this.email = email;
-		this.personContactLinks = personContactLinks;
-		this.organizationContactLinks = organizationContactLinks;
+		this.organizationses = organizationses;
+		this.personses = personses;
 	}
 
 	public Integer getId() {
@@ -146,20 +146,20 @@ public class Contacts implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public Set getPersonContactLinks() {
-		return this.personContactLinks;
+	public Set<Organizations> getOrganizationses() {
+		return this.organizationses;
 	}
 
-	public void setPersonContactLinks(Set personContactLinks) {
-		this.personContactLinks = personContactLinks;
+	public void setOrganizationses(Set<Organizations> organizationses) {
+		this.organizationses = organizationses;
 	}
 
-	public Set getOrganizationContactLinks() {
-		return this.organizationContactLinks;
+	public Set<Persons> getPersonses() {
+		return this.personses;
 	}
 
-	public void setOrganizationContactLinks(Set organizationContactLinks) {
-		this.organizationContactLinks = organizationContactLinks;
+	public void setPersonses(Set<Persons> personses) {
+		this.personses = personses;
 	}
 
 }

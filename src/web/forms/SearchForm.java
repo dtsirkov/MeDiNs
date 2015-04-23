@@ -3,11 +3,10 @@ package web.forms;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import web.MedinsUI;
-import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.components.PagedTable;
 import web.views.AbstractView;
@@ -24,11 +23,13 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.event.ItemClickEvent;
 
+import beans.ComboxBean;
 import dao.classes.DaoIntrfc;
 
 @Theme("pagedtabletheme")
@@ -178,10 +179,8 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 		//get main layout
 		VerticalLayout root = (VerticalLayout)getLayout();
-		//get component validator
-		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
-		PropertyManager propertyManager = getPropertyManager();
+		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao = getDao();
 
@@ -227,19 +226,34 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 
 			private static final long serialVersionUID = 1L;
 
+			String key, value;
+			Map<String, String> searchConstraintFiltered;
+			Iterator<String> constraintIterator;
+
 			public void buttonClick(ClickEvent event) {
-
-				searchResult = new ArrayList<T>();
-				searchResult.addAll(searchByIdResult);
-
-				Set<T> hs = new HashSet<T>(searchResult);
-				searchResult.clear();
-				searchResult.addAll(hs);
 				
+				searchConstraintFiltered = new HashMap<String, String>();
+				constraintIterator = searchConstraint.keySet().iterator();
+				
+				while (constraintIterator.hasNext()) {
+					key = constraintIterator.next();	
+					value = searchConstraint.get(key);
+					if (!value.equals(""))
+						searchConstraintFiltered.put(key, value);
+				} 
+
 				System.out.println(searchConstraint);
+				List resultList = dao.searchByConstaint(dBTableName, searchConstraintFiltered);
+
+				if(resultList.isEmpty())
+					searchResult = new ArrayList<T>();
+				else
+					searchResult = new ArrayList<T>(resultList);
 
 				resultTable.setContainerDataSource(createContainer());
 
+				if(searchResult.isEmpty())
+					Notification.show(propertyManager.getLabelDtl("stepObjectFound"));
 			}
 		});
 
@@ -294,21 +308,6 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		searchByKeyLayout.addComponent(keySearchTF);	
 		addToSearchConstraint(keySearchTF, "keySearch");
 
-		/*
-		keySearchTF.addValueChangeListener(new Property.ValueChangeListener(){
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				String value = event.getProperty().getValue().toString();
-				keySearchTF.setData(value);
-				searchByKeyResult = searchByKey(value);
-			}
-
-		});
-		 */
-
 		return searchByKeyLayout;
 	}
 
@@ -356,7 +355,8 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		ArrayList<T> searchByIdResult = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
 		T object = (T)getDao().findById(dBTableName, value);
-		searchByIdResult.add(object);
+		if (object != null)
+			searchByIdResult.add(object);
 		return searchByIdResult;
 	}
 
@@ -392,8 +392,21 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 		return searchConstraint;
 	}
 
+	public HashMap<String, String> addToSearchConstraint(final ComboBox comboBox, final String key){
 
+		comboBox.addValueChangeListener(new Property.ValueChangeListener(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				ComboxBean value = (ComboxBean) event.getProperty().getValue();
+				comboBox.setData(value);
+				searchConstraint.put(key, value.getValue());
+			}
 
+		});
+		return searchConstraint;
+	}
+	
 	protected abstract ArrayList<T> search();
 
 	protected abstract FormLayout buildSearchByCriteriaLayout();

@@ -1,6 +1,6 @@
 package pojo.classes;
 
-// Generated May 18, 2014 7:33:38 PM by Hibernate Tools 4.0.0
+// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,21 +12,21 @@ public class Enumerations implements java.io.Serializable {
 
 	private String code;
 	private EnumerationTypes enumerationTypes;
-	private Set personsesForTitle = new HashSet(0);
-	private Set deceaseses = new HashSet(0);
-	private Set contactsesForPrefered = new HashSet(0);
-	private Set medicalCasesesForStatus2 = new HashSet(0);
-	private Set personsesForRole = new HashSet(0);
-	private Set personsesForSex = new HashSet(0);
-	private Set enumerationLabelses = new HashSet(0);
-	private Set contactsesForActive = new HashSet(0);
-	private Set documentations = new HashSet(0);
-	private Set organizationses = new HashSet(0);
-	private Set personsesForJobTitle = new HashSet(0);
-	private Set contactsesForType = new HashSet(0);
-	private Set treatmentses = new HashSet(0);
-	private Set medicalCasesesForStatus1 = new HashSet(0);
-	private Set medicamentses = new HashSet(0);
+	private Set<Persons> personsesForTitle = new HashSet<Persons>(0);
+	private Set<Contacts> contactsesForPrefered = new HashSet<Contacts>(0);
+	private Set<CaseInfo> caseInfosForStatus2 = new HashSet<CaseInfo>(0);
+	private Set<Persons> personsesForRole = new HashSet<Persons>(0);
+	private Set<Persons> personsesForSex = new HashSet<Persons>(0);
+	private Set<EnumerationLabels> enumerationLabelses = new HashSet<EnumerationLabels>(
+			0);
+	private Set<Contacts> contactsesForActive = new HashSet<Contacts>(0);
+	private Set<Documentation> documentations = new HashSet<Documentation>(0);
+	private Set<Organizations> organizationses = new HashSet<Organizations>(0);
+	private Set<Persons> personsesForJobTitle = new HashSet<Persons>(0);
+	private Set<Contacts> contactsesForType = new HashSet<Contacts>(0);
+	private Set<Treatments> treatmentses = new HashSet<Treatments>(0);
+	private Set<CaseInfo> caseInfosForStatus1 = new HashSet<CaseInfo>(0);
+	private Set<Medicaments> medicamentses = new HashSet<Medicaments>(0);
 
 	public Enumerations() {
 	}
@@ -37,18 +37,22 @@ public class Enumerations implements java.io.Serializable {
 	}
 
 	public Enumerations(String code, EnumerationTypes enumerationTypes,
-			Set personsesForTitle, Set deceaseses, Set contactsesForPrefered,
-			Set medicalCasesesForStatus2, Set personsesForRole,
-			Set personsesForSex, Set enumerationLabelses,
-			Set contactsesForActive, Set documentations, Set organizationses,
-			Set personsesForJobTitle, Set contactsesForType, Set treatmentses,
-			Set medicalCasesesForStatus1, Set medicamentses) {
+			Set<Persons> personsesForTitle,
+			Set<Contacts> contactsesForPrefered,
+			Set<CaseInfo> caseInfosForStatus2, Set<Persons> personsesForRole,
+			Set<Persons> personsesForSex,
+			Set<EnumerationLabels> enumerationLabelses,
+			Set<Contacts> contactsesForActive,
+			Set<Documentation> documentations,
+			Set<Organizations> organizationses,
+			Set<Persons> personsesForJobTitle, Set<Contacts> contactsesForType,
+			Set<Treatments> treatmentses, Set<CaseInfo> caseInfosForStatus1,
+			Set<Medicaments> medicamentses) {
 		this.code = code;
 		this.enumerationTypes = enumerationTypes;
 		this.personsesForTitle = personsesForTitle;
-		this.deceaseses = deceaseses;
 		this.contactsesForPrefered = contactsesForPrefered;
-		this.medicalCasesesForStatus2 = medicalCasesesForStatus2;
+		this.caseInfosForStatus2 = caseInfosForStatus2;
 		this.personsesForRole = personsesForRole;
 		this.personsesForSex = personsesForSex;
 		this.enumerationLabelses = enumerationLabelses;
@@ -58,7 +62,7 @@ public class Enumerations implements java.io.Serializable {
 		this.personsesForJobTitle = personsesForJobTitle;
 		this.contactsesForType = contactsesForType;
 		this.treatmentses = treatmentses;
-		this.medicalCasesesForStatus1 = medicalCasesesForStatus1;
+		this.caseInfosForStatus1 = caseInfosForStatus1;
 		this.medicamentses = medicamentses;
 	}
 
@@ -78,123 +82,116 @@ public class Enumerations implements java.io.Serializable {
 		this.enumerationTypes = enumerationTypes;
 	}
 
-	public Set getPersonsesForTitle() {
+	public Set<Persons> getPersonsesForTitle() {
 		return this.personsesForTitle;
 	}
 
-	public void setPersonsesForTitle(Set personsesForTitle) {
+	public void setPersonsesForTitle(Set<Persons> personsesForTitle) {
 		this.personsesForTitle = personsesForTitle;
 	}
 
-	public Set getDeceaseses() {
-		return this.deceaseses;
-	}
-
-	public void setDeceaseses(Set deceaseses) {
-		this.deceaseses = deceaseses;
-	}
-
-	public Set getContactsesForPrefered() {
+	public Set<Contacts> getContactsesForPrefered() {
 		return this.contactsesForPrefered;
 	}
 
-	public void setContactsesForPrefered(Set contactsesForPrefered) {
+	public void setContactsesForPrefered(Set<Contacts> contactsesForPrefered) {
 		this.contactsesForPrefered = contactsesForPrefered;
 	}
 
-	public Set getMedicalCasesesForStatus2() {
-		return this.medicalCasesesForStatus2;
+	public Set<CaseInfo> getCaseInfosForStatus2() {
+		return this.caseInfosForStatus2;
 	}
 
-	public void setMedicalCasesesForStatus2(Set medicalCasesesForStatus2) {
-		this.medicalCasesesForStatus2 = medicalCasesesForStatus2;
+	public void setCaseInfosForStatus2(Set<CaseInfo> caseInfosForStatus2) {
+		this.caseInfosForStatus2 = caseInfosForStatus2;
 	}
 
-	public Set getPersonsesForRole() {
+	public Set<Persons> getPersonsesForRole() {
 		return this.personsesForRole;
 	}
 
-	public void setPersonsesForRole(Set personsesForRole) {
+	public void setPersonsesForRole(Set<Persons> personsesForRole) {
 		this.personsesForRole = personsesForRole;
 	}
 
-	public Set getPersonsesForSex() {
+	public Set<Persons> getPersonsesForSex() {
 		return this.personsesForSex;
 	}
 
-	public void setPersonsesForSex(Set personsesForSex) {
+	public void setPersonsesForSex(Set<Persons> personsesForSex) {
 		this.personsesForSex = personsesForSex;
 	}
 
-	public Set getEnumerationLabelses() {
+	public Set<EnumerationLabels> getEnumerationLabelses() {
 		return this.enumerationLabelses;
 	}
 
-	public void setEnumerationLabelses(Set enumerationLabelses) {
+	public void setEnumerationLabelses(
+			Set<EnumerationLabels> enumerationLabelses) {
 		this.enumerationLabelses = enumerationLabelses;
 	}
 
-	public Set getContactsesForActive() {
+	public Set<Contacts> getContactsesForActive() {
 		return this.contactsesForActive;
 	}
 
-	public void setContactsesForActive(Set contactsesForActive) {
+	public void setContactsesForActive(Set<Contacts> contactsesForActive) {
 		this.contactsesForActive = contactsesForActive;
 	}
 
-	public Set getDocumentations() {
+	public Set<Documentation> getDocumentations() {
 		return this.documentations;
 	}
 
-	public void setDocumentations(Set documentations) {
+	public void setDocumentations(Set<Documentation> documentations) {
 		this.documentations = documentations;
 	}
 
-	public Set getOrganizationses() {
+	public Set<Organizations> getOrganizationses() {
 		return this.organizationses;
 	}
 
-	public void setOrganizationses(Set organizationses) {
+	public void setOrganizationses(Set<Organizations> organizationses) {
 		this.organizationses = organizationses;
 	}
 
-	public Set getPersonsesForJobTitle() {
+	public Set<Persons> getPersonsesForJobTitle() {
 		return this.personsesForJobTitle;
 	}
 
-	public void setPersonsesForJobTitle(Set personsesForJobTitle) {
+	public void setPersonsesForJobTitle(Set<Persons> personsesForJobTitle) {
 		this.personsesForJobTitle = personsesForJobTitle;
 	}
 
-	public Set getContactsesForType() {
+	public Set<Contacts> getContactsesForType() {
 		return this.contactsesForType;
 	}
 
-	public void setContactsesForType(Set contactsesForType) {
+	public void setContactsesForType(Set<Contacts> contactsesForType) {
 		this.contactsesForType = contactsesForType;
 	}
 
-	public Set getTreatmentses() {
+	public Set<Treatments> getTreatmentses() {
 		return this.treatmentses;
 	}
 
-	public void setTreatmentses(Set treatmentses) {
+	public void setTreatmentses(Set<Treatments> treatmentses) {
 		this.treatmentses = treatmentses;
 	}
 
-	public Set getMedicalCasesesForStatus1() {
-		return this.medicalCasesesForStatus1;
+	public Set<CaseInfo> getCaseInfosForStatus1() {
+		return this.caseInfosForStatus1;
 	}
 
-	public void setMedicalCasesesForStatus1(Set medicalCasesesForStatus1) {
-		this.medicalCasesesForStatus1 = medicalCasesesForStatus1;
+	public void setCaseInfosForStatus1(Set<CaseInfo> caseInfosForStatus1) {
+		this.caseInfosForStatus1 = caseInfosForStatus1;
 	}
 
-	public Set getMedicamentses() {
+	public Set<Medicaments> getMedicamentses() {
 		return this.medicamentses;
 	}
 
-	public void setMedicamentses(Set medicamentses) {
+	public void setMedicamentses(Set<Medicaments> medicamentses) {
 		this.medicamentses = medicamentses;
 	}
 

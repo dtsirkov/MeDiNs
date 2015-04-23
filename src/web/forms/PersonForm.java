@@ -34,7 +34,7 @@ public class PersonForm extends Form implements StepIntrfc{
 	private TextField personLastNameTF;
 	private TextField persomMiddleNameTF;
 	private TextField personFirstNameTF;
-
+	
 	public PersonForm(AbstractView view, String label) {
 
 		super(view, label, new FormLayout());
@@ -55,7 +55,7 @@ public class PersonForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the components
 		final Persons person;
-		if(mode.equals("update") || getData() != null){
+		if(mode.equals("update") && getData() != null){
 			person = (Persons)getData();
 		}else{
 			//set initial values
@@ -317,9 +317,17 @@ public class PersonForm extends Form implements StepIntrfc{
 		return formLayout;
 	}
 
+	
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
-		// TODO Auto-generated method stub
+		//get access to DB
+		DaoIntrfc dao = getDao();
+
+		Persons person = (Persons) getData();
+		dao.evict(person);
+
+		steps.get("stepCreatePerson").setData(person);
+		
 		return true;
 	}
 

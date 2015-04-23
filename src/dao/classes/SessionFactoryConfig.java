@@ -14,9 +14,9 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class SessionFactoryConfig {
 
 	private static final Log log = LogFactory.getLog(SessionFactoryConfig.class);
-	
+
 	private Session session;
-	
+
 	public SessionFactoryConfig(){
 		SessionFactory sessionFactory = SessionFactoryConfig.getSessionFactory();
 		this.setSession(sessionFactory.openSession());
@@ -25,9 +25,11 @@ public class SessionFactoryConfig {
 	protected static SessionFactory getSessionFactory() {
 		try {
 			log.info("Trying to create a test connection with the database.");
-			  Configuration configuration = new Configuration().addResource("hibernate.cfg.xml").configure();
-			     StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-			     SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+			Configuration configuration = new Configuration();
+			configuration.addResource("hibernate.cfg.xml").configure();
+			StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
+			ssrb.applySettings(configuration.getProperties());
+			SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
 			sessionFactory.openSession();
 			//Session session = sessionFactory.openSession();
 			//session.close();

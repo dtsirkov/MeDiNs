@@ -9,7 +9,7 @@ import java.util.Random;
 
 import pojo.classes.Contacts;
 import pojo.classes.Enumerations;
-import pojo.classes.PersonContactLink;
+import pojo.classes.Organizations;
 import pojo.classes.Persons;
 
 public class DaoTest {
@@ -19,9 +19,36 @@ public class DaoTest {
 		System.out.println();
 		System.out.println("CREATE CONFIGURATION AND SESSION");
 
-		DaoImpl daoImpl = new DaoImpl("EN");
+		DaoImpl dao = new DaoImpl("EN");
 
-		//CREATE PERSON
+		Map<Enumerations, String> typeOrg = dao.getEnumeration("organization");
+		Enumerations orgEnum=new Enumerations();
+
+		for (Map.Entry<Enumerations, String> entry : typeOrg.entrySet()) {
+			Enumerations enumeration = entry.getKey();			
+			String label = entry.getValue();
+			if (label.equalsIgnoreCase("Hotel")){
+				orgEnum=enumeration;
+				break;
+			}
+		} 
+
+		Organizations hotels=new Organizations();
+		hotels.setEnumerations(orgEnum);
+
+		List<Object> orgs=dao.findByExample(hotels);
+		System.out.println(orgs.toString());
+
+		List<String> hotelList=new ArrayList<String>();
+
+		for (Object organization:orgs){
+			Organizations org=(Organizations) organization;
+			hotelList.add(org.getName());
+			System.out.println(org.getName());
+		}
+		//daoImpl.getTransaction().commit();
+
+		/*//CREATE PERSON
 		System.out.println();
 		System.out.println("CREATE PERSON");
 
@@ -89,7 +116,7 @@ public class DaoTest {
 			System.out.println(((PersonContactLink) link).getPersons().getFirstName());
 
 		}
-		
+
 		Persons foundPerson = (Persons)daoImpl.findById("Persons", "411515");
 		Map<Object, List<Object>> hmPerson = new HashMap<Object, List<Object>>();
 		List<Object> personsLs = new ArrayList<Object>();
@@ -99,7 +126,7 @@ public class DaoTest {
 		for(Object personAddressLink : personAddressLinks){
 			System.out.println(((PersonContactLink) personAddressLink).getContacts().getAddress());
 		}
-		
+		 */
 
 		/*	
 	((Persons) merge).setFirstName("Petko");
