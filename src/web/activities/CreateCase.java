@@ -1,6 +1,5 @@
 package web.activities;
 
-import web.forms.CasePersonForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;

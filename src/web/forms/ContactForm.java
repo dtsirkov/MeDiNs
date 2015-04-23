@@ -346,7 +346,7 @@ public class ContactForm extends Form implements StepIntrfc{
 			addressTF.setValue(contact.getAddress());
 			zipCodeTF.setValue(contact.getZip());
 			cityTF.setValue(contact.getCity());
-			countryCB.setValue(Country.getCountry(dao, contact.getCountry()));
+			countryCB.setValue(getCountry(dao, contact.getCountry()));
 			phoneTF.setValue(contact.getPhone());
 			mobileTF.setValue(contact.getMobile());
 			emailTF.setValue(contact.getEmail());
