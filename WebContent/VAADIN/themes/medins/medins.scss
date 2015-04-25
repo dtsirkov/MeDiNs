@@ -1,0 +1,149 @@
+/* Import the reindeer theme.*/
+/* This only allows us to use the mixins defined in it and does not add any styles by itself. */
+@import "../reindeer/reindeer.scss";
+
+/* This contains all of your theme.*/
+/* If somebody wants to extend the theme she will include this mixin. */
+@mixin medins {
+  /* Include all the styles from the reindeer theme */
+  @include reindeer;
+
+  /* Insert your theme rules here */
+  
+  .flexwrap {
+    background: blue;
+    color: white;
+
+    .title {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 30px;
+        padding: 5px;
+    }
+    
+    .itembox {
+        white-space: normal;
+        vertical-align: top;
+    }
+    
+    .itembox.v-label {padding: 5px}
+	}
+    
+	.flexwrap[width-range~="0-499px"] {
+	    .itembox {width: 100%}
+	}
+    
+	.flexwrap[width-range~="500px-"] {
+	    .itembox {width: 50%}
+	}
+	
+	/* For the title bar and black border around the view */
+	.v-verticallayout-personcreate {
+	    background: #58FC87;
+	}
+	
+	/* Padding to create a border around the view */
+	.v-verticallayout-personcreate .v-verticallayout-margin {
+	    padding: 3px;
+	}
+	
+	/* The main title */
+	.personcreate .v-label-title {
+		padding: 3px;
+	    font-size: 24pt;
+	    color: white;
+	    line-height:36pt;
+	    background: #58FC87;
+	}   
+	
+	.em{
+	    padding: 100px;
+	}
+	
+	/* The details text. */
+	.stepTitle{
+	    font-size: 24pt;
+	    color: gray;
+	    line-height: 36pt;
+	    background: white;
+	}
+	
+	.validationCompenentTitle{
+		font-size: 16pt;
+	    color: black;
+	    line-height: 36pt;
+	    background: white;
+	}
+	
+	/* The horizontal area */
+	.personcreate .v-horizontallayout .v-horizontallayout-spacing-on {
+	    background: gray;
+	    padding-left: 1px;
+	}
+	
+	/* The menu tree panel */
+	.personcreate .v-panel-caption-menucontainer,
+	.personcreate .v-panel-caption-detailspanel {
+	    padding: 3px;
+	    color: white;
+	    background: gray;
+	    font-size: 12pt;
+	    line-height: 35pt;
+	    height: 44px;
+	}
+	
+	/* The details caption. */
+	.personcreate .v-panel-caption-detailspanel {
+	    font-size: 18pt;
+	}
+	
+	.personcreate .treecontainer, .personcreate .v-panel {
+	    background: white;
+	}
+	
+	.personcreate .v-horizontallayout-spacing-on {
+	    padding-left: 4px;
+	}
+	
+	.v-formlayout-captioncell { text-align: left;}
+	.v-formlayout-row {padding-bottom:100px;}
+	
+	.v-panel-content-validation_panel {
+		background-color:yellow;
+		text-align: right;
+	}
+	
+	.v-textarea-validation_textarea{
+		background-color:yellow; !important;
+	}
+	
+	.v-tree-stepStyle .v-tree-node-caption-notValidated{
+	    font-weight: bold;
+	    font-size: 12pt;
+	    color: red;
+	}
+
+	.v-tree-stepStyle .v-tree-node-caption-validated{
+	    font-weight: bold;
+	    font-size: 12pt;
+	    color: green;
+	}
+	
+	.v-tree-stepStyle .v-tree-node-caption-category{
+	    font-weight: bold;
+	    font-size: 14pt;
+	    color: black;
+	}
+	
+	.v-gridlayout-gridexpandratio {
+	    background: blue; /* Creates a "border" around the grid. */
+	    margin:     10px; /* Empty space around the layout. */
+	    padding:    2px;
+	    padding-right: 100px;
+	}
+	
+	.v-gridlayout-test{
+	    background: gray;
+	}
+	
+}
