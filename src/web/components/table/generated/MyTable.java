@@ -14,6 +14,7 @@ import web.components.table.generated.components.CancelButton;
 import web.components.table.generated.components.MyButton;
 import web.components.table.generated.windows.EditPopupWindow;
 import web.components.table.generated.windows.Type;
+import web.forms.Form;
 
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -259,8 +260,10 @@ public abstract class MyTable extends CustomComponent {
 		});
 
 
-		mainLayout.addComponent(actionButtonsHL);
-		mainLayout.setComponentAlignment(actionButtonsHL, Alignment.MIDDLE_RIGHT);
+		if(tableInfo.getEditForm() != null){
+			mainLayout.addComponent(actionButtonsHL);
+			mainLayout.setComponentAlignment(actionButtonsHL, Alignment.MIDDLE_RIGHT);
+		}
 
 		setCompositionRoot(mainLayout);
 
@@ -283,7 +286,7 @@ public abstract class MyTable extends CustomComponent {
 		table.setMultiSelect(tableInfo.isMultiSelect());
 		table.setImmediate(true);
 		table.setFooterVisible(false);
-		
+
 		table.setColumnReorderingAllowed(true);
 		table.setColumnCollapsingAllowed(tableInfo.isColumnCollapsingAllowed());
 		table.setContainerDataSource(tableInfo.getBeanItemContainer());
@@ -291,6 +294,11 @@ public abstract class MyTable extends CustomComponent {
 		mainLayout.addComponent(table);
 		mainLayout.setExpandRatio(table, 1.0f);
 		mainLayout.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
+
+		Form editForm = tableInfo.getEditForm();
+		if(editForm == null){
+			table.setReadOnly(true);
+		}
 
 		if (tableInfo.getNestedProperties().length > 0) {
 			for (String nestedProp : tableInfo.getNestedProperties()) {
@@ -323,7 +331,7 @@ public abstract class MyTable extends CustomComponent {
 			}
 		}
 
-		if (tableInfo.isEditable()) {
+		if (tableInfo.isEditable() && editForm != null) {
 			ColumnGenerator editColumn = generateEditColumn();
 			column = propertyManager.getLabelDtl("editColumn");
 			table.addGeneratedColumn(column, editColumn);
@@ -331,7 +339,7 @@ public abstract class MyTable extends CustomComponent {
 			table.setColumnWidth(column, 60);
 		}
 
-		if (tableInfo.isDeletable()) {
+		if (tableInfo.isDeletable() && editForm != null) {
 			ColumnGenerator deleteColumn = generateDeleteColumn();
 			column = propertyManager.getLabelDtl("deleteColumn");
 			table.addGeneratedColumn(column, deleteColumn);

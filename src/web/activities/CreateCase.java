@@ -8,6 +8,7 @@ import java.util.Set;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
+import web.forms.NewValidationForm;
 import web.forms.PersonForm;
 import web.forms.PersonTouristVisitForm;
 import web.forms.PolicyForm;
@@ -49,11 +50,11 @@ public class CreateCase extends AbstractActivityView{
 
 		Set<Services> services = caseInfo.getServiceses();
 
-		Form serviceForm = new ServicesForm(this,"stepServices");
+		Form serviceForm = new ServicesForm(this, "stepServices");
 		services.size();
 		serviceForm.setData(services);
 
-		Form validationForm = new ValidationForm(this, "stepValidate");
+		Form validationForm = new NewValidationForm(this, "stepValidate");
 		validationForm.setData(caseInfo);
 
 		Form[] requiredSteps = {
@@ -62,6 +63,7 @@ public class CreateCase extends AbstractActivityView{
 				//new PolicyForm(this,"stepPolicy"),
 				//new MedicalReportForm(this,"stepMedicalReport"),
 				//new ServicesForm(this,"stepServices"),
+				new PersonForm(this, "stepCreatePerson"), 
 				serviceForm,
 				//new DiagnosisForm(this,"stepDiagnosis"),
 				//new ValidationForm(this, "stepValidate")
@@ -82,19 +84,29 @@ public class CreateCase extends AbstractActivityView{
 
 		CaseInfo caseInfo = (CaseInfo)hmRequiredSteps.get("stepValidate").getData();
 		@SuppressWarnings("unchecked")
-		Set<Services> services = (Set<Services>)hmRequiredSteps.get("stepServices").getData();
+		Set<Services> updatedServices = (Set<Services>)hmRequiredSteps.get("stepServices").getData();
+
+		Set<Integer> updatedServiceIds = new HashSet<Integer>(); 
+		Iterator<Services> updatedServicesIterator = updatedServices.iterator();
+		while(updatedServicesIterator.hasNext()){
+			updatedServiceIds.add(updatedServicesIterator.next().getId());
+		}
 
 		Set<Services> oldServicesSet = caseInfo.getServiceses();
 		oldServicesSet.size();
-
-		Iterator<Services> serviceIterator = oldServicesSet.iterator();
-		while(serviceIterator.hasNext()){
-			getDao().delete(serviceIterator.next());
+		Iterator<Services> oldServicesIterator = oldServicesSet.iterator();
+		Services tmpService;
+		int tmpId;
+		while(oldServicesIterator.hasNext()){
+			tmpService = oldServicesIterator.next();
+			tmpId = tmpService.getId();
+			if(!updatedServiceIds.contains(tmpId))
+				getDao().delete(tmpService);
 		}
 
-		caseInfo.setServiceses(services);
+		caseInfo.setServiceses(updatedServices);
 
-		Set<Object> objectSet = new HashSet<Object>(services);
+		Set<Object> objectSet = new HashSet<Object>(updatedServices);
 		objectSet.add(caseInfo);
 
 		Iterator<Object> iterator = objectSet.iterator();

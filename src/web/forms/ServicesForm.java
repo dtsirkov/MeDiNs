@@ -66,15 +66,13 @@ public class ServicesForm extends Form {
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 
-		//get main web.components.table.generated.layout
+		//build main layout
 		Layout absoluteLayout = buildMainLayout();
-		setLayout(absoluteLayout);
-		setCompositionRoot(absoluteLayout);
 
 		ServiceBean.setTypeEnum(dao.getEnumeration("person title"));
 
 		BeanItemContainer<ServiceBean> serviceBeanItemContainer = new BeanItemContainer<ServiceBean>(ServiceBean.class);
-		if(mode.equals("update") && getData() != null){
+		if(getData() != null){
 			@SuppressWarnings("unchecked")
 			Set<Services> services = (Set<Services>)getData();
 			Iterator<Services> iterator = services.iterator();
@@ -85,10 +83,18 @@ public class ServicesForm extends Form {
 					ServiceBean serviceBean = new ServiceBean(service);
 					serviceBeanItemContainer.addItem(serviceBean);
 				}
+				dao.evict(service);
 			}
 		}
 
-		EditServiceForm editServiceForm = new EditServiceForm(this.getView(), "editService");
+		EditServiceForm editServiceForm;
+		if(mode.equals("view")){
+			editServiceForm = null;
+		}else{
+			editServiceForm = new EditServiceForm(this.getView(), "editService");
+			setLayout(absoluteLayout);
+			setCompositionRoot(absoluteLayout);
+		}
 
 		GenerateTableInPanel panel = new GenerateTableInPanel(ServiceBean.class, serviceBeanItemContainer, editServiceForm);
 		panel.setWidth("100%");

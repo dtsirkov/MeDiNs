@@ -34,7 +34,7 @@ public class ValidationForm extends Form implements StepIntrfc{
 
 	}
 
-	public ValidationForm(ValidationForm validationForm) {
+	public ValidationForm(Form validationForm) {
 
 		super(validationForm);
 		setLayout(new VerticalLayout());
