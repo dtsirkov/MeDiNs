@@ -89,19 +89,21 @@ public class MedicalReportForm extends Form {
 		Layout absoluteLayout = buildMainLayout();
 		setLayout(absoluteLayout);
 		setCompositionRoot(absoluteLayout);
-		
+
+		/*
 		BeanItemContainer<ServiceBean> treatmentItemContainer = new BeanItemContainer<ServiceBean>(ServiceBean.class);
 		treatmentItemContainer.addBean(new ServiceBean("name", "type"));
-		
+
 		PersonForm personForm = new PersonForm(this.getView(), "stepCreatePerson");
-		
+
 		GenerateTableInPanel panel = new GenerateTableInPanel(ServiceBean.class, treatmentItemContainer, personForm);
 		panel.setWidth("100%");
 		panel.setHeight("100%");
 		verticalLayout.addComponent(panel);
 		verticalLayout.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
-		
+
 		this.setData(treatmentItemContainer);
+		 */
 
 		return absoluteLayout;
 	}
@@ -113,7 +115,7 @@ public class MedicalReportForm extends Form {
 
 		BeanItemContainer<ServiceBean> treatmentItemContainer = (BeanItemContainer<ServiceBean>) getData();
 		steps.get("stepMedicalReport").setData(treatmentItemContainer);		
-		
+
 		return true;
 	}
 
@@ -124,11 +126,11 @@ public class MedicalReportForm extends Form {
 		mainLayout.setImmediate(false);
 		mainLayout.setWidth("600px");
 		mainLayout.setHeight("952px");
-		
+
 		// top-level component properties
 		setWidth("600px");
 		setHeight("952px");
-		
+
 		// illnessHistoryLB
 		illnessHistoryLB = new Label();
 		illnessHistoryLB.setImmediate(false);
@@ -136,7 +138,7 @@ public class MedicalReportForm extends Form {
 		illnessHistoryLB.setHeight("-1px");
 		illnessHistoryLB.setValue("History of illness");
 		mainLayout.addComponent(illnessHistoryLB, "top:22.0px;left:40.0px;");
-		
+
 		// illnessHIstoryTA
 		illnessHIstoryTA = new TextArea();
 		illnessHIstoryTA.setImmediate(false);
@@ -145,7 +147,7 @@ public class MedicalReportForm extends Form {
 		illnessHIstoryTA.setRequired(true);
 		mainLayout.addComponent(illnessHIstoryTA,
 				"top:40.0px;right:12.0px;left:20.0px;");
-		
+
 		// presentConditionLB
 		presentConditionLB = new Label();
 		presentConditionLB.setImmediate(false);
@@ -153,7 +155,7 @@ public class MedicalReportForm extends Form {
 		presentConditionLB.setHeight("-1px");
 		presentConditionLB.setValue("Present condition");
 		mainLayout.addComponent(presentConditionLB, "top:160.0px;left:40.0px;");
-		
+
 		// presentConditionTA
 		presentConditionTA = new TextArea();
 		presentConditionTA.setImmediate(false);
@@ -162,7 +164,7 @@ public class MedicalReportForm extends Form {
 		presentConditionTA.setRequired(true);
 		mainLayout.addComponent(presentConditionTA,
 				"top:180.0px;right:11.0px;left:20.0px;");
-		
+
 		// alcoholLB
 		alcoholLB = new Label();
 		alcoholLB.setImmediate(false);
@@ -170,7 +172,7 @@ public class MedicalReportForm extends Form {
 		alcoholLB.setHeight("-1px");
 		alcoholLB.setValue("Alcohol:");
 		mainLayout.addComponent(alcoholLB, "top:302.0px;left:40.0px;");
-		
+
 		// alcoholYesCB
 		alcoholYesCB = new CheckBox();
 		alcoholYesCB.setCaption("yes");
@@ -178,7 +180,7 @@ public class MedicalReportForm extends Form {
 		alcoholYesCB.setWidth("-1px");
 		alcoholYesCB.setHeight("-1px");
 		mainLayout.addComponent(alcoholYesCB, "top:300.0px;left:100.0px;");
-		
+
 		// alcoholNoCB
 		alcoholNoCB = new CheckBox();
 		alcoholNoCB.setCaption("no");
@@ -187,7 +189,7 @@ public class MedicalReportForm extends Form {
 		alcoholNoCB.setHeight("-1px");
 		alcoholNoCB.setRequired(true);
 		mainLayout.addComponent(alcoholNoCB, "top:300.0px;left:160.0px;");
-		
+
 		// drugsLB
 		drugsLB = new Label();
 		drugsLB.setImmediate(false);
@@ -195,7 +197,7 @@ public class MedicalReportForm extends Form {
 		drugsLB.setHeight("-1px");
 		drugsLB.setValue("Drugs:");
 		mainLayout.addComponent(drugsLB, "top:322.0px;left:40.0px;");
-		
+
 		// drugsYes
 		drugsYes = new CheckBox();
 		drugsYes.setCaption("yes");
@@ -203,7 +205,7 @@ public class MedicalReportForm extends Form {
 		drugsYes.setWidth("-1px");
 		drugsYes.setHeight("-1px");
 		mainLayout.addComponent(drugsYes, "top:321.0px;left:100.0px;");
-		
+
 		// drugsNo
 		drugsNo = new CheckBox();
 		drugsNo.setCaption("no");
@@ -212,7 +214,7 @@ public class MedicalReportForm extends Form {
 		drugsNo.setHeight("-1px");
 		drugsNo.setRequired(true);
 		mainLayout.addComponent(drugsNo, "top:321.0px;left:160.0px;");
-		
+
 		// recommendationsLB
 		recommendationsLB = new Label();
 		recommendationsLB.setImmediate(false);
@@ -220,7 +222,7 @@ public class MedicalReportForm extends Form {
 		recommendationsLB.setHeight("-1px");
 		recommendationsLB.setValue("Recommendations");
 		mainLayout.addComponent(recommendationsLB, "top:362.0px;left:39.0px;");
-		
+
 		// textArea_3
 		textArea_3 = new TextArea();
 		textArea_3.setImmediate(false);
@@ -228,7 +230,7 @@ public class MedicalReportForm extends Form {
 		textArea_3.setHeight("100px");
 		mainLayout.addComponent(textArea_3,
 				"top:380.0px;right:12.0px;left:20.0px;");
-		
+
 		// verticalLayout
 		verticalLayout = new VerticalLayout();
 		verticalLayout.setImmediate(false);
@@ -237,7 +239,7 @@ public class MedicalReportForm extends Form {
 		verticalLayout.setMargin(false);
 		mainLayout.addComponent(verticalLayout,
 				"top:502.0px;right:20.0px;left:20.0px;");
-		
+
 		return mainLayout;
 	}
 

@@ -36,6 +36,7 @@ import web.classes.PropertyManager;
 import web.classes.ValidationClass;
 import web.components.table.paged.Header;
 import web.forms.Form;
+import web.forms.NewValidationForm;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
@@ -384,7 +385,7 @@ public abstract class AbstractActivityView extends AbstractView {
 								stepLabel = validationForm.getLabel();
 								if(value.equals(stepLabel))
 								{	
-									customComponent = new ValidationForm((ValidationForm)validationForm);
+									customComponent = new ValidationForm(validationForm);
 									customComponent.setData(requiredSteps);
 									buttonsLayout.addComponent(validateButton);
 								}else{

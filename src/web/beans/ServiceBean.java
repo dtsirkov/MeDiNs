@@ -18,6 +18,8 @@ public class ServiceBean {
 
 	private static Map<Enumerations, String> typeEnum;
 
+	private int id;
+
 	@NotNull
 	@MyColumn(name = "name", isVisible = true, width = 150)
 	private String name;
@@ -47,7 +49,8 @@ public class ServiceBean {
 	public ServiceBean() {
 	}
 
-	public ServiceBean(String name, String type) {
+	public ServiceBean(int id, String name, String type) {
+		this.id = id;
 		this.name = name;
 		this.type = type;
 	}
@@ -57,6 +60,7 @@ public class ServiceBean {
 		String type = (service.getType() == null ? "" : service.getType());
 		Map<String, String> codeDisplayMap = ComboxBean.getCodeDisplayMap(typeEnum);
 
+		this.setId(service.getId());
 		this.setName(service.getName() == null ? "" : service.getName());
 		this.setType(codeDisplayMap.get(type));
 		this.setDescription(service.getDescription() == null ? "" : service.getDescription());
@@ -65,6 +69,7 @@ public class ServiceBean {
 		this.setLocation(service.getServiceLocation() == null ? "" : service.getServiceLocation());
 		this.setPriceDue(service.getPriceDue()  == null ? "0.0" :  service.getPriceDue().toString());
 		this.setPriceExcess(service.getPriceExcess()  == null ? "0.0" :  service.getPriceExcess().toString());	
+
 	}
 
 	public static Map<Enumerations, String> getTypeEnum() {
@@ -73,6 +78,14 @@ public class ServiceBean {
 
 	public static void setTypeEnum(Map<Enumerations, String> typeEnum) {
 		ServiceBean.typeEnum = typeEnum;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -145,6 +158,7 @@ public class ServiceBean {
 
 		Map<String, String> displayCodeMap = ComboxBean.getDisplayCodeMap(typeEnum);
 
+		service.setId(id);
 		service.setName(name);
 		service.setType(displayCodeMap.get(type));
 		service.setDescription(description);
