@@ -37,11 +37,11 @@ public class UpdateOrganization extends AbstractActivityView{
 	public Layout buildLayout(){
 
 		Form[] requiredSteps = { new SearchOrganizationForm(this, "stepSearchOrganization"),
-		new OrganizationForm(this, "stepOrganization"),
-		new ContactForm(this, "stepCreateContact"), 
-		new ValidationForm(this, "stepValidate")
+				new OrganizationForm(this, "stepOrganization"),
+				new ContactForm(this, "stepCreateContact"), 
+				new ValidationForm(this, "stepValidate")
 		};
-		
+
 		setRequiredSteps(requiredSteps);
 
 		Form[] optionalSteps = {};
@@ -52,7 +52,7 @@ public class UpdateOrganization extends AbstractActivityView{
 
 		return super.buildLayout();
 	}
-	
+
 	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){		
 
 		Organizations organization = (Organizations)hmRequiredSteps.get("stepOrganization").getData();
@@ -75,5 +75,4 @@ public class UpdateOrganization extends AbstractActivityView{
 
 		return true;
 	}
-
 }

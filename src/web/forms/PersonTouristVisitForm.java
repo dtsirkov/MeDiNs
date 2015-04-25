@@ -12,10 +12,9 @@ import pojo.classes.Organizations;
 import pojo.classes.Persons;
 import pojo.classes.TouristVisit;
 
-
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractSelect;
@@ -50,7 +49,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 	public PersonTouristVisitForm(AbstractView view, String label) {
 		super(view, label, new FormLayout());
 		setCompositionRoot(getLayout());
-
 	}
 
 	public Layout buildLayout(String mode) {	
@@ -169,13 +167,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		hlContactNumber.addComponent(textFieldContactNumber);
 		formLayout.addComponent(hlContactNumber);
 
-		//Get combobox data
-		List<String> hotels = getOrganizationNameList(dao,"hotel");
-		if (!hotels.isEmpty())
-		{
-			comboBoxHotel.addItems(hotels.toArray());
-		}
-
 		// Custom handling for new items
 		comboBoxHotel.setNewItemHandler(new NewItemHandler() {
 			private static final long serialVersionUID = 1L;
@@ -214,7 +205,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setFrom((Date)event.getProperty().getValue());
 						popupDateFieldStart.setData((Date)event.getProperty().getValue());
 						popupDateFieldStart.setComponentError(null);
-						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -225,7 +215,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setTo((Date)event.getProperty().getValue());
 						popupDateFieldEnd.setData((Date)event.getProperty().getValue());
 						popupDateFieldEnd.setComponentError(null);
-						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -238,7 +227,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 							touristVisit.setResort(event.getProperty().getValue().toString());
 							comboBoxResort.setData(event.getProperty().getValue().toString());
 							comboBoxResort.setComponentError(null);
-							//setTouristVisit(touristVisit);
 						}
 					}
 				});
@@ -252,7 +240,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 							touristVisit.setHotel(event.getProperty().getValue().toString());
 							comboBoxHotel.setData(event.getProperty().getValue().toString());
 							comboBoxHotel.setComponentError(null);
-							//setTouristVisit(touristVisit);
 						}
 					}
 				});
@@ -264,7 +251,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setRoom(event.getProperty().getValue().toString());
 						textFieldRoomNumber.setData(event.getProperty().getValue().toString());
 						textFieldRoomNumber.setComponentError(null);
-						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -275,7 +261,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						touristVisit.setPhoneNumber(event.getProperty().getValue().toString());
 						textFieldContactNumber.setData(event.getProperty().getValue().toString());
 						textFieldContactNumber.setComponentError(null);
-						//setTouristVisit(touristVisit);
 					}
 				});
 
@@ -295,21 +280,6 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		}
 
 		return formLayout;
-	}
-
-	@Override
-	public boolean process(HashMap<String, Form> steps) {
-		//get access to DB
-		DaoIntrfc dao = getDao();
-
-		TouristVisit touristVisit = (TouristVisit) getData();
-		dao.evict(touristVisit);
-
-		//Persons person=(Persons) steps.get("stepCreatePerson").getData();
-		//touristVisit.setPersons(person);
-		steps.get("stepTouristVisit").setData(touristVisit);
-
-		return true;
 	}
 
 	public List<String> getOrganizationNameList(DaoIntrfc dao,String typeOrganization){
@@ -339,6 +309,21 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		}		
 
 		return hotelList;
+	}
+
+	@Override
+	public boolean process(HashMap<String, Form> steps) {
+		//get access to DB
+		DaoIntrfc dao = getDao();
+
+		TouristVisit touristVisit = (TouristVisit) getData();
+		dao.evict(touristVisit);
+
+		//Persons person=(Persons) steps.get("stepCreatePerson").getData();
+		//touristVisit.setPersons(person);
+		steps.get("stepTouristVisit").setData(touristVisit);
+
+		return true;
 	}
 
 }

@@ -8,8 +8,6 @@ import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import pojo.classes.TouristVisit;
 
-
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.AbstractComponent;

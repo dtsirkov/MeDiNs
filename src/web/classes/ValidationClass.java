@@ -2,20 +2,20 @@ package web.classes;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.Transaction;
-
 
 import pojo.classes.*;
 import web.forms.Form;
 
 import dao.classes.DaoIntrfc;
 
-public class ValidationClass {
+public class ValidationClass implements java.io.Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private boolean isValidated = false;
 	private String validationMethod;
 	private DaoIntrfc dao;
@@ -75,7 +75,7 @@ public class ValidationClass {
 		Transaction trans = getDao().getTransaction();
 		try{
 
-			String validationMethod = getValidationMethod();
+			String validationMethod=getValidationMethod();
 			/*if(getValidationMethod().equals("validatePerson")){
 				setValidated(validatePerson(mode));
 			}*/
@@ -86,8 +86,11 @@ public class ValidationClass {
 			case "validateOrganization":
 				setValidated(validateOrganization(mode));
 				break;
-			case "validateCase":
-				setValidated(validateCase(mode));
+			case "validateUser":
+				setValidated(validateUser(mode));
+				break;
+			case "validateUser2":
+				setValidated(validateUser2(mode));
 				break;
 			}
 
@@ -137,6 +140,30 @@ public class ValidationClass {
 				organization
 		};
 
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
+
+	private boolean validateUser(String mode){		
+
+		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+		Contacts contact = (Contacts)getRequiredSteps().get("stepCreateContact").getData();
+		Users user = (Users)getRequiredSteps().get("stepCreateUser").getData();
+
+		Set<Contacts> contactses=person.getContactses();
+		//load children
+		contactses.size();
+		contactses.add(contact);
+		person.setContactses(contactses);
+
+		Object[] objects  = {
+				contact,
+				person,
+				user
+		};
 
 		for(int i = 0; i < objects.length; i++){
 			dao.saveOrUpdate(objects[i]);
@@ -145,6 +172,23 @@ public class ValidationClass {
 		return true;
 	}
 
+	private boolean validateUser2(String mode){		
+
+		Persons person = (Persons)getRequiredSteps().get("stepCreatePerson").getData();
+		Users user = (Users)getRequiredSteps().get("stepCreateUser").getData();
+
+		Object[] objects  = {
+				person,
+				user
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			dao.saveOrUpdate(objects[i]);
+		}
+
+		return true;
+	}
+	
 	private boolean validateCase(String mode){		
 
 		CaseInfo caseInfo = (CaseInfo)getRequiredSteps().get("stepValidate").getData();
@@ -176,5 +220,4 @@ public class ValidationClass {
 
 		return true;
 	}
-
 }

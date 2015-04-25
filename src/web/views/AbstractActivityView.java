@@ -34,6 +34,7 @@ import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
+import web.components.Header;
 import web.forms.Form;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
@@ -115,6 +116,10 @@ public abstract class AbstractActivityView extends AbstractView {
 		// Create the root layout (VerticalLayout is actually the default).
 		root.addStyleName("personcreate");
 		root.setSizeFull();
+
+		Header header=new Header(getUI());
+		root.addComponent(header);
+		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
 
 		// Title bar
 		HorizontalLayout titleBar = new HorizontalLayout();
@@ -516,7 +521,6 @@ public abstract class AbstractActivityView extends AbstractView {
 				}else{
 					validatedSteps.remove((requiredSteps[requiredSteps.length-1]).getLabel());
 				}
-
 				menu.expandItemsRecursively((requiredStepsDisplay[0]).getLabel());
 				menu.unselect((requiredStepsDisplay[requiredSteps.length]).getLabel());
 				menu.setReadOnly(true);
@@ -573,7 +577,6 @@ public abstract class AbstractActivityView extends AbstractView {
 		return root;
 
 	}
-
 	//validation method
 	protected abstract boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps);
 

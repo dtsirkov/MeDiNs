@@ -7,14 +7,14 @@ import java.util.Set;
 
 import pojo.classes.CaseInfo;
 import pojo.classes.Services;
-
-import web.forms.CasePersonForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
 import web.forms.PersonForm;
 import web.forms.PersonTouristVisitForm;
 import web.forms.PolicyForm;
+import web.forms.SearchPersonForm;
+import web.forms.ServicesForm;
 import web.forms.ServicesForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
@@ -57,7 +57,7 @@ public class CreateCase extends AbstractActivityView{
 		validationForm.setData(caseInfo);
 
 		Form[] requiredSteps = {
-				//new CasePersonForm(this, "stepCreatePerson"),
+				new SearchPersonForm(this, "stepCreatePerson"),
 				//new PersonTouristVisitForm(this,"stepTouristVisit"),
 				//new PolicyForm(this,"stepPolicy"),
 				//new MedicalReportForm(this,"stepMedicalReport"),

@@ -6,11 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pojo.classes.Contacts;
-import pojo.classes.Enumerations;
-import pojo.classes.Persons;
-
-
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.FormLayout;
@@ -19,6 +14,9 @@ import com.vaadin.ui.TextField;
 
 import dao.classes.DaoIntrfc;
 
+import pojo.classes.Contacts;
+import pojo.classes.Enumerations;
+import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.PropertyManager;
 import web.views.AbstractView;

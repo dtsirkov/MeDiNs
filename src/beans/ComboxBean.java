@@ -8,8 +8,6 @@ import java.util.Map;
 
 import pojo.classes.Enumerations;
 
-
-
 public class ComboxBean {
 
 	private String value;
@@ -68,6 +66,17 @@ public class ComboxBean {
 			displayCodeMap.put(enumMap.get(key), key.getCode());
 		}
 		return displayCodeMap;
+	}
+	
+	public static ComboxBean getComboxBean(Map<Enumerations, String> enumMap,String value){
+		List<ComboxBean> comboxBeanList=getComboxBeanList(enumMap);
+		ComboxBean out=new ComboxBean(value,"");
+		for(ComboxBean bean:comboxBeanList){
+			if (value.equals(bean.getValue())){
+				out=bean;
+			}	
+		}
+		return out;
 	}
 
 }

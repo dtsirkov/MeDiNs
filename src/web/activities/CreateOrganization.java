@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pojo.classes.Contacts;
 import pojo.classes.Organizations;
+
 import web.forms.ContactForm;
 import web.forms.Form;
 import web.forms.OrganizationForm;
@@ -72,5 +73,6 @@ public class CreateOrganization extends AbstractActivityView{
 
 		return true;
 	}
+
 
 }

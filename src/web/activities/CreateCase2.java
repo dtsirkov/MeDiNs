@@ -7,6 +7,7 @@ import java.util.Set;
 
 import pojo.classes.CaseInfo;
 import pojo.classes.Services;
+
 import web.forms.ContactForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
@@ -56,7 +57,6 @@ public class CreateCase2 extends AbstractActivityView{
 
 		return super.buildLayout();
 	}
-
 	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){
 
 		CaseInfo caseInfo = (CaseInfo)hmRequiredSteps.get("stepValidate").getData();

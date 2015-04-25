@@ -14,7 +14,7 @@ public class PropertyManager {
 	private ServletContext servletContext;
 
 	public PropertyManager(){}
-
+	
 	public PropertyManager(String language){
 		setLanguage(language);
 	}
@@ -54,8 +54,6 @@ public class PropertyManager {
 			InputStream in = servletContext.getResourceAsStream("/LANGUAGES/" + getLanguage() + "/" + fileName);
 			prop.load(in);
 			propertyValue = prop.getProperty(propertyName);
-			if(propertyValue == null)
-				propertyValue = propertyName;
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

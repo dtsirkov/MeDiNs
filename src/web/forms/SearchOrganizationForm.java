@@ -9,11 +9,6 @@ import java.util.Set;
 
 import org.hibernate.Hibernate;
 
-import pojo.classes.Contacts;
-import pojo.classes.Enumerations;
-import pojo.classes.Organizations;
-import pojo.classes.Persons;
-
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -34,6 +29,10 @@ import com.vaadin.ui.Button.ClickEvent;
 import beans.ComboxBean;
 import dao.classes.DaoIntrfc;
 
+import pojo.classes.Contacts;
+import pojo.classes.Enumerations;
+import pojo.classes.Organizations;
+import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.PropertyManager;
 import web.components.PagedTable;

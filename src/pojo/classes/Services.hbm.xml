@@ -6,7 +6,7 @@
     <class name="pojo.classes.Services" table="services" catalog="medins_schema">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="assigned" />
         </id>
         <property name="name" type="string">
             <column name="name" length="100" not-null="true" />

@@ -59,7 +59,7 @@ public class UpdatePerson extends AbstractActivityView{
 
 		return super.buildLayout();
 	}
-
+	
 	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){		
 
 		Persons person = (Persons)hmRequiredSteps.get("stepCreatePerson").getData();

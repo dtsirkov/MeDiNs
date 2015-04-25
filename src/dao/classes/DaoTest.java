@@ -12,8 +12,6 @@ import pojo.classes.Enumerations;
 import pojo.classes.Organizations;
 import pojo.classes.Persons;
 
-
-
 public class DaoTest {
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException{
 

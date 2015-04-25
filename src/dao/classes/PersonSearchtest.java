@@ -18,7 +18,6 @@ import pojo.classes.Country;
 import pojo.classes.Enumerations;
 import pojo.classes.Persons;
 
-
 import beans.ComboxBean;
 
 import com.mysql.jdbc.Connection;

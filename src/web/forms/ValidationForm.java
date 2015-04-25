@@ -60,8 +60,7 @@ public class ValidationForm extends Form implements StepIntrfc{
 
 		int componentCount = componentLayout.getComponentCount();
 		GridLayout grid = new GridLayout(1, componentCount + 1);
-		//grid.setWidth("400px");
-		grid.setSizeUndefined();
+		grid.setWidth("400px");
 
 		Label label = new Label(object.getLabelDtl());
 		label.setStyleName("validationCompenentTitle");
@@ -87,15 +86,15 @@ public class ValidationForm extends Form implements StepIntrfc{
 			caption = abstractComponent.getCaption();
 			//System.out.println(caption);		
 			panel = new Panel(caption);
-			//panel.setSizeUndefined();
+			//panel.setWidth("400px");
 			panel.setStyleName("validation_panel");
 
 			if (abstractComponent.getData() != null){
-
 				value = abstractComponent.getData().toString();                
 
-				panel.setWidth("400px");
 				int valueWidth = metrics.charsWidth(value.toCharArray(), 0, value.length());
+
+				//System.out.println(value);
 
 				if (valueWidth < 400){
 					valueLabel = new Label(value);
@@ -111,15 +110,9 @@ public class ValidationForm extends Form implements StepIntrfc{
 					panel.setContent(area);
 				}
 			}else{
-				if(abstractComponent instanceof Layout){
-					panel.setSizeUndefined();
-					panel.setContent(abstractComponent);
-				}else{
-					valueLabel = new Label("-");
-					valueLabel.setSizeUndefined();
-					panel.setContent(valueLabel);
-				}
-
+				valueLabel = new Label("-");
+				valueLabel.setSizeUndefined();
+				panel.setContent(valueLabel);
 			}
 			grid.addComponent(panel);
 			grid.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);

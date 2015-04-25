@@ -3,17 +3,12 @@ package web.forms;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import pojo.classes.Enumerations;
 import pojo.classes.Persons;
-
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
-
-
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.ComboBox;
@@ -21,7 +16,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
-
 import dao.classes.DaoIntrfc;
 
 public class PersonForm extends Form implements StepIntrfc{
@@ -36,7 +30,7 @@ public class PersonForm extends Form implements StepIntrfc{
 	private TextField personLastNameTF;
 	private TextField persomMiddleNameTF;
 	private TextField personFirstNameTF;
-	
+
 	public PersonForm(AbstractView view, String label) {
 
 		super(view, label, new FormLayout());
@@ -227,10 +221,10 @@ public class PersonForm extends Form implements StepIntrfc{
 									enumeration = (Enumerations)entry.getKey();
 								}		
 							}
+							person.setEnumerationsBySex(enumeration);
+							personSexCB.setData(event.getProperty().getValue().toString());
+							personSexCB.setComponentError(null);
 						}
-						person.setEnumerationsBySex(enumeration);
-						personSexCB.setData(event.getProperty().getValue().toString());
-						personSexCB.setComponentError(null);
 					}
 				});
 
@@ -246,10 +240,10 @@ public class PersonForm extends Form implements StepIntrfc{
 									enumeration = (Enumerations)entry.getKey();
 								}		
 							}
+							person.setEnumerationsByJobTitle(enumeration);
+							personJobTitleCB.setData(event.getProperty().getValue().toString());
+							personJobTitleCB.setComponentError(null);
 						}
-						person.setEnumerationsByJobTitle(enumeration);
-						personJobTitleCB.setData(event.getProperty().getValue().toString());
-						personJobTitleCB.setComponentError(null);
 					}
 				});
 
@@ -265,10 +259,10 @@ public class PersonForm extends Form implements StepIntrfc{
 									enumeration = (Enumerations)entry.getKey();
 								}		
 							}
+							person.setEnumerationsByRole(enumeration);
+							personRoleCB.setData(event.getProperty().getValue().toString());
+							personRoleCB.setComponentError(null);
 						}
-						person.setEnumerationsByRole(enumeration);
-						personRoleCB.setData(event.getProperty().getValue().toString());
-						personRoleCB.setComponentError(null);
 					}
 				});
 
@@ -297,16 +291,18 @@ public class PersonForm extends Form implements StepIntrfc{
 		personRoleCB.select(personRoleEnum.get(person.getEnumerationsByRole()));
 		personJobTitleCB.select(personJobTitleEnum.get(person.getEnumerationsByJobTitle()));
 
-		//bind data
-		personSocialNumberTF.setValue(person.getSocialNumber());
-		personFirstNameTF.setValue(person.getFirstName());
-		persomMiddleNameTF.setValue(person.getMiddleName());
-		personLastNameTF.setValue(person.getLastName());
-		personBirthDatePDF.setValue(person.getBirthDate());
-		personSexCB.setValue(person.getEnumerationsBySex());
-		personJobTitleCB.setValue(person.getEnumerationsByJobTitle());
-		personRoleCB.setValue(person.getEnumerationsByRole());
-		personTitleCB.setValue(person.getEnumerationsByTitle());
+		//retrieve and bind data to fields
+		if(getData() != null){
+			personSocialNumberTF.setValue(person.getSocialNumber());
+			personFirstNameTF.setValue(person.getFirstName());
+			persomMiddleNameTF.setValue(person.getMiddleName());
+			personLastNameTF.setValue(person.getLastName());
+			personBirthDatePDF.setValue(person.getBirthDate());
+			personSexCB.setValue(person.getEnumerationsBySex());
+			personJobTitleCB.setValue(person.getEnumerationsByJobTitle());
+			personRoleCB.setValue(person.getEnumerationsByRole());
+			personTitleCB.setValue(person.getEnumerationsByTitle());
+		}
 
 		if (mode.equals("update")){
 			personSocialNumberTF.setData(person.getSocialNumber());
@@ -319,7 +315,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		return formLayout;
 	}
 
-	
+
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
 		//get access to DB
@@ -329,7 +325,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		dao.evict(person);
 
 		steps.get("stepCreatePerson").setData(person);
-		
+
 		return true;
 	}
 
