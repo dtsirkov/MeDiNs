@@ -1,9 +1,9 @@
 package web.components.table.generated.components;
 
 
+import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.components.table.generated.TableInfo;
-import web.components.table.generated.ui.MyUI;
 import web.forms.Form;
 
 import com.vaadin.data.util.BeanItem;
@@ -127,7 +127,7 @@ public class MyEdit extends CustomComponent {
 
 			BeanItem<?> beanItem  = bic.addItem(tableInfo.getEditForm().getData());
 			setIdentification(beanItem);
-			((MyUI) UI.getCurrent()).removeActiveEditPopupWindow();
+			((MedinsUI) UI.getCurrent()).removeActiveEditPopupWindow();
 
 		}
 	};

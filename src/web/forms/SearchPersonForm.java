@@ -104,18 +104,17 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		DaoIntrfc dao = getDao();
 
 		Persons selectedPerson = getSelectedItem();
+		Set<Contacts> contactses = selectedPerson.getContactses();
+		contactses.size();
+
 		dao.evict(selectedPerson);
-
 		steps.get("stepCreatePerson").setData(selectedPerson);
-
-		Set<Contacts> contactses=selectedPerson.getContactses();
 
 		Enumerations enumeration;
 		for(Contacts contact : contactses){
 			dao.evict(contact);
 			enumeration = contact.getEnumerationsByActive();
 			if(enumeration.getCode().equals("yes")){
-				dao.evict(contact);
 				steps.get("stepCreateContact").setData(contact);
 			}
 		}

@@ -1,6 +1,6 @@
 package web.components.table.generated.components;
 
-import web.components.table.generated.ui.MyUI;
+import web.MedinsUI;
 
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
@@ -23,9 +23,9 @@ public class CancelButton extends MyButton {
 			@Override
 			public void buttonClick(final ClickEvent event) {
 				if (isEdit) {
-					((MyUI) UI.getCurrent()).removeActiveEditPopupWindow();
+					((MedinsUI) UI.getCurrent()).removeActiveEditPopupWindow();
 				} else {
-					((MyUI) UI.getCurrent()).removeActiveListPopupWindow();
+					((MedinsUI) UI.getCurrent()).removeActiveListPopupWindow();
 				}
 			}
 		});

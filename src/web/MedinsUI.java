@@ -17,6 +17,8 @@ import web.activities.UpdateUser;
 import web.classes.Activity;
 import web.classes.Domain;
 import web.classes.PropertyManager;
+import web.components.table.generated.windows.EditPopupWindow;
+import web.components.table.generated.windows.ListPopupWindow;
 import web.views.DomainSelectionView;
 import web.views.LoginView;
 
@@ -41,10 +43,10 @@ public class MedinsUI extends UI {
 
 	private DaoIntrfc dao;
 	private Navigator navigator;
+	private EditPopupWindow activeEditPopupWindow;
+	private ListPopupWindow activeListPopupWindow;
 
-	public MedinsUI(){
-
-	}
+	public MedinsUI(){}
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = MedinsUI.class)
@@ -131,12 +133,9 @@ public class MedinsUI extends UI {
 			}
 
 			@Override
-			public void afterViewChange(ViewChangeEvent event) {
-
-			}
-		}
-
-				);
+			public void afterViewChange(ViewChangeEvent event) {}
+			
+		});
 
 		navigator.navigateTo("loginView");
 	}
@@ -164,5 +163,56 @@ public class MedinsUI extends UI {
 	public void setNavigator(Navigator navigator) {
 		this.navigator = navigator;
 	}
+	
+	public EditPopupWindow getActiveEditPopupWindow() {
+		return activeEditPopupWindow;
+	}
+	
+	public void setActiveEditPopupWindow(final EditPopupWindow activeEditPopup) {
+		removeActiveEditPopupWindow();
+		activeEditPopupWindow = activeEditPopup;
+	}
+	
+	public ListPopupWindow getActiveListPopupWindow() {
+		return activeListPopupWindow;
+	}
+
+	public void setActiveListPopupWindow(final ListPopupWindow activeListPopup) {
+		removeActiveListPopupWindow();
+		activeListPopupWindow = activeListPopup;
+	}
+	
+	
+
+	public void removeActiveEditPopupWindow() {
+		getCurrent().removeWindow(activeEditPopupWindow);
+		if (activeEditPopupWindow != null) {
+			activeEditPopupWindow.close();
+		}
+	}
+
+	public void removeActiveListPopupWindow() {
+		getCurrent().removeWindow(activeListPopupWindow);
+		if (activeListPopupWindow != null) {
+			activeListPopupWindow.close();
+		}
+	}
+
+	public void showEditPopup(final EditPopupWindow editPopup) {
+		getCurrent().addWindow(editPopup);
+		setActiveEditPopupWindow(editPopup);
+	}
+
+	public void showListPopup(final ListPopupWindow listPopup) {
+		removeActiveListPopupWindow();
+		getCurrent().addWindow(listPopup);
+		setActiveListPopupWindow(listPopup);
+	}
+
+	public void removeActivePopupWindows() {
+		removeActiveEditPopupWindow();
+		removeActiveListPopupWindow();
+	}
+
 
 }

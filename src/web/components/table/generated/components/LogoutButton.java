@@ -1,6 +1,6 @@
 package web.components.table.generated.components;
 
-import web.components.table.generated.ui.MyUI;
+import web.MedinsUI;
 
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
@@ -9,7 +9,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
 public abstract class LogoutButton extends MyButton {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8616061697550604698L;
 
@@ -23,17 +23,17 @@ public abstract class LogoutButton extends MyButton {
 			private static final long serialVersionUID = -6024482019178835620L;
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				((MyUI) UI.getCurrent()).removeActivePopupWindows();
+				((MedinsUI) UI.getCurrent()).removeActivePopupWindows();
 				try {
 					VaadinSession.getCurrent().setAttribute(Class.forName(userClassPath), null);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				MyUI.getCurrent().setContent(setContent());
+				MedinsUI.getCurrent().setContent(setContent());
 			}
 		});
 	}
-	
+
 	/**
 	 * Sets the content of the View to the intended View.
 	 * 

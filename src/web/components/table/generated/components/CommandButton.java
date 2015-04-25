@@ -1,9 +1,9 @@
 package web.components.table.generated.components;
 
+import web.MedinsUI;
 import web.components.table.generated.MyTable;
 import web.components.table.generated.TableInfo;
 import web.components.table.generated.autogenerate.GenerateTableInfo;
-import web.components.table.generated.ui.MyUI;
 import web.forms.Form;
 
 
@@ -45,7 +45,7 @@ public abstract class CommandButton extends MyButton {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				((MyUI) UI.getCurrent()).removeActivePopupWindows();
+				((MedinsUI) UI.getCurrent()).removeActivePopupWindows();
 				TableInfo tableInfo = null;
 				try {
 					Class<TableInfo> classTableInfo = (Class<TableInfo>) Class.forName(clazz.getCanonicalName() + "TableInfo");

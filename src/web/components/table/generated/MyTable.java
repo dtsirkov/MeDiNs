@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import web.MedinsUI;
 import web.classes.PropertyManager;
 import web.components.table.generated.components.CancelButton;
 import web.components.table.generated.components.MyButton;
-import web.components.table.generated.ui.MyUI;
 import web.components.table.generated.windows.EditPopupWindow;
 import web.components.table.generated.windows.Type;
 
@@ -358,7 +358,7 @@ public abstract class MyTable extends CustomComponent {
 				editCell.addClickListener(new Button.ClickListener() {
 					private static final long serialVersionUID = -7781579576610805407L;
 					public void buttonClick(final ClickEvent event) {
-						((MyUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, itemId, Type.EDIT));
+						((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, itemId, Type.EDIT));
 					}
 				});
 				editCell.setIcon(new ThemeResource("myVaadin/icons/edit.png"));
@@ -529,7 +529,7 @@ public abstract class MyTable extends CustomComponent {
 			private static final long serialVersionUID = -5000801077096604587L;
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				((MyUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.NEW));
+				((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.NEW));
 			}
 		};
 	}
@@ -545,7 +545,7 @@ public abstract class MyTable extends CustomComponent {
 
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				((MyUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.IMPORT));
+				((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.IMPORT));
 			}
 		};
 	}

@@ -6,8 +6,6 @@ import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 import web.MedinsUI;
-import web.components.table.generated.ui.MyUI;
-
 import com.vaadin.ui.Table;
 
 /**
@@ -31,7 +29,7 @@ public final class DeleteConfirmation {
 
 		createCustomConfirmDialog();
 
-		ConfirmDialog.show(MyUI.getCurrent(), new ConfirmDialog.Listener() {
+		ConfirmDialog.show(MedinsUI.getCurrent(), new ConfirmDialog.Listener() {
 
 			private static final long serialVersionUID = 2498283846710824877L;
 
@@ -64,7 +62,7 @@ public final class DeleteConfirmation {
 
 		createCustomConfirmDialog();
 
-		ConfirmDialog.show(MyUI.getCurrent(), new ConfirmDialog.Listener() {
+		ConfirmDialog.show(MedinsUI.getCurrent(), new ConfirmDialog.Listener() {
 			private static final long serialVersionUID = 2498283846710824877L;
 			@Override
 			public void onClose(final ConfirmDialog dialog) {

@@ -57,7 +57,7 @@ public class CreateCase extends AbstractActivityView{
 		validationForm.setData(caseInfo);
 
 		Form[] requiredSteps = {
-				new SearchPersonForm(this, "stepCreatePerson"),
+				//new SearchPersonForm(this, "stepCreatePerson"),
 				//new PersonTouristVisitForm(this,"stepTouristVisit"),
 				//new PolicyForm(this,"stepPolicy"),
 				//new MedicalReportForm(this,"stepMedicalReport"),

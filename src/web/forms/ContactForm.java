@@ -356,24 +356,22 @@ public class ContactForm extends Form implements StepIntrfc{
 
 		return formLayout;
 	}
-	
-	public static List<Country> getCountries(DaoIntrfc dao){
-		List<Country> outCountries=new ArrayList<Country>(0);
 
-		Country country=new Country();		
-		List<Object> ls=dao.findByExample(country);
+	public static List<Country> getCountries(DaoIntrfc dao){
+		
+		List<Country> outCountries = new ArrayList<Country>(0);
+		Country country = new Country();		
+		List<Object> ls = dao.findByExample(country);
 
 		for(Object c:ls){
-			Country c1=(Country) c;
+			Country c1 = (Country) c;
 			outCountries.add(c1);
 		}
 		return outCountries;		
 	}
 
 	public static Country getCountry(DaoIntrfc dao,String countryCode){
-		Country country=(Country) dao.findById("Country",countryCode);
-		
-		return country;		
+		return (Country) dao.findById("Country",countryCode);	
 	}
 
 	@Override
