@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import pojo.classes.Persons;
 
 
 
@@ -28,11 +27,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Persons;
 
 import web.StepIntrfc;
 import web.classes.PropertyManager;
-import web.components.PagedTable;
+import web.components.table.paged.PagedTable;
 import web.views.AbstractView;
 
 public class CasePersonForm<T> extends SearchPersonForm implements StepIntrfc {
@@ -81,7 +81,7 @@ public class CasePersonForm<T> extends SearchPersonForm implements StepIntrfc {
 
 		Layout root = (VerticalLayout)getLayout();
 		HorizontalLayout hlayout=new HorizontalLayout();
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		root.removeAllComponents();
 		Button createPerson=new Button("Create Person");
 		createPerson.addClickListener(new Button.ClickListener() {
@@ -112,14 +112,14 @@ public class CasePersonForm<T> extends SearchPersonForm implements StepIntrfc {
 
 	public Layout buildSearchLayout(){
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		VerticalLayout root = new VerticalLayout();
 		//get propertyManager
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao=getDao();
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		root.removeAllComponents();	
 
 		searchByIdLayout=buildSearchByIdLayout();
@@ -197,7 +197,7 @@ public class CasePersonForm<T> extends SearchPersonForm implements StepIntrfc {
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
 
 		FormLayout formLayout = new FormLayout();

@@ -29,12 +29,12 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
 import web.classes.ValidationClass;
-import web.components.Header;
+import web.components.table.paged.Header;
 import web.forms.Form;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
@@ -108,12 +108,12 @@ public abstract class AbstractActivityView extends AbstractView {
 		dao.getTransaction().rollback();
 		final Transaction transaction = dao.getTransaction();
 
-		//create main layout
+		//create main web.components.table.generated.layout
 		final VerticalLayout root = new VerticalLayout();
 		//create component validater
 		final ComponentValidator customValidator = new ComponentValidator(getPropertyManager());
 
-		// Create the root layout (VerticalLayout is actually the default).
+		// Create the root web.components.table.generated.layout (VerticalLayout is actually the default).
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
@@ -137,7 +137,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		titleBar.addComponent(homeEm);
 		titleBar.setComponentAlignment(homeEm, Alignment.MIDDLE_RIGHT);
 
-		// Horizontal layout with selection tree on the left and 
+		// Horizontal web.components.table.generated.layout with selection tree on the left and 
 		// a details panel on the right.
 		HorizontalLayout horlayout = new HorizontalLayout();
 		horlayout.setSizeFull();
@@ -168,7 +168,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		detailspanel.setSizeFull();
 		horlayout.addComponent(detailspanel);
 
-		// Have a vertical layout in the Details panel.
+		// Have a vertical web.components.table.generated.layout in the Details panel.
 		final VerticalLayout detailslayout = new VerticalLayout();
 		detailslayout.setImmediate(true);
 		detailslayout.setSizeFull();
@@ -187,7 +187,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		detailslayout.addComponent(detailsbox);
 		detailslayout.setComponentAlignment(detailsbox, Alignment.MIDDLE_CENTER);
 
-		//create step title layout
+		//create step title web.components.table.generated.layout
 		final HorizontalLayout stepTitleLayout = new HorizontalLayout();
 		stepTitleLayout.setMargin(new MarginInfo(true, false, true, false));
 
@@ -197,11 +197,11 @@ public abstract class AbstractActivityView extends AbstractView {
 		stepTitleLayout.addComponent(stepTitle);
 		stepTitleLayout.setComponentAlignment(stepTitle, Alignment.MIDDLE_CENTER);
 
-		//create custom component layout
+		//create custom component web.components.table.generated.layout
 		final VerticalLayout customComponentLayout = new VerticalLayout();
 		customComponentLayout.setMargin(new MarginInfo(false, false, false, false));
 
-		//create button layout
+		//create button web.components.table.generated.layout
 		final HorizontalLayout buttonsLayout = new HorizontalLayout();
 		buttonsLayout.setMargin(new MarginInfo(true, false, true, false));
 

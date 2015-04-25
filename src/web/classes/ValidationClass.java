@@ -8,10 +8,10 @@ import java.util.Map;
 
 import org.hibernate.Transaction;
 
-import pojo.classes.*;
 import web.forms.Form;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.*;
 
 public class ValidationClass implements java.io.Serializable{
 

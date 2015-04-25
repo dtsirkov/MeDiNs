@@ -7,8 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import web.beans.ComboxBean;
 import web.classes.PropertyManager;
-import web.components.PagedTable;
+import web.components.table.paged.PagedTable;
 import web.views.AbstractView;
 
 import com.vaadin.annotations.Theme;
@@ -29,8 +30,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.event.ItemClickEvent;
 
-import beans.ComboxBean;
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 @Theme("pagedtabletheme")
 @Title("PagedTable Example")
@@ -177,17 +177,17 @@ public abstract class SearchForm <T extends Serializable> extends Form {
 	@SuppressWarnings("unchecked")
 	public Layout buildLayout(String mode){
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		VerticalLayout root = (VerticalLayout)getLayout();
 		//get propertyManager
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
 		final DaoIntrfc dao = getDao();
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		root.removeAllComponents();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		//String width = "180px", height = "-1px";
 
 		resultTableLayout = new VerticalLayout();	

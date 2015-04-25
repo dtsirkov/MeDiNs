@@ -12,11 +12,11 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
 
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Contacts;
+import database.pojo.Enumerations;
+import database.pojo.Persons;
 
-import pojo.classes.Contacts;
-import pojo.classes.Enumerations;
-import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
@@ -35,7 +35,7 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
 
 		FormLayout formLayout = new FormLayout();

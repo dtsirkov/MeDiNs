@@ -6,7 +6,7 @@ import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
-import web.components.Header;
+import web.components.table.paged.Header;
 import web.forms.DomainSelectionForm;
 
 import com.vaadin.navigator.Navigator;
@@ -20,7 +20,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 //@Theme("medins")
 public class DomainSelectionView extends AbstractView{
@@ -49,12 +49,12 @@ public class DomainSelectionView extends AbstractView{
 		//get navigator 
 		final Navigator navigator = getNavigator();
 
-		//create main layout
+		//create main web.components.table.generated.layout
 		final VerticalLayout root = new VerticalLayout();
 		//create component validater
 		final ComponentValidator customValidator = new ComponentValidator(getPropertyManager());
 
-		// Create the root layout (VerticalLayout is actually the default).
+		// Create the root web.components.table.generated.layout (VerticalLayout is actually the default).
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 

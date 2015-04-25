@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="database.pojo.Persons" table="persons" catalog="medins_schema">
+        <id name="socialNumber" type="string">
+            <column name="social_number" length="45" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="enumerationsByJobTitle" class="database.pojo.Enumerations" fetch="select">
+            <column name="job_title" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsByTitle" class="database.pojo.Enumerations" fetch="select">
+            <column name="title" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsByRole" class="database.pojo.Enumerations" fetch="select">
+            <column name="role" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="enumerationsBySex" class="database.pojo.Enumerations" fetch="select">
+            <column name="sex" length="15" not-null="true" />
+        </many-to-one>
+        <property name="firstName" type="string">
+            <column name="first_name" length="45" not-null="true" />
+        </property>
+        <property name="middleName" type="string">
+            <column name="middle_name" length="45" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="45" not-null="true" />
+        </property>
+        <property name="birthDate" type="date">
+            <column name="birth_date" length="0" not-null="true" />
+        </property>
+        <set name="organizationses" table="person_organization_link" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="person_id" length="45" not-null="true" />
+            </key>
+            <many-to-many entity-name="database.pojo.Organizations">
+                <column name="organization_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="contactses" table="person_contact_link" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="person_id" length="45" not-null="true" />
+            </key>
+            <many-to-many entity-name="database.pojo.Contacts">
+                <column name="contact_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="caseInfos" table="case_info" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="patient_info" length="45" not-null="true" />
+            </key>
+            <one-to-many class="database.pojo.CaseInfo" />
+        </set>
+        <set name="userses" table="users" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="person_id" length="45" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="database.pojo.Users" />
+        </set>
+        <set name="touristVisits" table="tourist_visit" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="person" length="45" not-null="true" />
+            </key>
+            <one-to-many class="database.pojo.TouristVisit" />
+        </set>
+    </class>
+</hibernate-mapping>

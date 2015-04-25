@@ -5,17 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pojo.classes.Contacts;
-import pojo.classes.Country;
-import pojo.classes.Enumerations;
-import pojo.classes.Organizations;
 import web.StepIntrfc;
+import web.beans.ComboxBean;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
 
 
-import beans.ComboxBean;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -25,9 +21,12 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
-import dao.classes.DaoImpl;
-import dao.classes.DaoIntrfc;
-import pojo.classes.Country;
+import database.dao.DaoImpl;
+import database.dao.DaoIntrfc;
+import database.pojo.Contacts;
+import database.pojo.Country;
+import database.pojo.Enumerations;
+import database.pojo.Organizations;
 
 public class ContactForm extends Form implements StepIntrfc{
 
@@ -52,7 +51,7 @@ public class ContactForm extends Form implements StepIntrfc{
 
 	public Layout buildLayout(String mode) {
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
@@ -61,7 +60,7 @@ public class ContactForm extends Form implements StepIntrfc{
 		//get access to DB
 		DaoImpl dao = (DaoImpl) getDao();	
 
-		//get object that will be bind to the components
+		//get object that will be bind to the web.components.table.generated.components
 		final Contacts contact;
 		if((mode.equals("update") && getData() != null) || getData() !=null) {
 			contact = (Contacts)getData();
@@ -78,10 +77,10 @@ public class ContactForm extends Form implements StepIntrfc{
 			setData(contact);
 		}
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		formLayout.removeAllComponents();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
 
 		// addressTF

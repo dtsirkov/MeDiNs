@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
-import ui.MyUI;
 import web.activities.CreateCase;
 import web.activities.CreateCase2;
 import web.activities.CreateOrganization;
@@ -30,13 +29,13 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import dao.classes.DaoImpl;
-import dao.classes.DaoIntrfc;
+import database.dao.DaoImpl;
+import database.dao.DaoIntrfc;
 
 @SuppressWarnings("serial")
 @Theme("medins")
 @PreserveOnRefresh
-public class MedinsUI extends MyUI {
+public class MedinsUI extends UI {
 
 	private static PropertyManager propertyManager;
 

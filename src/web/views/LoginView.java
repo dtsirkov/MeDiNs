@@ -1,7 +1,7 @@
 package web.views;
 
 import web.classes.PropertyManager;
-import web.components.Header;
+import web.components.table.paged.Header;
 import web.forms.LoginForm;
 
 import com.vaadin.navigator.View;
@@ -15,7 +15,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 public class LoginView extends AbstractView implements View{
 
@@ -38,7 +38,7 @@ public class LoginView extends AbstractView implements View{
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 
-		//create main layout
+		//create main web.components.table.generated.layout
 		VerticalLayout layout =new VerticalLayout();	
 		layout.removeAllComponents();
 
@@ -48,7 +48,7 @@ public class LoginView extends AbstractView implements View{
 		/*	// Title bar
 		HorizontalLayout titleBar = new HorizontalLayout();
 		titleBar.setWidth("100%");
-		layout.addComponent(titleBar);
+		web.components.table.generated.layout.addComponent(titleBar);
 
 		Label title = new Label("MeDiNs");
 		title.addStyleName("title");

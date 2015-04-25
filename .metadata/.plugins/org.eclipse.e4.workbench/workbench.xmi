@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_L_D5Mem5EeOsFIpiNR_Ang" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_L_D5Mum5EeOsFIpiNR_Ang" bindingContexts="_L_EgQ-m5EeOsFIpiNR_Ang">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/web.components.table.generated.ui/2010/UIModel/application/web.components.table.generated.ui/advanced" xmlns:application="http://www.eclipse.org/web.components.table.generated.ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/web.components.table.generated.ui/2010/UIModel/application/web.components.table.generated.ui/basic" xmlns:menu="http://www.eclipse.org/web.components.table.generated.ui/2010/UIModel/application/web.components.table.generated.ui/menu" xmi:id="_L_D5Mem5EeOsFIpiNR_Ang" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_L_D5Mum5EeOsFIpiNR_Ang" bindingContexts="_L_EgQ-m5EeOsFIpiNR_Ang">
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <children xsi:type="basic:TrimmedWindow" xmi:id="_L_D5Mum5EeOsFIpiNR_Ang" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_MOzlYOm5EeOsFIpiNR_Ang" x="25" y="25" width="1024" height="768">
     <tags>topLevel</tags>
@@ -989,7 +989,7 @@
     <children xmi:id="_L_EgRum5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.contexts.dialog" contributorURI="platform:/plugin/org.eclipse.ui.workbench" name="In Dialogs" description="A dialog is open"/>
   </rootContext>
   <rootContext xmi:id="_MBEEUOm5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.xsd.ui.editor.designView" name="XSD Editor Design View" description="XSD Editor Design View"/>
-  <rootContext xmi:id="_MBEEUem5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.contexts.workbenchMenu" name="Workbench Menu" description="When no Workbench windows are active"/>
+  <rootContext xmi:id="_MBEEUem5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.contexts.workbenchMenu" name="Workbench Menu" description="When no Workbench web.components.table.generated.windows are active"/>
   <rootContext xmi:id="_MBEEVOm5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.wsdl.ui.editor.designView" name="WSDL Editor Design View" description="WSDL Editor Design View"/>
   <rootContext xmi:id="_MBEEXum5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.contexts.actionSet" name="Action Set" description="Parent context for action sets"/>
   <rootContext xmi:id="_MBErYem5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.breadcrumbEditorScope" name="Editor Breadcrumb Navigation" description="Editor Breadcrumb Navigation Context"/>
@@ -1493,7 +1493,7 @@
   <commands xmi:id="_MAsQ6Om5EeOsFIpiNR_Ang" elementId="org.eclipse.mylyn.context.ui.commands.open.context.dialog" commandName="Show Context Quick View" description="Show Context Quick View" category="_MArC1-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MAsQ6em5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.edit.text.java.convert.anonymous.to.nested" commandName="Convert Anonymous Class to Nested" description="Convert an anonymous class to a nested class" category="_MArC3Om5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MAsQ6um5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.edit.text.select.lineDown" commandName="Select Line Down" description="Extend the selection to the next line of text" category="_MArCzem5EeOsFIpiNR_Ang"/>
-  <commands xmi:id="_MAsQ6-m5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.edit.text.remove.occurrence.annotations" commandName="Remove Occurrence Annotations" description="Removes the occurrence annotations from the current editor" category="_MArCwOm5EeOsFIpiNR_Ang"/>
+  <commands xmi:id="_MAsQ6-m5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.edit.text.remove.occurrence.annotations" commandName="Remove Occurrence Annotations" description="Removes the occurrence web.components.table.generated.annotations from the current editor" category="_MArCwOm5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MAsQ7Om5EeOsFIpiNR_Ang" elementId="org.eclipse.egit.ui.PushHeadToGerrit" commandName="Push Current Head to Gerrit" category="_MArCx-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MAsQ7em5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.window.showContextMenu" commandName="Show Context Menu" description="Show the context menu" category="_MAqbs-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MAsQ7um5EeOsFIpiNR_Ang" elementId="org.eclipse.egit.ui.team.stash.drop" commandName="Delete Stashed Commit..." category="_MArCx-m5EeOsFIpiNR_Ang"/>
@@ -1799,7 +1799,7 @@
   <commands xmi:id="_MA0Ms-m5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.edit.text.java.modify.method.parameters" commandName="Change Method Signature" description="Change method signature includes parameter names and parameter order" category="_MArC3Om5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA0MtOm5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.edit.text.copyLineDown" commandName="Copy Lines" description="Duplicates the selected lines and moves the selection to the copy" category="_MArCzem5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA0Mtem5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.toggleMarkOccurrences" commandName="Toggle Mark Occurrences" description="Toggles mark occurrences in JavaScript editors" category="_MArCwOm5EeOsFIpiNR_Ang"/>
-  <commands xmi:id="_MA0Mtum5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.edit.text.remove.occurrence.annotations" commandName="Remove Occurrence Annotations" description="Removes the occurrence annotations from the current editor" category="_MArC2-m5EeOsFIpiNR_Ang"/>
+  <commands xmi:id="_MA0Mtum5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.edit.text.remove.occurrence.annotations" commandName="Remove Occurrence Annotations" description="Removes the occurrence web.components.table.generated.annotations from the current editor" category="_MArC2-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA0Mt-m5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.correction.addBlock.assist" commandName="Quick Assist - Replace statement with block" description="Invokes quick assist and selects 'Replace statement with block'" category="_MArC2-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA0MuOm5EeOsFIpiNR_Ang" elementId="org.eclipse.egit.ui.history.CherryPick" commandName="Cherry Pick" category="_MArC0Om5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA0Muem5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.extract.method" commandName="Extract Function" description="Extract a set of statements or an expression into a new function and use the new function" category="_MArCxem5EeOsFIpiNR_Ang"/>
@@ -2064,7 +2064,7 @@
   <commands xmi:id="_MA4eOum5EeOsFIpiNR_Ang" elementId="org.eclipse.jdt.ui.edit.text.java.change.type" commandName="Generalize Declared Type" description="Change the declaration of a selected variable to a more general type consistent with usage" category="_MArC3Om5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA4eO-m5EeOsFIpiNR_Ang" elementId="org.eclipse.egit.ui.CheckoutCommand" commandName="Checkout" category="_MArCx-m5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA4ePOm5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.edit.rename" commandName="Rename" description="Rename the selected item" category="_MAqbvOm5EeOsFIpiNR_Ang"/>
-  <commands xmi:id="_MA4ePem5EeOsFIpiNR_Ang" elementId="org.hibernate.eclipse.jdt.ui.run_jpaaction" commandName="Generate &amp;Hibernate/JPA annotations..." category="_MArCyOm5EeOsFIpiNR_Ang"/>
+  <commands xmi:id="_MA4ePem5EeOsFIpiNR_Ang" elementId="org.hibernate.eclipse.jdt.ui.run_jpaaction" commandName="Generate &amp;Hibernate/JPA web.components.table.generated.annotations..." category="_MArCyOm5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA4ePum5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.edit.text.java.add.block.comment" commandName="Add Block Comment" description="Enclose the selection with a block comment" category="_MArCwOm5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA4eP-m5EeOsFIpiNR_Ang" elementId="org.eclipse.datatools.sqltools.sqlscrapbook.commands.openscrapbook" commandName="Open SQL Scrapboo&amp;k" category="_MArC0Om5EeOsFIpiNR_Ang"/>
   <commands xmi:id="_MA5FMOm5EeOsFIpiNR_Ang" elementId="org.eclipse.mylyn.tasks.ui.command.previousTask" commandName="Previous Task Command" category="_MArC0Om5EeOsFIpiNR_Ang"/>
@@ -2502,7 +2502,7 @@
   <categories xmi:id="_MArCxem5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.jsdt.ui.category.refactoring" name="Refactor - JavaScript" description="JavaScript Refactoring Actions"/>
   <categories xmi:id="_MArCxum5EeOsFIpiNR_Ang" elementId="org.eclipse.mylyn.java.ui.commands" name="Java Context" description="Java Task-Focused Interface Commands"/>
   <categories xmi:id="_MArCx-m5EeOsFIpiNR_Ang" elementId="org.eclipse.egit.ui.commandCategory" name="Git"/>
-  <categories xmi:id="_MArCyOm5EeOsFIpiNR_Ang" elementId="org.hibernate.eclipse.jdt.ui.run_jpaaction.category1" name="Generate Hibernate/JPA annotations"/>
+  <categories xmi:id="_MArCyOm5EeOsFIpiNR_Ang" elementId="org.hibernate.eclipse.jdt.ui.run_jpaaction.category1" name="Generate Hibernate/JPA web.components.table.generated.annotations"/>
   <categories xmi:id="_MArCyem5EeOsFIpiNR_Ang" elementId="org.eclipse.wst.server.ui" name="Server" description="Server"/>
   <categories xmi:id="_MArCyum5EeOsFIpiNR_Ang" elementId="org.eclipse.ui.category.dialogs" name="Dialogs" description="Commands for opening dialogs"/>
   <categories xmi:id="_MArCy-m5EeOsFIpiNR_Ang" elementId="org.eclipse.mylyn.tasks.ui.commands" name="Task Repositories"/>

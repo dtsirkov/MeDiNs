@@ -4,8 +4,6 @@ package web.activities;
 import java.util.HashMap;
 import java.util.Set;
 
-import pojo.classes.Contacts;
-import pojo.classes.Persons;
 import web.forms.ContactForm;
 import web.forms.Form;
 import web.forms.PersonForm;
@@ -17,6 +15,9 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
+
+import database.pojo.Contacts;
+import database.pojo.Persons;
 
 @Theme("medins")
 public class CreatePerson extends AbstractActivityView{

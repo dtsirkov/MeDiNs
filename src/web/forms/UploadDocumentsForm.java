@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pojo.classes.Enumerations;
-import pojo.classes.Organizations;
-import pojo.classes.Persons;
-import pojo.classes.Users;
-import beans.ComboxBean;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -33,9 +28,14 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Enumerations;
+import database.pojo.Organizations;
+import database.pojo.Persons;
+import database.pojo.Users;
 
 import web.StepIntrfc;
+import web.beans.ComboxBean;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
@@ -52,7 +52,7 @@ public class UploadDocumentsForm extends Form implements StepIntrfc {
 
 	public Layout buildLayout(String mode) {	
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		Layout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
@@ -61,9 +61,9 @@ public class UploadDocumentsForm extends Form implements StepIntrfc {
 		//get access to DB
 		DaoIntrfc dao = getDao();
 
-		//get object that will be bind to the components
+		//get object that will be bind to the web.components.table.generated.components
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		formLayout.removeAllComponents();
 
 

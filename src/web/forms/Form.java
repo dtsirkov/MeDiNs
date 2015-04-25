@@ -15,16 +15,16 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 public class Form extends CustomComponent implements CustomComponentIntrfc, StepIntrfc{
 
 	private static final long serialVersionUID = 1L;
-	//layout of the form
+	//web.components.table.generated.layout of the form
 	private Layout layout;
 	//label of the form
 	private String label;
-	//custom validator used to validate form components
+	//custom validator used to validate form web.components.table.generated.components
 	private ComponentValidator componentValidator;
 	//the form is always not validated
 	private boolean validated = false;

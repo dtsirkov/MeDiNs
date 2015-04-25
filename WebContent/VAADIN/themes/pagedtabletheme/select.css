@@ -106,7 +106,7 @@ body .v-filterselect-suggestpopup-big td {
 	display: block;
 	text-indent: -9999px;
 	height: 12px;
-	background: transparent url(../../../base/common/img/sprites.png) no-repeat 50% 3px;
+	background: transparent url(../../../base/web.components.table.generated.common/img/sprites.png) no-repeat 50% 3px;
 	}
 
 .v-filterselect-nextpage-off span,

@@ -10,13 +10,13 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 public abstract class AbstractView extends CustomComponent implements CustomComponentIntrfc, View{
 
 	private static final long serialVersionUID = 1L;
 	
-	//this is the layout of the view
+	//this is the web.components.table.generated.layout of the view
 	private Layout layout;
 	//label of the view
 	private String label;

@@ -4,8 +4,6 @@ package web.activities;
 import java.util.HashMap;
 import java.util.Set;
 
-import pojo.classes.Contacts;
-import pojo.classes.Organizations;
 
 import web.forms.ContactForm;
 import web.forms.Form;
@@ -16,6 +14,9 @@ import web.views.AbstractActivityView;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
+
+import database.pojo.Contacts;
+import database.pojo.Organizations;
 
 public class CreateOrganization extends AbstractActivityView{
 

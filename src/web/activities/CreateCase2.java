@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import pojo.classes.CaseInfo;
-import pojo.classes.Services;
 
 import web.forms.ContactForm;
 //import web.forms.DiagnosisForm;
@@ -21,6 +19,9 @@ import web.views.AbstractActivityView;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
+
+import database.pojo.CaseInfo;
+import database.pojo.Services;
 
 public class CreateCase2 extends AbstractActivityView{
 

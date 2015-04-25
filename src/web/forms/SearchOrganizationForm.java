@@ -26,16 +26,16 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 
-import beans.ComboxBean;
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Contacts;
+import database.pojo.Enumerations;
+import database.pojo.Organizations;
+import database.pojo.Persons;
 
-import pojo.classes.Contacts;
-import pojo.classes.Enumerations;
-import pojo.classes.Organizations;
-import pojo.classes.Persons;
 import web.StepIntrfc;
+import web.beans.ComboxBean;
 import web.classes.PropertyManager;
-import web.components.PagedTable;
+import web.components.table.paged.PagedTable;
 import web.views.AbstractView;
 
 public class SearchOrganizationForm extends SearchForm<Organizations> implements StepIntrfc{
@@ -87,7 +87,7 @@ public class SearchOrganizationForm extends SearchForm<Organizations> implements
 		final Map<Enumerations, String> orgTypeEnum = dao.getEnumeration("organization");
 
 		//add values in combo box
-		// Have a bean container to put the beans in
+		// Have a bean container to put the web.beans in
 		final BeanItemContainer<ComboxBean> container = new BeanItemContainer<ComboxBean>(ComboxBean.class);
 		container.addAll(ComboxBean.getComboxBeanList(orgTypeEnum));
 		comboBoxOrgType.setContainerDataSource(container);

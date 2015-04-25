@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pojo.classes.Users;
 
 
 import com.vaadin.data.Validator;
@@ -16,7 +15,8 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Users;
 
 public class ComponentValidator implements java.io.Serializable{
 

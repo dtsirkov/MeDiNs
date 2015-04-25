@@ -4,7 +4,7 @@ import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
-import web.components.Header;
+import web.components.table.paged.Header;
 import web.forms.ActivitySelectionForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,7 +15,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 public class ActivitySelectionView extends AbstractView{
 
@@ -41,12 +41,12 @@ public class ActivitySelectionView extends AbstractView{
 		//get access to DB
 		final DaoIntrfc dao = getDao();	
 
-		//create main layout
+		//create main web.components.table.generated.layout
 		final VerticalLayout root = new VerticalLayout();
 		//create component validater
 		final ComponentValidator customValidator = new ComponentValidator(getPropertyManager());
 
-		// Create the root layout (VerticalLayout is actually the default).
+		// Create the root web.components.table.generated.layout (VerticalLayout is actually the default).
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 

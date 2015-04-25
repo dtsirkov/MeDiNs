@@ -14,7 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.ListSelect;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
 
 public class ActivitySelectionForm extends Form{
 
@@ -33,7 +33,7 @@ public class ActivitySelectionForm extends Form{
 
 	public Layout buildLayout(String mode) {
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		HorizontalLayout layout = (HorizontalLayout)getLayout();
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();

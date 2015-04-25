@@ -3,8 +3,6 @@ package web.forms;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import pojo.classes.Enumerations;
-import pojo.classes.Persons;
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
@@ -16,7 +14,10 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
-import dao.classes.DaoIntrfc;
+
+import database.dao.DaoIntrfc;
+import database.pojo.Enumerations;
+import database.pojo.Persons;
 
 public class PersonForm extends Form implements StepIntrfc{
 
@@ -40,7 +41,7 @@ public class PersonForm extends Form implements StepIntrfc{
 
 	public Layout buildLayout(String mode) {	
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		FormLayout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
@@ -49,7 +50,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 
-		//get object that will be bind to the components
+		//get object that will be bind to the web.components.table.generated.components
 		final Persons person;
 		if(mode.equals("update") && getData() != null){
 			person = (Persons)getData();
@@ -63,10 +64,10 @@ public class PersonForm extends Form implements StepIntrfc{
 			setData(person);
 		}
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		formLayout.removeAllComponents();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
 
 		// personTitleCB

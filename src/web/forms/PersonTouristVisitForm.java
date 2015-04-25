@@ -7,10 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import pojo.classes.Enumerations;
-import pojo.classes.Organizations;
-import pojo.classes.Persons;
-import pojo.classes.TouristVisit;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -35,7 +31,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Enumerations;
+import database.pojo.Organizations;
+import database.pojo.Persons;
+import database.pojo.TouristVisit;
 
 import web.StepIntrfc;
 import web.classes.ComponentValidator;
@@ -53,7 +53,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 	public Layout buildLayout(String mode) {	
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		FormLayout formLayout = (FormLayout) getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
@@ -62,7 +62,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		//get access to DB
 		final DaoIntrfc dao = getDao();
 
-		//get object that will be bind to the components
+		//get object that will be bind to the web.components.table.generated.components
 		final TouristVisit touristVisit;
 		if(mode.equals("update") || getData() != null){
 			touristVisit = (TouristVisit)getData();
@@ -79,7 +79,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 			setData(touristVisit);
 		}
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		formLayout.removeAllComponents();
 
 		HorizontalLayout hlVacation=new HorizontalLayout();

@@ -2,7 +2,6 @@ package web.forms;
 
 import java.util.List;
 
-import pojo.classes.Users;
 import web.classes.ComponentValidator;
 import web.classes.PropertyManager;
 import web.views.AbstractView;
@@ -26,7 +25,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
-import dao.classes.DaoIntrfc;
+import database.dao.DaoIntrfc;
+import database.pojo.Users;
 
 public class LoginForm extends Form implements View {
 
@@ -44,7 +44,7 @@ public class LoginForm extends Form implements View {
 
 	public Layout buildLayout(String mode) {
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		VerticalLayout layout = (VerticalLayout)getLayout();
 		//get component validater
 		ComponentValidator componentValidator = getComponentValidator();
@@ -55,10 +55,10 @@ public class LoginForm extends Form implements View {
 		//get naviagator
 		final Navigator navigator = getNavigator();
 
-		//remove all current components
+		//remove all current web.components.table.generated.components
 		layout.removeAllComponents();
 
-		//define measurements of the components 
+		//define measurements of the web.components.table.generated.components 
 		String width = "200px", height = "-1px";
 
 		Panel panel = new Panel(getLabelDtl());

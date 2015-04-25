@@ -31,7 +31,7 @@ public class DomainSelectionForm extends Form{
 
 	public Layout buildLayout(String mode) {
 
-		//get main layout
+		//get main web.components.table.generated.layout
 		HorizontalLayout layout = (HorizontalLayout)getLayout();
 		//get propertyManager
 		PropertyManager propertyManager = getPropertyManager();
