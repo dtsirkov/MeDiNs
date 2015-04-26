@@ -16,6 +16,7 @@ import database.dao.DaoIntrfc;
 import database.pojo.Contacts;
 import database.pojo.Enumerations;
 import database.pojo.Persons;
+import database.pojo.Users;
 
 import web.StepIntrfc;
 import web.classes.PropertyManager;
@@ -104,20 +105,37 @@ public class SearchPersonForm extends SearchForm<Persons> implements StepIntrfc{
 		DaoIntrfc dao = getDao();
 
 		Persons selectedPerson = getSelectedItem();
-		Set<Contacts> contactses = selectedPerson.getContactses();
-		contactses.size();
+
+		Object stepContact=steps.get("stepCreateContact");
+		Object stepUser=steps.get("stepCreateUser");
+
+		if (stepContact != null)
+		{
+			Set<Contacts> contactses = selectedPerson.getContactses();
+			contactses.size();			
+			Enumerations enumeration;
+			for(Contacts contact : contactses){
+				dao.evict(contact);
+				enumeration = contact.getEnumerationsByActive();
+				if(enumeration.getCode().equals("yes")){
+					steps.get("stepCreateContact").setData(contact);
+				}
+			}
+		}
+
+		if (stepUser != null)
+		{			
+			Set<Users> users = selectedPerson.getUserses();
+			users.size();			
+
+			for(Users user : users){
+				dao.evict(user);
+				steps.get("stepCreateUser").setData(user);
+			}
+		}
 
 		dao.evict(selectedPerson);
 		steps.get("stepCreatePerson").setData(selectedPerson);
-
-		Enumerations enumeration;
-		for(Contacts contact : contactses){
-			dao.evict(contact);
-			enumeration = contact.getEnumerationsByActive();
-			if(enumeration.getCode().equals("yes")){
-				steps.get("stepCreateContact").setData(contact);
-			}
-		}
 
 		processed = true;
 		return processed;

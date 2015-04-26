@@ -103,6 +103,7 @@ public class LoginForm extends Form implements View {
 				Users user = new Users();
 				user.setUsername(usernameTF.getValue());
 				user.setPassword(passwordPF.getValue());
+				user.setActive("yes");
 				List<Object> searchResult=dao.findByExample(user);
 				if (searchResult.size() > 0){
 					out=(Users) searchResult.get(0);

@@ -14,6 +14,9 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 
+import database.pojo.Persons;
+import database.pojo.Users;
+
 @Theme("medins")
 public class CreateUser2 extends AbstractActivityView{
 
@@ -48,10 +51,20 @@ public class CreateUser2 extends AbstractActivityView{
 	}
 
 	@Override
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps,
-			HashMap<String, Form> hmOptionalSteps) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean validate(HashMap<String, Form> hmRequiredSteps,HashMap<String, Form> hmOptionalSteps) {
+		Persons person = (Persons)hmRequiredSteps.get("stepCreatePerson").getData();
+		Users user = (Users)hmRequiredSteps.get("stepCreateUser").getData();
+
+		Object[] objects  = {
+				person,
+				user
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			getDao().saveOrUpdate(objects[i]);
+		}
+
+		return true;
 	}
 
 
