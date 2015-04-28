@@ -385,7 +385,7 @@ public abstract class AbstractActivityView extends AbstractView {
 								stepLabel = validationForm.getLabel();
 								if(value.equals(stepLabel))
 								{	
-									customComponent = new ValidationForm(validationForm);
+									customComponent = ValidationForm.create(validationForm);
 									customComponent.setData(requiredSteps);
 									buttonsLayout.addComponent(validateButton);
 								}else{
