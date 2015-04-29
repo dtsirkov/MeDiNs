@@ -39,10 +39,15 @@ public class PersonForm extends Form implements StepIntrfc{
 
 	}
 
+	public Layout viewLayout(String mode){
+		return buildLayout(mode);
+	}
+
 	public Layout buildLayout(String mode) {	
 
 		//get main web.components.table.generated.layout
-		FormLayout formLayout = (FormLayout)getLayout();
+		//FormLayout formLayout = (FormLayout)getLayout();
+		FormLayout formLayout = new FormLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
@@ -52,7 +57,7 @@ public class PersonForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the web.components.table.generated.components
 		final Persons person;
-		if(mode.equals("update") && getData() != null){
+		if(getData() != null){
 			person = (Persons)getData();
 		}else{
 			//set initial values
@@ -65,7 +70,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		}
 
 		//remove all current web.components.table.generated.components
-		formLayout.removeAllComponents();
+		//formLayout.removeAllComponents();
 
 		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
@@ -312,6 +317,13 @@ public class PersonForm extends Form implements StepIntrfc{
 			personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator("IncorrectSocialNumber"));
 			personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
 		}
+
+		setLayout(formLayout);
+		
+		if(!mode.equals("validation"))
+			setCompositionRoot(formLayout);
+		else
+			this.setEnabled(false);
 
 		return formLayout;
 	}

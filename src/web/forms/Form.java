@@ -40,7 +40,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 		setValidated(form.isValidated());
 		setView(form.getView());
 	}
-	
+
 	public Form(String label){
 		setLabel(label);
 	}
@@ -49,7 +49,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 		setLabel(label);
 		setView(view);
 	}
-	
+
 	public Form(Layout layout, ComponentValidator componentValidator){
 		setLayout(layout);
 		setComponentValidator(componentValidator);
@@ -69,11 +69,11 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 	public void setLayout(Layout layout) {
 		this.layout = layout;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}
-	
+
 	public String getLabelDtl() {
 		return getPropertyManager().getLabelDtl(label);
 	}
@@ -105,7 +105,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 	public void setView(AbstractView view) {
 		this.view = view;
 	}
-	
+
 	public DaoIntrfc getDao() {
 		return view.getDao();
 	}
@@ -117,7 +117,7 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 	public Navigator getNavigator() {
 		return view.getNavigator();
 	}
-	
+
 	public Layout buildLayout(String mode){
 		return layout;
 	};
@@ -129,10 +129,23 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 		}
 	}
 
+	public void setEnabled(boolean readOnly) {
+		Iterator<Component> layoutIterator = this.getLayout().iterator();
+		while(layoutIterator.hasNext()){
+			layoutIterator.next().setEnabled(readOnly);
+		}
+	}
+
 	@Override
 	public boolean process(HashMap<String, Form> steps) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return layout;
 	}
 
 }

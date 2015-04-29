@@ -113,6 +113,16 @@
 		text-align: right;
 	}
 	
+	.v-gridlayout-validation_grid {
+		margin: 0px;
+		padding: 0px;
+		border: 1px solid gray;
+	}
+	
+	.v-disabled {
+		opacity: 1.0 !important;
+	}
+	
 	.v-textarea-validation_textarea{
 		background-color:yellow; !important;
 	}

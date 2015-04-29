@@ -33,10 +33,8 @@ import database.dao.DaoIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.PropertyManager;
-import web.classes.ValidationClass;
 import web.components.table.paged.Header;
 import web.forms.Form;
-import web.forms.NewValidationForm;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
@@ -97,6 +95,10 @@ public abstract class AbstractActivityView extends AbstractView {
 
 	public void setDomain(Domain domain) {
 		this.domain = domain;
+	}
+	
+	public Layout viewLayout(String mode){
+		return null;
 	}
 
 	public Layout buildLayout(){
@@ -226,7 +228,6 @@ public abstract class AbstractActivityView extends AbstractView {
 		//////////////////////////////////////////////////////
 		//Put in the application data and handle the UI logic
 
-		final String validationMethod = getValidationMethod();
 		final String mode = getMode();
 
 		//put required steps in array
@@ -385,7 +386,7 @@ public abstract class AbstractActivityView extends AbstractView {
 								stepLabel = validationForm.getLabel();
 								if(value.equals(stepLabel))
 								{	
-									customComponent = new ValidationForm(validationForm);
+									customComponent = ValidationForm.create(validationForm);
 									customComponent.setData(requiredSteps);
 									buttonsLayout.addComponent(validateButton);
 								}else{
