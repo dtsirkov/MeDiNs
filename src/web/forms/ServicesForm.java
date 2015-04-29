@@ -108,7 +108,7 @@ public class ServicesForm extends Form {
 		return absoluteLayout;
 	}
 	
-	public Layout view() {
+	public Layout viewLayout(String mode) {
 		
 		//get access to DB
 		DaoIntrfc dao = getDao();	

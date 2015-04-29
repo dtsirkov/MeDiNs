@@ -69,7 +69,6 @@ public class UpdateOrganization extends AbstractActivityView{
 				organization
 		};
 
-
 		for(int i = 0; i < objects.length; i++){
 			getDao().saveOrUpdate(objects[i]);
 		}

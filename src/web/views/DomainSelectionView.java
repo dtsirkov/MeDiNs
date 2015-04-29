@@ -108,4 +108,10 @@ public class DomainSelectionView extends AbstractView{
 		this.domainList = domainList;
 	}
 
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

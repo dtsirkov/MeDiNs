@@ -69,4 +69,10 @@ public class LoginView extends AbstractView implements View{
 		return layout;
 	}
 
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
