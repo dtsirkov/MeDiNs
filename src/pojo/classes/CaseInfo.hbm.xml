@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 29, 2015 9:23:51 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo.classes.CaseInfo" table="case_info" catalog="medins_schema">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="enumerationsByStatus2" class="pojo.classes.Enumerations" fetch="select">
+            <column name="status_2" length="15" />
+        </many-to-one>
+        <many-to-one name="medicalReport" class="pojo.classes.MedicalReport" fetch="select">
+            <column name="medical_report" />
+        </many-to-one>
+        <many-to-one name="persons" class="pojo.classes.Persons" fetch="select">
+            <column name="patient_info" length="45" not-null="true" />
+        </many-to-one>
+        <many-to-one name="policies" class="pojo.classes.Policies" fetch="select">
+            <column name="policy" length="45" />
+        </many-to-one>
+        <many-to-one name="enumerationsByStatus1" class="pojo.classes.Enumerations" fetch="select">
+            <column name="status_1" length="15" />
+        </many-to-one>
+        <property name="caseDate" type="date">
+            <column name="case_date" length="0" not-null="true" />
+        </property>
+        <property name="referanceNumber1" type="string">
+            <column name="referance_number_1" length="45" not-null="true" />
+        </property>
+        <property name="referanceNumber2" type="string">
+            <column name="referance_number_2" length="45" />
+        </property>
+        <property name="responsiblePerson" type="java.lang.Integer">
+            <column name="responsible_person" />
+        </property>
+        <property name="createdBy" type="java.lang.Integer">
+            <column name="created_by" />
+        </property>
+        <property name="lastUpdateBy" type="java.lang.Integer">
+            <column name="last_update_by" />
+        </property>
+        <property name="franchise" type="java.lang.Float">
+            <column name="franchise" precision="12" scale="0" />
+        </property>
+        <set name="serviceses" table="case_info_services_link" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="case_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="pojo.classes.Services">
+                <column name="service_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="documentations" table="documentation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="case_info_id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.classes.Documentation" />
+        </set>
+        <set name="invoiceses" table="invoices" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="case_info" not-null="true" />
+            </key>
+            <one-to-many class="pojo.classes.Invoices" />
+        </set>
+    </class>
+</hibernate-mapping>

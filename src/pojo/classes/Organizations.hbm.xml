@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 29, 2015 9:23:51 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="pojo.classes.Organizations" table="organizations" catalog="medins_schema">
+        <id name="number" type="java.lang.Integer">
+            <column name="number" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="enumerations" class="pojo.classes.Enumerations" fetch="select">
+            <column name="type" length="15" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="45" not-null="true" />
+        </property>
+        <property name="logo" type="string">
+            <column name="logo" length="45" />
+        </property>
+        <property name="iban" type="string">
+            <column name="iban" length="45" />
+        </property>
+        <property name="bankDetails" type="string">
+            <column name="bank_details" length="45" />
+        </property>
+        <set name="policiesesForInsuaranceCompany" table="policies" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="insuarance_company" not-null="true" />
+            </key>
+            <one-to-many class="pojo.classes.Policies" />
+        </set>
+        <set name="personses" table="person_organization_link" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="organization_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="pojo.classes.Persons">
+                <column name="person_id" length="45" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="contactses" table="organization_contact_link" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="organization_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="pojo.classes.Contacts">
+                <column name="contact_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="policiesesForAssistanceCompany" table="policies" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="assistance_company" not-null="true" />
+            </key>
+            <one-to-many class="pojo.classes.Policies" />
+        </set>
+    </class>
+</hibernate-mapping>
