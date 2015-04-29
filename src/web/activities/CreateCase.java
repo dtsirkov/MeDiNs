@@ -75,7 +75,7 @@ public class CreateCase extends AbstractActivityView{
 		setOptionalSteps(optionalSteps);
 
 		setValidationMethod("validateCase");
-		setMode("update");
+		setMode("create");
 
 		return super.buildLayout();
 	}
