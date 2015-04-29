@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
+// Generated Apr 29, 2015 9:23:50 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 
@@ -17,22 +17,18 @@ public class TouristVisit implements java.io.Serializable {
 	private String hotel;
 	private String room;
 	private String phoneNumber;
+	private String address;
 
 	public TouristVisit() {
 	}
 
-	public TouristVisit(Persons persons, Date from, Date to, String resort,
-			String hotel, String room) {
+	public TouristVisit(Persons persons, String resort) {
 		this.persons = persons;
-		this.from = from;
-		this.to = to;
 		this.resort = resort;
-		this.hotel = hotel;
-		this.room = room;
 	}
 
 	public TouristVisit(Persons persons, Date from, Date to, String resort,
-			String hotel, String room, String phoneNumber) {
+			String hotel, String room, String phoneNumber, String address) {
 		this.persons = persons;
 		this.from = from;
 		this.to = to;
@@ -40,6 +36,7 @@ public class TouristVisit implements java.io.Serializable {
 		this.hotel = hotel;
 		this.room = room;
 		this.phoneNumber = phoneNumber;
+		this.address = address;
 	}
 
 	public Integer getId() {
@@ -104,6 +101,14 @@ public class TouristVisit implements java.io.Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

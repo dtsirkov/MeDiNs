@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
+// Generated Apr 29, 2015 9:23:50 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Services implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private String name;
 	private String type;
 	private String description;
@@ -24,16 +24,14 @@ public class Services implements java.io.Serializable {
 	public Services() {
 	}
 
-	public Services(int id, String name, String type) {
-		this.id = id;
+	public Services(String name, String type) {
 		this.name = name;
 		this.type = type;
 	}
 
-	public Services(int id, String name, String type, String description,
+	public Services(String name, String type, String description,
 			Float priceDue, Float priceExcess, String performedBy,
 			String serviceLocation, String specialist, Set<CaseInfo> caseInfos) {
-		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.description = description;
@@ -45,11 +43,11 @@ public class Services implements java.io.Serializable {
 		this.caseInfos = caseInfos;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
