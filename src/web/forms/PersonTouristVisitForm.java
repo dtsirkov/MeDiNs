@@ -76,6 +76,7 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 			touristVisit.setResort("");
 			touristVisit.setRoom("");	
 			touristVisit.setPhoneNumber("");
+			touristVisit.setAddress("");
 			setData(touristVisit);
 		}
 
@@ -116,6 +117,17 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 		hlResort.setCaption(propertyManager.getLabelDtl("Resort")+": ");
 		hlResort.setSpacing(true);
 
+		// textFieldAddress
+		HorizontalLayout hlAddress = new HorizontalLayout();
+		hlAddress.setCaption(propertyManager.getLabelDtl("address")+": ");
+
+		final TextField textFieldAddress = new TextField();
+		textFieldAddress.setImmediate(false);
+		textFieldAddress.setWidth("150px");
+		textFieldAddress.setHeight("-1px");
+		hlAddress.addComponent(textFieldAddress);
+		formLayout.addComponent(hlAddress);
+		
 		// comboBoxResort
 		final ComboBox comboBoxResort = new ComboBox();
 		comboBoxResort.setImmediate(true);
@@ -263,12 +275,24 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 						textFieldContactNumber.setComponentError(null);
 					}
 				});
+		
+		textFieldAddress.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						touristVisit.setAddress(event.getProperty().getValue().toString());
+						textFieldAddress.setData(event.getProperty().getValue().toString());
+						textFieldAddress.setComponentError(null);
+					}
+				});
 
 		//retrieve and bind data to fields
 		if(mode.equals("update") || getData() != null){
 			popupDateFieldStart.setValue(touristVisit.getFrom());
 			popupDateFieldEnd.setValue(touristVisit.getTo());
 
+			textFieldAddress.setValue(touristVisit.getAddress());
+			
 			comboBoxResort.addItem(touristVisit.getResort());
 			comboBoxResort.select(touristVisit.getResort());
 
