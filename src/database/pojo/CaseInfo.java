@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
+// Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -23,6 +23,7 @@ public class CaseInfo implements java.io.Serializable {
 	private Integer responsiblePerson;
 	private Integer createdBy;
 	private Integer lastUpdateBy;
+	private Float franchise;
 	private Set<Services> serviceses = new HashSet<Services>(0);
 	private Set<Documentation> documentations = new HashSet<Documentation>(0);
 	private Set<Invoices> invoiceses = new HashSet<Invoices>(0);
@@ -30,15 +31,8 @@ public class CaseInfo implements java.io.Serializable {
 	public CaseInfo() {
 	}
 
-	public CaseInfo(Enumerations enumerationsByStatus2,
-			MedicalReport medicalReport, Persons persons, Policies policies,
-			Enumerations enumerationsByStatus1, Date caseDate,
-			String referanceNumber1) {
-		this.enumerationsByStatus2 = enumerationsByStatus2;
-		this.medicalReport = medicalReport;
+	public CaseInfo(Persons persons, Date caseDate, String referanceNumber1) {
 		this.persons = persons;
-		this.policies = policies;
-		this.enumerationsByStatus1 = enumerationsByStatus1;
 		this.caseDate = caseDate;
 		this.referanceNumber1 = referanceNumber1;
 	}
@@ -48,8 +42,8 @@ public class CaseInfo implements java.io.Serializable {
 			Enumerations enumerationsByStatus1, Date caseDate,
 			String referanceNumber1, String referanceNumber2,
 			Integer responsiblePerson, Integer createdBy, Integer lastUpdateBy,
-			Set<Services> serviceses, Set<Documentation> documentations,
-			Set<Invoices> invoiceses) {
+			Float franchise, Set<Services> serviceses,
+			Set<Documentation> documentations, Set<Invoices> invoiceses) {
 		this.enumerationsByStatus2 = enumerationsByStatus2;
 		this.medicalReport = medicalReport;
 		this.persons = persons;
@@ -61,6 +55,7 @@ public class CaseInfo implements java.io.Serializable {
 		this.responsiblePerson = responsiblePerson;
 		this.createdBy = createdBy;
 		this.lastUpdateBy = lastUpdateBy;
+		this.franchise = franchise;
 		this.serviceses = serviceses;
 		this.documentations = documentations;
 		this.invoiceses = invoiceses;
@@ -160,6 +155,14 @@ public class CaseInfo implements java.io.Serializable {
 
 	public void setLastUpdateBy(Integer lastUpdateBy) {
 		this.lastUpdateBy = lastUpdateBy;
+	}
+
+	public Float getFranchise() {
+		return this.franchise;
+	}
+
+	public void setFranchise(Float franchise) {
+		this.franchise = franchise;
 	}
 
 	public Set<Services> getServiceses() {

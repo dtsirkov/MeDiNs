@@ -81,5 +81,11 @@ public class ActivitySelectionView extends AbstractView{
 		this.domain = domain;
 	}
 
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

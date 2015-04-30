@@ -102,7 +102,42 @@ public class ServicesForm extends Form {
 		tableVerticalLayout.addComponent(panel);
 		tableVerticalLayout.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 
-		this.setData(serviceBeanItemContainer);
+		if(!mode.equals("view"))
+			this.setData(serviceBeanItemContainer);
+
+		return absoluteLayout;
+	}
+	
+	public Layout viewLayout(String mode) {
+		
+		//get access to DB
+		DaoIntrfc dao = getDao();	
+
+		//build main layout
+		Layout absoluteLayout = buildMainLayout();
+
+		ServiceBean.setTypeEnum(dao.getEnumeration("person title"));
+
+		BeanItemContainer<ServiceBean> serviceBeanItemContainer = new BeanItemContainer<ServiceBean>(ServiceBean.class);
+		if(getData() != null){
+			@SuppressWarnings("unchecked")
+			Set<Services> services = (Set<Services>)getData();
+			Iterator<Services> iterator = services.iterator();
+			Services service;
+			while(iterator.hasNext()){
+				service = iterator.next();
+				if(service != null){
+					ServiceBean serviceBean = new ServiceBean(service);
+					serviceBeanItemContainer.addItem(serviceBean);
+				}
+			}
+		}
+
+		GenerateTableInPanel panel = new GenerateTableInPanel(ServiceBean.class, serviceBeanItemContainer, null);
+		panel.setWidth("100%");
+		panel.setHeight("100%");
+		tableVerticalLayout.addComponent(panel);
+		tableVerticalLayout.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 
 		return absoluteLayout;
 	}
