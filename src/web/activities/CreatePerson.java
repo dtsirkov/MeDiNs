@@ -6,6 +6,7 @@ import java.util.Set;
 
 import web.forms.ContactForm;
 import web.forms.Form;
+import web.forms.NewValidationForm;
 import web.forms.PersonForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
@@ -41,7 +42,8 @@ public class CreatePerson extends AbstractActivityView{
 		Form[] requiredSteps = {
 				new PersonForm(this, "stepCreatePerson"), 
 				new ContactForm(this, "stepCreateContact"), 
-				new ValidationForm(this, "stepValidate")
+				new NewValidationForm(this, "stepValidate")
+				//new ValidationForm(this, "stepValidate")
 		};
 		setRequiredSteps(requiredSteps);
 

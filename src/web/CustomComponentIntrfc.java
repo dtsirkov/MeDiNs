@@ -9,5 +9,6 @@ public interface CustomComponentIntrfc {
 	public String getLabel();
 	public void setLabel(String label);
 	public Layout buildLayout(String mode);
+	public Layout viewLayout(String mode);
 
 }

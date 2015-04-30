@@ -5,17 +5,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import web.forms.ContactForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
-import web.forms.MedicalReportForm;
 import web.forms.NewValidationForm;
 import web.forms.PersonForm;
-import web.forms.PersonTouristVisitForm;
-import web.forms.PolicyForm;
-import web.forms.SearchPersonForm;
 import web.forms.ServicesForm;
-import web.forms.ServicesForm;
-import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
 
 
@@ -64,7 +59,8 @@ public class CreateCase extends AbstractActivityView{
 				//new MedicalReportForm(this,"stepMedicalReport"),
 				//new ServicesForm(this,"stepServices"),
 				new PersonForm(this, "stepCreatePerson"), 
-				serviceForm,
+				new ContactForm(this, "stepCreateContact"),
+				//serviceForm,
 				//new DiagnosisForm(this,"stepDiagnosis"),
 				//new ValidationForm(this, "stepValidate")
 				validationForm

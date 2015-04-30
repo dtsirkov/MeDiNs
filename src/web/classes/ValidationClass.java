@@ -75,7 +75,7 @@ public class ValidationClass implements java.io.Serializable{
 		Transaction trans = getDao().getTransaction();
 		try{
 
-			String validationMethod=getValidationMethod();
+			String validationMethod = getValidationMethod();
 			/*if(getValidationMethod().equals("validatePerson")){
 				setValidated(validatePerson(mode));
 			}*/

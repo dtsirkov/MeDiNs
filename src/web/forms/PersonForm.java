@@ -39,6 +39,10 @@ public class PersonForm extends Form implements StepIntrfc{
 
 	}
 
+	public Layout viewLayout(String mode){
+		return buildLayout(mode);
+	}
+
 	public Layout buildLayout(String mode) {	
 
 		//get main web.components.table.generated.layout
@@ -53,7 +57,7 @@ public class PersonForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the web.components.table.generated.components
 		final Persons person;
-		if(mode.equals("update") && getData() != null){
+		if(getData() != null){
 			person = (Persons)getData();
 		}else{
 			//set initial values
@@ -314,9 +318,12 @@ public class PersonForm extends Form implements StepIntrfc{
 			personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
 		}
 
-		this.setLayout(formLayout);
-		if(!mode.equals("view"))
+		setLayout(formLayout);
+		
+		if(!mode.equals("validation"))
 			setCompositionRoot(formLayout);
+		else
+			this.setEnabled(false);
 
 		return formLayout;
 	}
