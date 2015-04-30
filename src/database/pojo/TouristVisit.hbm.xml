@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 29, 2015 9:23:51 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo.classes.TouristVisit" table="tourist_visit" catalog="medins_schema">
+    <class name="database.pojo.TouristVisit" table="tourist_visit" catalog="medins_schema">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="persons" class="pojo.classes.Persons" fetch="select">
+        <many-to-one name="persons" class="database.pojo.Persons" fetch="select">
             <column name="person" length="45" not-null="true" />
         </many-to-one>
         <property name="from" type="date">

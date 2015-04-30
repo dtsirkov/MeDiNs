@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 29, 2015 9:23:51 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo.classes.Invoices" table="invoices" catalog="medins_schema">
+    <class name="database.pojo.Invoices" table="invoices" catalog="medins_schema">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="caseInfo" class="pojo.classes.CaseInfo" fetch="select">
+        <many-to-one name="caseInfo" class="database.pojo.CaseInfo" fetch="select">
             <column name="case_info" not-null="true" />
         </many-to-one>
         <property name="number" type="java.lang.Integer">

@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 29, 2015 9:23:50 PM by Hibernate Tools 4.0.0
+// Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;

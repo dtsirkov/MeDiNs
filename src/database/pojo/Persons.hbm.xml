@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 29, 2015 9:23:51 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="pojo.classes.Persons" table="persons" catalog="medins_schema">
+    <class name="database.pojo.Persons" table="persons" catalog="medins_schema">
         <id name="socialNumber" type="string">
             <column name="social_number" length="45" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="enumerationsByJobTitle" class="pojo.classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByJobTitle" class="database.pojo.Enumerations" fetch="select">
             <column name="job_title" length="15" />
         </many-to-one>
-        <many-to-one name="enumerationsByTitle" class="pojo.classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByTitle" class="database.pojo.Enumerations" fetch="select">
             <column name="title" length="15" />
         </many-to-one>
-        <many-to-one name="enumerationsByRole" class="pojo.classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsByRole" class="database.pojo.Enumerations" fetch="select">
             <column name="role" length="15" />
         </many-to-one>
-        <many-to-one name="enumerationsBySex" class="pojo.classes.Enumerations" fetch="select">
+        <many-to-one name="enumerationsBySex" class="database.pojo.Enumerations" fetch="select">
             <column name="sex" length="15" not-null="true" />
         </many-to-one>
         <property name="firstName" type="string">
@@ -36,7 +36,7 @@
             <key>
                 <column name="person_id" length="45" not-null="true" />
             </key>
-            <many-to-many entity-name="pojo.classes.Organizations">
+            <many-to-many entity-name="database.pojo.Organizations">
                 <column name="organization_id" not-null="true" />
             </many-to-many>
         </set>
@@ -44,7 +44,7 @@
             <key>
                 <column name="person_id" length="45" not-null="true" />
             </key>
-            <many-to-many entity-name="pojo.classes.Contacts">
+            <many-to-many entity-name="database.pojo.Contacts">
                 <column name="contact_id" not-null="true" />
             </many-to-many>
         </set>
@@ -52,19 +52,19 @@
             <key>
                 <column name="patient_info" length="45" not-null="true" />
             </key>
-            <one-to-many class="pojo.classes.CaseInfo" />
+            <one-to-many class="database.pojo.CaseInfo" />
         </set>
         <set name="userses" table="users" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="person_id" length="45" not-null="true" unique="true" />
             </key>
-            <one-to-many class="pojo.classes.Users" />
+            <one-to-many class="database.pojo.Users" />
         </set>
         <set name="touristVisits" table="tourist_visit" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="person" length="45" not-null="true" />
             </key>
-            <one-to-many class="pojo.classes.TouristVisit" />
+            <one-to-many class="database.pojo.TouristVisit" />
         </set>
     </class>
 </hibernate-mapping>
