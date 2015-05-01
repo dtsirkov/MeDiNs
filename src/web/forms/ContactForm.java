@@ -356,12 +356,13 @@ public class ContactForm extends Form implements StepIntrfc{
 			activeCB.setValue(contact.getEnumerationsByActive());
 		}
 
+		setLayout(formLayout);
+
 		if(!mode.equals("validation"))
 			setCompositionRoot(formLayout);
 		else
-			this.setEnabled(false);
-
-		setLayout(formLayout);
+			//this.setEnabled(false);
+			this.setReadOnly(true);
 
 		return formLayout;
 	}
