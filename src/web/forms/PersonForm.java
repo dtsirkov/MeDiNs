@@ -319,11 +319,12 @@ public class PersonForm extends Form implements StepIntrfc{
 		}
 
 		setLayout(formLayout);
-		
+
 		if(!mode.equals("validation"))
 			setCompositionRoot(formLayout);
 		else
-			this.setEnabled(false);
+			//this.setEnabled(false);
+			this.setReadOnly(true);
 
 		return formLayout;
 	}

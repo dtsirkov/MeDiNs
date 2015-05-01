@@ -51,9 +51,9 @@ public class CreateUser2 extends AbstractActivityView{
 	}
 
 	@Override
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps,HashMap<String, Form> hmOptionalSteps) {
-		Persons person = (Persons)hmRequiredSteps.get("stepCreatePerson").getData();
-		Users user = (Users)hmRequiredSteps.get("stepCreateUser").getData();
+	protected boolean validate(HashMap<String, Form> steps) {
+		Persons person = (Persons)steps.get("stepCreatePerson").getData();
+		Users user = (Users)steps.get("stepCreateUser").getData();
 
 		Object[] objects  = {
 				person,

@@ -58,10 +58,10 @@ public class UpdateUser extends AbstractActivityView{
 	}
 
 	@Override
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps,HashMap<String, Form> hmOptionalSteps) {
-		Persons person = (Persons)hmRequiredSteps.get("stepCreatePerson").getData();
-		Contacts contact = (Contacts)hmRequiredSteps.get("stepCreateContact").getData();
-		Users user = (Users)hmRequiredSteps.get("stepCreateUser").getData();
+	protected boolean validate(HashMap<String, Form> steps) {
+		Persons person = (Persons)steps.get("stepCreatePerson").getData();
+		Contacts contact = (Contacts)steps.get("stepCreateContact").getData();
+		Users user = (Users)steps.get("stepCreateUser").getData();
 
 		Set<Contacts> contactses=person.getContactses();
 		//load children
