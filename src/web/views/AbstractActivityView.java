@@ -44,6 +44,7 @@ public abstract class AbstractActivityView extends AbstractView {
 
 	private Form[] requiredSteps = new Form[]{};
 	private Form[] optionalSteps = new Form[]{};
+	private Form currentForm = null;
 	private String mode = "view";
 	private String validationMethod;
 	private Domain domain;
@@ -76,6 +77,12 @@ public abstract class AbstractActivityView extends AbstractView {
 	public void setOptionalSteps(Form[] optionalSteps) {
 		this.optionalSteps = optionalSteps;
 	}
+	public Form getCurrentForm() {
+		return currentForm;
+	}
+	public void setCurrentForm(Form currentForm) {
+		this.currentForm = currentForm;
+	}
 	public String getMode() {
 		return mode;
 	}
@@ -96,7 +103,7 @@ public abstract class AbstractActivityView extends AbstractView {
 	public void setDomain(Domain domain) {
 		this.domain = domain;
 	}
-	
+
 	public Layout viewLayout(String mode){
 		return null;
 	}
@@ -230,6 +237,9 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		final String mode = getMode();
 
+		//all steps of the activity
+		final HashMap<String, Form> stpes = new HashMap<String, Form>();
+
 		//put required steps in array
 		String requiredStepLabel;
 		final HashMap<String, Form> hmRequiredSteps = new HashMap<String, Form>();
@@ -242,6 +252,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			requiredStepsDisplay[i+1] = requiredSteps[i];
 			requiredStepLabel = requiredSteps[i].getLabel();
 			hmRequiredSteps.put(requiredStepLabel, requiredSteps[i]);
+			stpes.put(requiredStepLabel, requiredSteps[i]);
 		}
 
 		//put additional steps in array
@@ -261,6 +272,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				optionalStepsDisplay[i+1] = optionalSteps[i];
 				optionalStepLabel = optionalSteps[i].getLabel();
 				hmOptionalSteps.put(optionalStepLabel, optionalSteps[i]);
+				stpes.put(optionalStepLabel, optionalSteps[i]);
 			}
 		}
 
@@ -350,7 +362,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
 				//CustomComponent validationForm;
-				Form customComponent, validationForm; 
+				Form form, validationForm; 
 				if (event.getProperty() != null && event.getProperty().getValue() != null){
 
 					String value = event.getProperty().getValue().toString();	
@@ -378,6 +390,9 @@ public abstract class AbstractActivityView extends AbstractView {
 							//if the previous step is validated and the next step is reachable - add next step to detailsbox
 							if (stepLabel.equals(value) && validatedSteps.contains((requiredSteps[i]).getLabel())) {
 
+								if(currentForm != null)
+									currentForm.process(stpes);
+
 								detailsbox.removeAllComponents();
 								buttonsLayout.removeAllComponents();
 
@@ -386,22 +401,25 @@ public abstract class AbstractActivityView extends AbstractView {
 								stepLabel = validationForm.getLabel();
 								if(value.equals(stepLabel))
 								{	
-									customComponent = ValidationForm.create(validationForm);
-									customComponent.setData(requiredSteps);
+									form = ValidationForm.create(validationForm);
+									form.setData(requiredSteps);
 									buttonsLayout.addComponent(validateButton);
 								}else{
-									customComponent = requiredSteps[i];
+									form = requiredSteps[i];
 									buttonsLayout.addComponent(prevButton);
 									buttonsLayout.addComponent(nextButton);	
 								}
-								customComponent.buildLayout(mode);
+								form.buildLayout(mode);
 
 
 
-								if(!(customComponent instanceof SearchForm) || searchFormFlag){
+								if(!(form instanceof SearchForm) || searchFormFlag){
 
-									if(customComponent instanceof SearchForm)
+									if(form instanceof SearchForm)
 										searchFormFlag = false;
+
+									//set current form
+									currentForm = form;
 
 									//add stepTitleLayout
 									stepTitle.setValue(propertyManager.getLabelDtl(value));					
@@ -409,10 +427,10 @@ public abstract class AbstractActivityView extends AbstractView {
 									detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
 
 									//add customComponentLayout
-									customComponent.setSizeUndefined();
+									form.setSizeUndefined();
 									customComponentLayout.removeAllComponents();
-									customComponentLayout.addComponent(customComponent);
-									customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
+									customComponentLayout.addComponent(form);
+									customComponentLayout.setComponentAlignment(form, Alignment.MIDDLE_CENTER);	
 									detailsbox.addComponent(customComponentLayout);
 									detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
 
@@ -461,7 +479,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				if(isValid && !validatedSteps.contains(nextStep)){
 					validatedSteps.add(nextStep);
 					currentComponent.setValidated(isValid);
-					currentComponent.process(hmRequiredSteps);
+					//currentComponent.process(hmRequiredSteps);
 				}
 
 				menu.select(nextStep);	
@@ -505,10 +523,12 @@ public abstract class AbstractActivityView extends AbstractView {
 				boolean validated = false;
 				Transaction trans = getDao().getTransaction();
 				try{
-					validated = AbstractActivityView.this.validate(hmRequiredSteps, hmOptionalSteps);
+					validated = AbstractActivityView.this.validate(stpes);
 					trans.commit();
 				}catch(Exception e){
+					System.out.println(e);
 					System.out.println("Error in validation method.");
+					validated = false;
 					trans.rollback();
 				}
 				String validationResult = "not_validated";
@@ -580,6 +600,6 @@ public abstract class AbstractActivityView extends AbstractView {
 
 	}
 	//validation method
-	protected abstract boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps);
+	protected abstract boolean validate(HashMap<String, Form> steps);
 
 }

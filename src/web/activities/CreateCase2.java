@@ -58,11 +58,11 @@ public class CreateCase2 extends AbstractActivityView{
 
 		return super.buildLayout();
 	}
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){
+	protected boolean validate(HashMap<String, Form> steps){
 
-		CaseInfo caseInfo = (CaseInfo)hmRequiredSteps.get("stepValidate").getData();
+		CaseInfo caseInfo = (CaseInfo)steps.get("stepValidate").getData();
 		@SuppressWarnings("unchecked")
-		Set<Services> services = (Set<Services>)hmRequiredSteps.get("stepServices").getData();
+		Set<Services> services = (Set<Services>)steps.get("stepServices").getData();
 
 		Set<Services> oldServicesSet = caseInfo.getServiceses();
 		oldServicesSet.size();

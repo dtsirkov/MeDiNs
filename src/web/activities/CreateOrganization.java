@@ -52,10 +52,10 @@ public class CreateOrganization extends AbstractActivityView{
 		return super.buildLayout();
 	}
 
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){		
+	protected boolean validate(HashMap<String, Form> steps){		
 
-		Organizations organization = (Organizations)hmRequiredSteps.get("stepOrganization").getData();
-		Contacts contact = (Contacts)hmRequiredSteps.get("stepCreateContact").getData();
+		Organizations organization = (Organizations)steps.get("stepOrganization").getData();
+		Contacts contact = (Contacts)steps.get("stepCreateContact").getData();
 		Set<Contacts> contactses=organization.getContactses();
 		//load children
 		contactses.size();

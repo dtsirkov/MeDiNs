@@ -58,9 +58,9 @@ public class CreateCase extends AbstractActivityView{
 				//new PolicyForm(this,"stepPolicy"),
 				//new MedicalReportForm(this,"stepMedicalReport"),
 				//new ServicesForm(this,"stepServices"),
-				new PersonForm(this, "stepCreatePerson"), 
-				new ContactForm(this, "stepCreateContact"),
-				//serviceForm,
+				//new PersonForm(this, "stepCreatePerson"), 
+				//new ContactForm(this, "stepCreateContact"),
+				serviceForm,
 				//new DiagnosisForm(this,"stepDiagnosis"),
 				//new ValidationForm(this, "stepValidate")
 				validationForm
@@ -76,11 +76,11 @@ public class CreateCase extends AbstractActivityView{
 		return super.buildLayout();
 	}
 
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){
+	protected boolean validate(HashMap<String, Form> steps){
 
-		CaseInfo caseInfo = (CaseInfo)hmRequiredSteps.get("stepValidate").getData();
+		CaseInfo caseInfo = (CaseInfo)steps.get("stepValidate").getData();
 		@SuppressWarnings("unchecked")
-		Set<Services> updatedServices = (Set<Services>)hmRequiredSteps.get("stepServices").getData();
+		Set<Services> updatedServices = (Set<Services>)steps.get("stepServices").getData();
 
 		Set<Integer> updatedServiceIds = new HashSet<Integer>(); 
 		Iterator<Services> updatedServicesIterator = updatedServices.iterator();

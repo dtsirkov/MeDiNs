@@ -7,8 +7,6 @@ import web.views.AbstractView;
 
 
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
 import com.vaadin.ui.VerticalLayout;

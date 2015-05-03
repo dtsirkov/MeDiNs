@@ -298,6 +298,7 @@ public abstract class MyTable extends CustomComponent {
 		Form editForm = tableInfo.getEditForm();
 		if(editForm == null){
 			table.setReadOnly(true);
+			table.setPageLength(tableInfo.getBeanItemContainer().size());
 		}
 
 		if (tableInfo.getNestedProperties().length > 0) {
