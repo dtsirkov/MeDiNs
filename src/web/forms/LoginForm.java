@@ -99,19 +99,20 @@ public class LoginForm extends Form implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Users out = null;
 				Users user = new Users();
 				user.setUsername(usernameTF.getValue());
 				user.setPassword(passwordPF.getValue());
 				user.setActive("yes");
-				List<Object> searchResult=dao.findByExample(user);
+				List<Object> searchResult = dao.findByExample(user);
 				if (searchResult.size() > 0){
-					out=(Users) searchResult.get(0);
+					user = (Users) searchResult.get(0);
+					dao.evict(user);
 				}
-				if (usernameTF.isValid() == true && out != null)
+				if (usernameTF.isValid() == true && user != null)
 				{
 					// Store the current user in the service session
-					getSession().setAttribute("user", usernameTF.getValue());
+					getSession().setAttribute("user", user);
+					getSession().setAttribute("userName", user.getUsername());
 					navigator.navigateTo("domainSelectionView");
 				}
 				else

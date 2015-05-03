@@ -94,7 +94,7 @@ public final class DeleteConfirmation {
 										notOkCaption == null ? MY_NOTOK_CAPTION : notOkCaption,
 												cancelCaption);
 				confirmDialog.setWidth("300px");
-				//confirmDialog.setStyleName(Reindeer.WINDOW_LIGHT);
+				confirmDialog.setStyleName("popUpWindowStyle");
 				return confirmDialog;
 			}
 

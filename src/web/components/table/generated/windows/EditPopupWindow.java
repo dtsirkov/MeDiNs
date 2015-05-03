@@ -30,6 +30,7 @@ public class EditPopupWindow extends Window {
 	 *            The web.components.table.generated info
 	 */
 	public EditPopupWindow(final TableInfo tableInfo, Object itemId, Type type) {
+		addStyleName("popUpWindowStyle");
 		center();
 		setCaption(tableInfo.getPopupEditCaption());
 		setResizable(tableInfo.isPopupEditResizable());

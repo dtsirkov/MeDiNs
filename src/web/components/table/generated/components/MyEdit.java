@@ -61,7 +61,7 @@ public class MyEdit extends CustomComponent {
 		mainLayout.addComponent(txtId);
 
 		BeanItem<?> beanItem = null;
-		String mode = "";
+		String mode = "create";
 		if (itemId != null) {
 			beanItem = tableInfo.getBeanItemContainer().getItem(itemId);
 			setIdentification(beanItem);

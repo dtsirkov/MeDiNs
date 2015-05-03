@@ -118,9 +118,21 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 		return view.getNavigator();
 	}
 
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return layout;
+	}
+
 	public Layout buildLayout(String mode){
 		return layout;
-	};
+	}
+
+	@Override
+	public boolean process(HashMap<String, Form> steps) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
 	public void setReadOnly(boolean readOnly) {
 		Iterator<Component> layoutIterator = this.getLayout().iterator();
@@ -134,18 +146,6 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 		while(layoutIterator.hasNext()){
 			layoutIterator.next().setEnabled(readOnly);
 		}
-	}
-
-	@Override
-	public boolean process(HashMap<String, Form> steps) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public Layout viewLayout(String mode) {
-		// TODO Auto-generated method stub
-		return layout;
 	}
 
 }
