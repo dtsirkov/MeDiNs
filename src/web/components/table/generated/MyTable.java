@@ -131,7 +131,7 @@ public abstract class MyTable extends CustomComponent {
 
 		mainLayout = new VerticalLayout();
 		mainLayout.setSizeFull();
-		mainLayout.setMargin(true);
+		mainLayout.setMargin(false);
 
 		setSizeFull();
 

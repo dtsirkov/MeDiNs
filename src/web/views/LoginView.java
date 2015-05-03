@@ -1,7 +1,7 @@
 package web.views;
 
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.components.table.paged.Header;
 import web.forms.LoginForm;
 
 import com.vaadin.navigator.View;

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.components.table.paged.Header;
 import web.forms.DomainSelectionForm;
 
 import com.vaadin.navigator.Navigator;
