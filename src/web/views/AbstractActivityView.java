@@ -12,13 +12,11 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -32,8 +30,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import database.dao.DaoIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.components.table.paged.Header;
 import web.forms.Form;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
@@ -127,25 +125,9 @@ public abstract class AbstractActivityView extends AbstractView {
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
-		Header header=new Header(getUI());
+		//add header
+		HorizontalLayout header = Header.create();
 		root.addComponent(header);
-		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
-
-		// Title bar
-		HorizontalLayout titleBar = new HorizontalLayout();
-		titleBar.setWidth("100%");
-		root.addComponent(titleBar);
-
-		final String label = getLabel();
-		final Label title = new Label(propertyManager.getLabelDtl(label));
-		title.addStyleName("title");
-		titleBar.addComponent(title);
-
-		// home image
-		Embedded homeEm = new Embedded("", new ThemeResource("images/home.png"));
-		homeEm.setHeight("50px");
-		titleBar.addComponent(homeEm);
-		titleBar.setComponentAlignment(homeEm, Alignment.MIDDLE_RIGHT);
 
 		// Horizontal web.components.table.generated.layout with selection tree on the left and 
 		// a details panel on the right.
@@ -157,7 +139,7 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		// Layout for the menu area. Wrap the menu in a Panel to allow
 		// scrollbar.
-		Panel menuContainer = new Panel(propertyManager.getLabelDtl("stepList"));
+		Panel menuContainer = new Panel(propertyManager.getLabelDtl(getLabel()));
 		menuContainer.addStyleName("menucontainer");
 		menuContainer.addStyleName("light"); // No border
 		menuContainer.setWidth("-1px"); // Undefined width
@@ -172,7 +154,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		menuContainer.setContent(menu);
 
 		// A panel for the main view area on the right side
-		Panel detailspanel = new Panel(propertyManager.getLabelDtl("details"));
+		final Panel detailspanel = new Panel(propertyManager.getLabelDtl("details"));
 		detailspanel.addStyleName("detailspanel");
 		detailspanel.addStyleName("light"); // No borders
 		detailspanel.setSizeFull();
@@ -244,7 +226,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		String requiredStepLabel;
 		final HashMap<String, Form> hmRequiredSteps = new HashMap<String, Form>();
 		final Form[] requiredSteps = getRequiredSteps();
-		final Form [] requiredStepsDisplay = new Form[requiredSteps.length + 1];	
+		final Form[] requiredStepsDisplay = new Form[requiredSteps.length + 1];	
 
 		requiredStepsDisplay[0] = new Form(this, "requiredSteps");
 
@@ -287,7 +269,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		validatedSteps.add(requiredSteps[0].getLabel());
 		validatedSteps.add(requiredStepsDisplay[0].getLabel());
 		for (int i = 0; i < optionalStepsDisplay.length; i++) {
-			validatedSteps.add(optionalStepsDisplay[i].getLabel());
+			if(optionalStepsDisplay[i].getLabel() != "noOptionalSteps")
+				validatedSteps.add(optionalStepsDisplay[i].getLabel());
 		}
 
 		//create a list of required steps' labels 
@@ -351,6 +334,8 @@ public abstract class AbstractActivityView extends AbstractView {
 				String selectedItem = event.getItemId().toString();
 				if (requiredStepsLabels.contains(selectedItem) && !validatedSteps.contains(selectedItem))
 					Notification.show(propertyManager.getLabelDtl("stepNotValidated"));
+				if(validatedSteps.contains(selectedItem))
+					detailspanel.setCaption(propertyManager.getLabelDtl(selectedItem));
 			}
 		});
 
@@ -422,9 +407,9 @@ public abstract class AbstractActivityView extends AbstractView {
 									currentForm = form;
 
 									//add stepTitleLayout
-									stepTitle.setValue(propertyManager.getLabelDtl(value));					
-									detailsbox.addComponent(stepTitleLayout);
-									detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
+									//stepTitle.setValue(propertyManager.getLabelDtl(value));					
+									//detailsbox.addComponent(stepTitleLayout);
+									//detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
 
 									//add customComponentLayout
 									form.setSizeUndefined();
@@ -482,7 +467,8 @@ public abstract class AbstractActivityView extends AbstractView {
 					//currentComponent.process(hmRequiredSteps);
 				}
 
-				menu.select(nextStep);	
+				menu.select(nextStep);
+				detailspanel.setCaption(propertyManager.getLabelDtl(nextStep));
 			}
 		});
 
@@ -510,6 +496,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				CustomComponent prevComponent = requiredSteps[prevStepPosition];
 				prevComponent.setComponentError(null);
 				menu.select(prevStep);
+				detailspanel.setCaption(propertyManager.getLabelDtl(prevStep));
 			}
 		});
 
@@ -579,7 +566,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			}
 		});
 
-		homeEm.addClickListener(new MouseEvents.ClickListener() {
+		Header.getImage().addClickListener(new MouseEvents.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -599,6 +586,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		return root;
 
 	}
+
 	//validation method
 	protected abstract boolean validate(HashMap<String, Form> steps);
 

@@ -52,10 +52,14 @@ public class NewValidationForm extends Form implements StepIntrfc{
 			Panel panel = new Panel(form.getLabelDtl());
 			panel.setStyleName("validation_panel");
 			panel.setSizeFull();
-
 			panel.setContent(form.viewLayout("validation"));
 
-			VerticalLayout mainLayout = (VerticalLayout)this.getLayout();
+			VerticalLayout mainLayout = (VerticalLayout)getLayout();
+
+			VerticalLayout verticalLayout = new VerticalLayout();
+			verticalLayout.setHeight("30px");
+			mainLayout.addComponent(verticalLayout);
+
 			mainLayout.addComponent(panel);
 			mainLayout.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
 

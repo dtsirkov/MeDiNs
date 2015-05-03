@@ -8,6 +8,7 @@ import java.util.Set;
 import web.forms.ContactForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
+import web.forms.MedicalReportForm;
 import web.forms.NewValidationForm;
 import web.forms.PersonForm;
 import web.forms.ServicesForm;
@@ -20,6 +21,7 @@ import com.vaadin.ui.UI;
 
 import database.dao.DaoIntrfc;
 import database.pojo.CaseInfo;
+import database.pojo.MedicalReport;
 import database.pojo.Services;
 
 public class CreateCase extends AbstractActivityView{
@@ -56,7 +58,7 @@ public class CreateCase extends AbstractActivityView{
 				//new SearchPersonForm(this, "stepCreatePerson"),
 				//new PersonTouristVisitForm(this,"stepTouristVisit"),
 				//new PolicyForm(this,"stepPolicy"),
-				//new MedicalReportForm(this,"stepMedicalReport"),
+				new MedicalReportForm(this, "stepMedicalReport"),
 				//new ServicesForm(this,"stepServices"),
 				//new PersonForm(this, "stepCreatePerson"), 
 				//new ContactForm(this, "stepCreateContact"),
@@ -77,6 +79,8 @@ public class CreateCase extends AbstractActivityView{
 	}
 
 	protected boolean validate(HashMap<String, Form> steps){
+
+		MedicalReport medicalReport = (MedicalReport)steps.get("stepMedicalReport").getData();
 
 		CaseInfo caseInfo = (CaseInfo)steps.get("stepValidate").getData();
 		@SuppressWarnings("unchecked")
@@ -104,6 +108,7 @@ public class CreateCase extends AbstractActivityView{
 
 		Set<Object> objectSet = new HashSet<Object>(updatedServices);
 		objectSet.add(caseInfo);
+		objectSet.add(medicalReport);
 
 		Iterator<Object> iterator = objectSet.iterator();
 		Object object;
