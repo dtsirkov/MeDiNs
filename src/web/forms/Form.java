@@ -143,8 +143,11 @@ public class Form extends CustomComponent implements CustomComponentIntrfc, Step
 
 	public void setEnabled(boolean readOnly) {
 		Iterator<Component> layoutIterator = this.getLayout().iterator();
+		Component component;
 		while(layoutIterator.hasNext()){
-			layoutIterator.next().setEnabled(readOnly);
+			component = layoutIterator.next();
+			component.setStyleName("my-disabled");
+			component.setEnabled(readOnly);
 		}
 	}
 

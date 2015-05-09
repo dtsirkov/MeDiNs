@@ -59,7 +59,7 @@ public class ServicesForm extends Form {
 		DaoIntrfc dao = getDao();	
 
 		//build main layout
-		Layout absoluteLayout = buildMainLayout();
+		Layout mainLayout = buildMainLayout();
 
 		ServiceBean.setTypeEnum(dao.getEnumeration("service type"));
 
@@ -82,8 +82,8 @@ public class ServicesForm extends Form {
 
 		EditServiceForm editServiceForm;
 		editServiceForm = new EditServiceForm(getView(), "editService");
-		setLayout(absoluteLayout);
-		setCompositionRoot(absoluteLayout);
+		setLayout(mainLayout);
+		setCompositionRoot(mainLayout);
 
 		GenerateTable table = new GenerateTable(ServiceBean.class, serviceBeanItemContainer, editServiceForm);
 		table.setWidth("100%");
@@ -92,7 +92,7 @@ public class ServicesForm extends Form {
 
 		this.setData(serviceBeanItemContainer);
 
-		return absoluteLayout;
+		return mainLayout;
 	}
 
 	public Layout viewLayout(String mode) {

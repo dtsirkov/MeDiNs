@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import web.forms.ContactForm;
+import web.forms.DiagnosisForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
@@ -21,6 +22,7 @@ import com.vaadin.ui.UI;
 
 import database.dao.DaoIntrfc;
 import database.pojo.CaseInfo;
+import database.pojo.Diagnosis;
 import database.pojo.MedicalReport;
 import database.pojo.Services;
 
@@ -50,6 +52,7 @@ public class CreateCase extends AbstractActivityView{
 		Form serviceForm = new ServicesForm(this, "stepServices");
 		services.size();
 		serviceForm.setData(services);
+		dao.evict(caseInfo);
 
 		Form validationForm = new NewValidationForm(this, "stepValidate");
 		validationForm.setData(caseInfo);
@@ -58,11 +61,12 @@ public class CreateCase extends AbstractActivityView{
 				//new SearchPersonForm(this, "stepCreatePerson"),
 				//new PersonTouristVisitForm(this,"stepTouristVisit"),
 				//new PolicyForm(this,"stepPolicy"),
-				new MedicalReportForm(this, "stepMedicalReport"),
 				//new ServicesForm(this,"stepServices"),
 				//new PersonForm(this, "stepCreatePerson"), 
 				//new ContactForm(this, "stepCreateContact"),
+				new MedicalReportForm(this, "stepMedicalReport"),
 				serviceForm,
+				new DiagnosisForm(this, "stepDiagnosis"),	
 				//new DiagnosisForm(this,"stepDiagnosis"),
 				//new ValidationForm(this, "stepValidate")
 				validationForm

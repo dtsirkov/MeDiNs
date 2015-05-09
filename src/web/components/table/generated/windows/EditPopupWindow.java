@@ -1,5 +1,6 @@
 package web.components.table.generated.windows;
 
+import web.MedinsUI;
 import web.components.table.generated.TableInfo;
 
 import com.vaadin.ui.Window;

@@ -13,7 +13,7 @@ import database.pojo.Enumerations;
 import database.pojo.Services;
 
 
-@MyTable(caption = "", popupCaption = "service", isColumnCollapsingAllowed = true, height = 300)
+@MyTable(caption = "", popupCaption = "Service", isColumnCollapsingAllowed = true, height = 300)
 public class ServiceBean { 
 
 	private static Map<Enumerations, String> typeEnum;
