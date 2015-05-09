@@ -185,6 +185,16 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		}
 	}
 
+	public void clear(){
+		log.info("Session clear... ");
+		try {
+			session.clear();
+		} catch (RuntimeException re) {
+			log.error("Clear failed!", re);
+			throw re;
+		}
+	}
+
 	public Map<Enumerations, String> getEnumeration(String type){
 
 		Map<Enumerations, String> hmEnumerationEnumerationLabel = new HashMap<Enumerations, String>();

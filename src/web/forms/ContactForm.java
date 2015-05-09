@@ -380,7 +380,7 @@ public class ContactForm extends Form implements StepIntrfc{
 		return outCountries;		
 	}
 
-	public static Country getCountry(DaoIntrfc dao,String countryCode){
+	public static Country getCountry(DaoIntrfc dao, String countryCode){
 		return (Country) dao.findById("Country", countryCode);	
 	}
 

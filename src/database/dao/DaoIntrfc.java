@@ -12,9 +12,9 @@ import database.pojo.Enumerations;
 
 
 public interface DaoIntrfc {
-	
+
 	public Session getSession();
-	
+
 	public Transaction getTransaction();
 
 	public void persist(Object transientInstance);
@@ -30,13 +30,15 @@ public interface DaoIntrfc {
 	public List<Object> findByExample(Object instance);
 
 	public List<Object> findByExample(Object instance, Map<Object, List<Object>> hm);
-	
+
 	public void evict(Object object);
 
+	public void clear();
+
 	public Map<Enumerations, String> getEnumeration(String type);
-	
+
 	public List<?> searchByConstaint(String dBTableName, Map<String, String> constraint);
-	
+
 	public String toString(Object pojoObject);
 
 }

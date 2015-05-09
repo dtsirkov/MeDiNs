@@ -155,9 +155,7 @@ public class MedicalReportForm extends Form {
 			complaintsLB.setStyleName("compenentTitle");
 			presentConditionLB.setStyleName("compenentTitle");
 			therapyLB.setStyleName("compenentTitle");
-			//this.setEnabled(false);
-			//set read only to all components of the form
-			this.setReadOnly(true);
+			setEnabled(false);
 		}
 
 		//add listeners
@@ -313,7 +311,7 @@ public class MedicalReportForm extends Form {
 		getDao().evict(medicalReport);
 
 		steps.get("stepMedicalReport").setData(medicalReport);
-		//steps.get("stepDiagnosis").setData(medicalReport);
+		steps.get("stepDiagnosis").setData(medicalReport);
 
 		return true;
 	}
