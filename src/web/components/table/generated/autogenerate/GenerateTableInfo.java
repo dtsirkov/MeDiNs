@@ -32,8 +32,9 @@ public class GenerateTableInfo extends TableInfo {
 
 	public GenerateTableInfo(Class<?> clazz, BeanItemContainer<?> beanItemContainer, Form editForm, boolean shallGenerate, boolean includeId) {
 
+		PropertyManager propertyManager = MedinsUI.getPropertyManager();
+
 		this.setClazz(clazz);
-		this.setEditForm(editForm);
 
 		MyTable myTable = clazz.getAnnotation(MyTable.class);
 		Table table = clazz.getAnnotation(Table.class);
@@ -45,12 +46,9 @@ public class GenerateTableInfo extends TableInfo {
 		int width = -1;
 		int height = -1;
 
-		PropertyManager propertyManager = MedinsUI.getPropertyManager();
-		this.setPropertyManager(propertyManager);
-
 		if (myTable != null) {
 			caption = propertyManager.getLabelDtl(myTable.caption());
-			popupCaption = propertyManager.getLabelDtl(myTable.popupCaption());
+			popupCaption = (editForm == null ? "" : propertyManager.getLabelDtl(editForm.getLabel()));
 			width = myTable.width();
 			height = myTable.height();
 			isSearchable = myTable.isSearchable();
@@ -64,7 +62,9 @@ public class GenerateTableInfo extends TableInfo {
 		}
 
 		this.setCaption(caption);
+		this.setEditForm(editForm);
 		this.setPopupEditCaption(popupCaption);
+		this.setPropertyManager(propertyManager);	
 		this.setPopupEditWidth(width);
 		this.setPopupEditHeight(height);
 		this.setSearchable(isSearchable);
