@@ -11,6 +11,7 @@ import web.activities.CreateOrganization;
 import web.activities.CreatePerson;
 import web.activities.CreateUser;
 import web.activities.CreateUser2;
+import web.activities.RegisterCase;
 import web.activities.UpdateOrganization;
 import web.activities.UpdatePerson;
 import web.activities.UpdateUser;
@@ -93,8 +94,10 @@ public class MedinsUI extends UI {
 		Domain caseDomain = new Domain("caseDomain");
 		Activity createCaseActivity = new Activity(new CreateCase(this));
 		Activity createCaseActivity2 = new Activity(new CreateCase2(this));
+		Activity registerCase = new Activity(new RegisterCase(this));
 		caseDomain.addActivity(createCaseActivity);
 		caseDomain.addActivity(createCaseActivity2);
+		caseDomain.addActivity(registerCase);
 
 		ArrayList<Domain> domainList = new ArrayList<Domain>();
 

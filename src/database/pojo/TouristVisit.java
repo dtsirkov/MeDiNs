@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0
+// Generated May 23, 2015 12:50:22 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 
@@ -11,8 +11,8 @@ public class TouristVisit implements java.io.Serializable {
 
 	private Integer id;
 	private Persons persons;
-	private Date from;
-	private Date to;
+	private Date startDate;
+	private Date endDate;
 	private String resort;
 	private String hotel;
 	private String room;
@@ -27,11 +27,12 @@ public class TouristVisit implements java.io.Serializable {
 		this.resort = resort;
 	}
 
-	public TouristVisit(Persons persons, Date from, Date to, String resort,
-			String hotel, String room, String phoneNumber, String address) {
+	public TouristVisit(Persons persons, Date startDate, Date endDate,
+			String resort, String hotel, String room, String phoneNumber,
+			String address) {
 		this.persons = persons;
-		this.from = from;
-		this.to = to;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.resort = resort;
 		this.hotel = hotel;
 		this.room = room;
@@ -55,20 +56,20 @@ public class TouristVisit implements java.io.Serializable {
 		this.persons = persons;
 	}
 
-	public Date getFrom() {
-		return this.from;
+	public Date getStartDate() {
+		return this.startDate;
 	}
 
-	public void setFrom(Date from) {
-		this.from = from;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
-	public Date getTo() {
-		return this.to;
+	public Date getEndDate() {
+		return this.endDate;
 	}
 
-	public void setTo(Date to) {
-		this.to = to;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getResort() {

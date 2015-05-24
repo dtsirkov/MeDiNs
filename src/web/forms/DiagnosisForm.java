@@ -157,7 +157,6 @@ public class DiagnosisForm extends Form {
 			diagnosisBeanItemContainer.sort(new Object[] { "mkb" }, new boolean[] { true });
 		}
 
-
 		GenerateTable table = new GenerateTable(DiagnosisBean.class, diagnosisBeanItemContainer, null);
 		tableVerticalLayout.setMargin(new MarginInfo(true, false, true, false));
 		tableVerticalLayout.setWidth("566px");
@@ -187,6 +186,8 @@ public class DiagnosisForm extends Form {
 			getDao().evict(diagnosis);
 		}
 		medicalReport.setDiagnosises(allDiagnosis);	
+
+		steps.get("stepDiagnosis").setData(medicalReport);
 
 		return true;
 	}
