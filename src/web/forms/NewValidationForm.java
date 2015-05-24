@@ -6,7 +6,7 @@ import web.StepIntrfc;
 import web.views.AbstractView;
 
 
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Panel;
 
 import com.vaadin.ui.VerticalLayout;
@@ -46,16 +46,48 @@ public class NewValidationForm extends Form implements StepIntrfc{
 
 	private void addValidationComponent(Form form){
 
-		Label label = new Label(form.getLabelDtl());
-		label.setStyleName("validationCompenentTitle");
-		label.setSizeUndefined();
-		Panel panel = new Panel(label);
-		if(form.getData() != null)
-			panel.setContent(form.buildLayout("view"));
-		panel.setStyleName("validation_panel");
-		panel.setSizeFull();
-		Layout mainLayout = this.getLayout();
-		mainLayout.addComponent(panel);
+
+		if(form.getData() != null){
+
+			Panel panel = new Panel(form.getLabelDtl());
+			panel.setStyleName("validation_panel");
+			panel.setSizeFull();
+			panel.setContent(form.viewLayout("validation"));
+
+			VerticalLayout mainLayout = (VerticalLayout)getLayout();
+
+			VerticalLayout verticalLayout = new VerticalLayout();
+			verticalLayout.setHeight("30px");
+			mainLayout.addComponent(verticalLayout);
+
+			mainLayout.addComponent(panel);
+			mainLayout.setComponentAlignment(panel, Alignment.MIDDLE_CENTER);
+
+		}
+
+		/*
+		if(form.getData() != null){
+
+			GridLayout grid = new GridLayout(1, 2);
+
+			grid.setSizeUndefined();
+			grid.setStyleName("validation_grid");
+
+			Label label = new Label(form.getLabelDtl());
+			label.setStyleName("validationCompenentTitle");
+			label.setSizeUndefined();
+			grid.addComponent(label);
+			grid.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+
+			Layout viewLayout = form.viewLayout("validation");
+			viewLayout.setSizeUndefined();
+			grid.addComponent(viewLayout);
+			grid.setComponentAlignment(viewLayout, Alignment.MIDDLE_CENTER);
+
+			this.getLayout().addComponent(grid);
+
+		}
+		 */
 
 	}
 

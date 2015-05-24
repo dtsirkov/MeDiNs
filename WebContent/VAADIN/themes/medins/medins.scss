@@ -54,7 +54,15 @@
 	    color: white;
 	    line-height:36pt;
 	    background: #FF5050;
-	}   
+	} 
+	
+	/* The main title */
+	.personcreate .v-label-activityTitle {
+		padding: 3px;
+	    font-size: 24pt;
+	    line-height:36pt;
+	    color: white;
+	}     
 	
 	.em{
 	    padding: 100px;
@@ -75,6 +83,10 @@
 	    background: white;
 	}
 	
+	.v-horizontallayout-header{
+		background: gray;
+	}
+	
 	/* The horizontal area */
 	.personcreate .v-horizontallayout .v-horizontallayout-spacing-on {
 	    background: gray;
@@ -82,19 +94,23 @@
 	}
 	
 	/* The menu tree panel */
-	.personcreate .v-panel-caption-menucontainer,
-	.personcreate .v-panel-caption-detailspanel {
+	.personcreate .v-panel-caption-menucontainer {
 	    padding: 3px;
 	    color: white;
-	    background: gray;
-	    font-size: 12pt;
+	    background: #FF5050;
+	    font-size: 20pt;
 	    line-height: 35pt;
 	    height: 44px;
 	}
 	
-	/* The details caption. */
 	.personcreate .v-panel-caption-detailspanel {
+	    padding: 3px;
+	    color: white;
+	    background: #FF5050;
 	    font-size: 18pt;
+	    line-height: 35pt;
+	    height: 44px;
+	    text-align: center;
 	}
 	
 	.personcreate .treecontainer, .personcreate .v-panel {
@@ -108,9 +124,43 @@
 	.v-formlayout-captioncell { text-align: left;}
 	.v-formlayout-row {padding-bottom:100px;}
 	
-	.v-panel-content-validation_panel {
-		background-color:yellow;
-		text-align: right;
+	.v-panel-content .v-panel-caption-validation_panel {
+		padding: 3px;
+	    color: white;
+	    background: grey;
+		text-align: left;
+		font-size: 12pt;
+	}
+	
+	.compenentTitle{
+		font-size: 10pt;
+		font-weight: bold;
+	    color: black;
+	}
+	
+	.v-gridlayout-validation_grid {
+		margin: 0px;
+		padding: 0px;
+		border: 1px solid gray;
+	}
+	
+	.v-window-popUpWindowStyle .v-window-outerheader {
+     	background: #58FC87;
+     }
+
+	.v-window-popUpWindowStyle .v-window-header {
+    	 color: black;
+     }
+	
+	/*
+	.v-disabled {
+		opacity: 1.0 !important;
+	}
+	*/
+	
+	.my-disabled {
+		opacity: 1;
+   		filter: none;
 	}
 	
 	.v-textarea-validation_textarea{

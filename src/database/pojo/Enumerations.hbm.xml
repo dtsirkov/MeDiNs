@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
     <class name="database.pojo.Enumerations" table="enumerations" catalog="medins_schema">
         <id name="code" type="string">
@@ -13,25 +13,25 @@
         </many-to-one>
         <set name="personsesForTitle" table="persons" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="title" length="15" not-null="true" />
+                <column name="title" length="15" />
             </key>
             <one-to-many class="database.pojo.Persons" />
         </set>
         <set name="contactsesForPrefered" table="contacts" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="prefered" length="15" not-null="true" />
+                <column name="prefered" length="15" />
             </key>
             <one-to-many class="database.pojo.Contacts" />
         </set>
         <set name="caseInfosForStatus2" table="case_info" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="status_2" length="15" not-null="true" />
+                <column name="status_2" length="15" />
             </key>
             <one-to-many class="database.pojo.CaseInfo" />
         </set>
         <set name="personsesForRole" table="persons" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="role" length="15" not-null="true" />
+                <column name="role" length="15" />
             </key>
             <one-to-many class="database.pojo.Persons" />
         </set>
@@ -49,7 +49,7 @@
         </set>
         <set name="contactsesForActive" table="contacts" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="active" length="15" not-null="true" />
+                <column name="active" length="15" />
             </key>
             <one-to-many class="database.pojo.Contacts" />
         </set>
@@ -67,13 +67,13 @@
         </set>
         <set name="personsesForJobTitle" table="persons" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="job_title" length="15" not-null="true" />
+                <column name="job_title" length="15" />
             </key>
             <one-to-many class="database.pojo.Persons" />
         </set>
         <set name="contactsesForType" table="contacts" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="type" length="15" not-null="true" />
+                <column name="type" length="15" />
             </key>
             <one-to-many class="database.pojo.Contacts" />
         </set>
@@ -85,7 +85,7 @@
         </set>
         <set name="caseInfosForStatus1" table="case_info" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="status_1" length="15" not-null="true" />
+                <column name="status_1" length="15" />
             </key>
             <one-to-many class="database.pojo.CaseInfo" />
         </set>

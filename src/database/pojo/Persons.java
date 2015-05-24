@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
+// Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,18 +29,12 @@ public class Persons implements java.io.Serializable {
 	public Persons() {
 	}
 
-	public Persons(String socialNumber, Enumerations enumerationsByJobTitle,
-			Enumerations enumerationsByTitle, Enumerations enumerationsByRole,
-			Enumerations enumerationsBySex, String firstName, String lastName,
-			Date birthDate) {
+	public Persons(String socialNumber, Enumerations enumerationsBySex,
+			String firstName, String lastName) {
 		this.socialNumber = socialNumber;
-		this.enumerationsByJobTitle = enumerationsByJobTitle;
-		this.enumerationsByTitle = enumerationsByTitle;
-		this.enumerationsByRole = enumerationsByRole;
 		this.enumerationsBySex = enumerationsBySex;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.birthDate = birthDate;
 	}
 
 	public Persons(String socialNumber, Enumerations enumerationsByJobTitle,

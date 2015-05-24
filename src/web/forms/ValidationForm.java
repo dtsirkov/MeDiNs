@@ -42,6 +42,13 @@ public class ValidationForm extends Form implements StepIntrfc{
 
 	}
 
+	public static Form create(Form validationForm){
+		if(validationForm instanceof ValidationForm)
+			return new ValidationForm(validationForm);
+		else
+			return new NewValidationForm(validationForm);
+	}
+
 	public Layout buildLayout(String mode) {
 
 		getLayout().setSizeUndefined();

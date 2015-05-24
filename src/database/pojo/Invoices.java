@@ -1,6 +1,6 @@
 package database.pojo;
 
-// Generated Apr 4, 2015 7:32:07 PM by Hibernate Tools 4.0.0
+// Generated Apr 30, 2015 6:48:37 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 
@@ -11,20 +11,29 @@ public class Invoices implements java.io.Serializable {
 
 	private Integer id;
 	private CaseInfo caseInfo;
-	private int number;
+	private Integer number;
 	private Date date;
 	private int invoicedBy;
 	private int invoicedTo;
-	private float policyExcess;
+	private Float policyExcess;
 	private float dueAmount;
 	private String storagePath;
 
 	public Invoices() {
 	}
 
-	public Invoices(CaseInfo caseInfo, int number, Date date, int invoicedBy,
-			int invoicedTo, float policyExcess, float dueAmount,
-			String storagePath) {
+	public Invoices(CaseInfo caseInfo, Date date, int invoicedBy,
+			int invoicedTo, float dueAmount) {
+		this.caseInfo = caseInfo;
+		this.date = date;
+		this.invoicedBy = invoicedBy;
+		this.invoicedTo = invoicedTo;
+		this.dueAmount = dueAmount;
+	}
+
+	public Invoices(CaseInfo caseInfo, Integer number, Date date,
+			int invoicedBy, int invoicedTo, Float policyExcess,
+			float dueAmount, String storagePath) {
 		this.caseInfo = caseInfo;
 		this.number = number;
 		this.date = date;
@@ -51,11 +60,11 @@ public class Invoices implements java.io.Serializable {
 		this.caseInfo = caseInfo;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return this.number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 
@@ -83,11 +92,11 @@ public class Invoices implements java.io.Serializable {
 		this.invoicedTo = invoicedTo;
 	}
 
-	public float getPolicyExcess() {
+	public Float getPolicyExcess() {
 		return this.policyExcess;
 	}
 
-	public void setPolicyExcess(float policyExcess) {
+	public void setPolicyExcess(Float policyExcess) {
 		this.policyExcess = policyExcess;
 	}
 

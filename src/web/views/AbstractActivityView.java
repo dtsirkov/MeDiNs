@@ -12,13 +12,11 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -32,11 +30,9 @@ import com.vaadin.ui.Button.ClickEvent;
 import database.dao.DaoIntrfc;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.classes.ValidationClass;
-import web.components.table.paged.Header;
 import web.forms.Form;
-import web.forms.NewValidationForm;
 import web.forms.SearchForm;
 import web.forms.ValidationForm;
 
@@ -46,6 +42,7 @@ public abstract class AbstractActivityView extends AbstractView {
 
 	private Form[] requiredSteps = new Form[]{};
 	private Form[] optionalSteps = new Form[]{};
+	private Form currentForm = null;
 	private String mode = "view";
 	private String validationMethod;
 	private Domain domain;
@@ -78,6 +75,12 @@ public abstract class AbstractActivityView extends AbstractView {
 	public void setOptionalSteps(Form[] optionalSteps) {
 		this.optionalSteps = optionalSteps;
 	}
+	public Form getCurrentForm() {
+		return currentForm;
+	}
+	public void setCurrentForm(Form currentForm) {
+		this.currentForm = currentForm;
+	}
 	public String getMode() {
 		return mode;
 	}
@@ -99,6 +102,10 @@ public abstract class AbstractActivityView extends AbstractView {
 		this.domain = domain;
 	}
 
+	public Layout viewLayout(String mode){
+		return null;
+	}
+
 	public Layout buildLayout(){
 
 		//get propertyManager
@@ -109,6 +116,9 @@ public abstract class AbstractActivityView extends AbstractView {
 		dao.getTransaction().rollback();
 		final Transaction transaction = dao.getTransaction();
 
+		//set current form to null in case a new activity
+		currentForm = null;
+
 		//create main web.components.table.generated.layout
 		final VerticalLayout root = new VerticalLayout();
 		//create component validater
@@ -118,25 +128,9 @@ public abstract class AbstractActivityView extends AbstractView {
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
-		Header header=new Header(getUI());
+		//add header
+		HorizontalLayout header = Header.create();
 		root.addComponent(header);
-		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
-
-		// Title bar
-		HorizontalLayout titleBar = new HorizontalLayout();
-		titleBar.setWidth("100%");
-		root.addComponent(titleBar);
-
-		final String label = getLabel();
-		final Label title = new Label(propertyManager.getLabelDtl(label));
-		title.addStyleName("title");
-		titleBar.addComponent(title);
-
-		// home image
-		Embedded homeEm = new Embedded("", new ThemeResource("images/home.png"));
-		homeEm.setHeight("50px");
-		titleBar.addComponent(homeEm);
-		titleBar.setComponentAlignment(homeEm, Alignment.MIDDLE_RIGHT);
 
 		// Horizontal web.components.table.generated.layout with selection tree on the left and 
 		// a details panel on the right.
@@ -148,7 +142,7 @@ public abstract class AbstractActivityView extends AbstractView {
 
 		// Layout for the menu area. Wrap the menu in a Panel to allow
 		// scrollbar.
-		Panel menuContainer = new Panel(propertyManager.getLabelDtl("stepList"));
+		Panel menuContainer = new Panel(propertyManager.getLabelDtl(getLabel()));
 		menuContainer.addStyleName("menucontainer");
 		menuContainer.addStyleName("light"); // No border
 		menuContainer.setWidth("-1px"); // Undefined width
@@ -163,7 +157,7 @@ public abstract class AbstractActivityView extends AbstractView {
 		menuContainer.setContent(menu);
 
 		// A panel for the main view area on the right side
-		Panel detailspanel = new Panel(propertyManager.getLabelDtl("details"));
+		final Panel detailspanel = new Panel(propertyManager.getLabelDtl("details"));
 		detailspanel.addStyleName("detailspanel");
 		detailspanel.addStyleName("light"); // No borders
 		detailspanel.setSizeFull();
@@ -226,14 +220,16 @@ public abstract class AbstractActivityView extends AbstractView {
 		//////////////////////////////////////////////////////
 		//Put in the application data and handle the UI logic
 
-		final String validationMethod = getValidationMethod();
 		final String mode = getMode();
+
+		//all steps of the activity
+		final HashMap<String, Form> steps = new HashMap<String, Form>();
 
 		//put required steps in array
 		String requiredStepLabel;
 		final HashMap<String, Form> hmRequiredSteps = new HashMap<String, Form>();
 		final Form[] requiredSteps = getRequiredSteps();
-		final Form [] requiredStepsDisplay = new Form[requiredSteps.length + 1];	
+		final Form[] requiredStepsDisplay = new Form[requiredSteps.length + 1];	
 
 		requiredStepsDisplay[0] = new Form(this, "requiredSteps");
 
@@ -241,6 +237,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			requiredStepsDisplay[i+1] = requiredSteps[i];
 			requiredStepLabel = requiredSteps[i].getLabel();
 			hmRequiredSteps.put(requiredStepLabel, requiredSteps[i]);
+			steps.put(requiredStepLabel, requiredSteps[i]);
 		}
 
 		//put additional steps in array
@@ -260,6 +257,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				optionalStepsDisplay[i+1] = optionalSteps[i];
 				optionalStepLabel = optionalSteps[i].getLabel();
 				hmOptionalSteps.put(optionalStepLabel, optionalSteps[i]);
+				steps.put(optionalStepLabel, optionalSteps[i]);
 			}
 		}
 
@@ -274,7 +272,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		validatedSteps.add(requiredSteps[0].getLabel());
 		validatedSteps.add(requiredStepsDisplay[0].getLabel());
 		for (int i = 0; i < optionalStepsDisplay.length; i++) {
-			validatedSteps.add(optionalStepsDisplay[i].getLabel());
+			if(optionalStepsDisplay[i].getLabel() != "noOptionalSteps")
+				validatedSteps.add(optionalStepsDisplay[i].getLabel());
 		}
 
 		//create a list of required steps' labels 
@@ -338,6 +337,8 @@ public abstract class AbstractActivityView extends AbstractView {
 				String selectedItem = event.getItemId().toString();
 				if (requiredStepsLabels.contains(selectedItem) && !validatedSteps.contains(selectedItem))
 					Notification.show(propertyManager.getLabelDtl("stepNotValidated"));
+				if(validatedSteps.contains(selectedItem))
+					detailspanel.setCaption(propertyManager.getLabelDtl(selectedItem));
 			}
 		});
 
@@ -348,87 +349,100 @@ public abstract class AbstractActivityView extends AbstractView {
 			private boolean searchFormFlag = true;
 			Object previous = requiredSteps[0];
 			public void valueChange(ValueChangeEvent event) {
-				//CustomComponent validationForm;
-				Form customComponent, validationForm; 
-				if (event.getProperty() != null && event.getProperty().getValue() != null){
+				try{
+					//CustomComponent validationForm;
+					Form form, validationForm; 
+					if (event.getProperty() != null && event.getProperty().getValue() != null){
 
-					String value = event.getProperty().getValue().toString();	
+						String value = event.getProperty().getValue().toString();	
 
-					//manage selection of not validated step
-					if (!validatedSteps.contains(value)) 
-						menu.setValue(previous);
-					else
-						previous = menu.getValue();
+						//manage selection of not validated step
+						if (!validatedSteps.contains(value)) 
+							menu.setValue(previous);
+						else
+							previous = menu.getValue();
 
-					//a category is selected 
-					if ((stepCategory[0][0]).getLabel().equals(value) || 
-							(stepCategory[1][0]).getLabel().equals(value)){
+						//a category is selected 
+						if ((stepCategory[0][0]).getLabel().equals(value) || 
+								(stepCategory[1][0]).getLabel().equals(value)){
 
-						detailsbox.removeAllComponents();
-						Label noStepSelected = new Label(propertyManager.getLabelDtl("noStepSelected"));
-						noStepSelected.addStyleName("stepTitle");
-						detailsbox.addComponent(noStepSelected);
+							detailsbox.removeAllComponents();
+							Label noStepSelected = new Label(propertyManager.getLabelDtl("noStepSelected"));
+							noStepSelected.addStyleName("stepTitle");
+							detailsbox.addComponent(noStepSelected);
 
-					}else{
-						//a step is selected
-						String stepLabel;
-						for(int i = 0;  i < requiredSteps.length; i++){
-							stepLabel = (requiredSteps[i]).getLabel();
-							//if the previous step is validated and the next step is reachable - add next step to detailsbox
-							if (stepLabel.equals(value) && validatedSteps.contains((requiredSteps[i]).getLabel())) {
+						}else{
+							//a step is selected
+							String stepLabel;
+							for(int i = 0;  i < requiredSteps.length; i++){
+								stepLabel = (requiredSteps[i]).getLabel();
+								//if the previous step is validated and the next step is reachable - add next step to detailsbox
+								if (stepLabel.equals(value) && validatedSteps.contains((requiredSteps[i]).getLabel())) {
 
-								detailsbox.removeAllComponents();
-								buttonsLayout.removeAllComponents();
+									if(currentForm != null)
+										currentForm.process(steps);
 
-								//this is the last step in the requiredSteps array
-								validationForm  = requiredSteps[requiredSteps.length - 1];
-								stepLabel = validationForm.getLabel();
-								if(value.equals(stepLabel))
-								{	
-									customComponent = new ValidationForm(validationForm);
-									customComponent.setData(requiredSteps);
-									buttonsLayout.addComponent(validateButton);
-								}else{
-									customComponent = requiredSteps[i];
-									buttonsLayout.addComponent(prevButton);
-									buttonsLayout.addComponent(nextButton);	
+									detailsbox.removeAllComponents();
+									buttonsLayout.removeAllComponents();
+
+									//this is the last step in the requiredSteps array
+									validationForm  = requiredSteps[requiredSteps.length - 1];
+									stepLabel = validationForm.getLabel();
+									if(value.equals(stepLabel))
+									{	
+										form = ValidationForm.create(validationForm);
+										form.setData(requiredSteps);
+										buttonsLayout.addComponent(validateButton);
+									}else{
+										form = requiredSteps[i];
+										buttonsLayout.addComponent(prevButton);
+										buttonsLayout.addComponent(nextButton);	
+									}
+									form.buildLayout(mode);
+
+									if(!(form instanceof SearchForm) || searchFormFlag){
+
+										if(form instanceof SearchForm)
+											searchFormFlag = false;
+
+										//set current form
+										currentForm = form;
+
+										//add stepTitleLayout
+										//stepTitle.setValue(propertyManager.getLabelDtl(value));					
+										//detailsbox.addComponent(stepTitleLayout);
+										//detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
+
+										//add customComponentLayout
+										form.setSizeUndefined();
+										customComponentLayout.removeAllComponents();
+										customComponentLayout.addComponent(form);
+										customComponentLayout.setComponentAlignment(form, Alignment.MIDDLE_CENTER);	
+										detailsbox.addComponent(customComponentLayout);
+										detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
+
+										//add buttonsLayout 
+										detailsbox.addComponent(buttonsLayout);
+										detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+
+									}else{
+
+										Label noStepSelected = new Label(propertyManager.getLabelDtl("noReExecution"));
+										noStepSelected.addStyleName("stepTitle");
+										detailsbox.addComponent(noStepSelected);
+
+									}
 								}
-								customComponent.buildLayout(mode);
-
-
-
-								if(!(customComponent instanceof SearchForm) || searchFormFlag){
-
-									if(customComponent instanceof SearchForm)
-										searchFormFlag = false;
-
-									//add stepTitleLayout
-									stepTitle.setValue(propertyManager.getLabelDtl(value));					
-									detailsbox.addComponent(stepTitleLayout);
-									detailsbox.setComponentAlignment(stepTitleLayout, Alignment.TOP_CENTER);
-
-									//add customComponentLayout
-									customComponent.setSizeUndefined();
-									customComponentLayout.removeAllComponents();
-									customComponentLayout.addComponent(customComponent);
-									customComponentLayout.setComponentAlignment(customComponent, Alignment.MIDDLE_CENTER);	
-									detailsbox.addComponent(customComponentLayout);
-									detailsbox.setComponentAlignment(customComponentLayout, Alignment.MIDDLE_CENTER);
-
-									//add buttonsLayout 
-									detailsbox.addComponent(buttonsLayout);
-									detailsbox.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
-
-								}else{
-
-									Label noStepSelected = new Label(propertyManager.getLabelDtl("noReExecution"));
-									noStepSelected.addStyleName("stepTitle");
-									detailsbox.addComponent(noStepSelected);
-
-								}
-							}
-						}	
+							}	
+						}
 					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+					getDao().getTransaction().rollback();
+					Label error = new Label(propertyManager.getExceptionDtl("error"));
+					error.addStyleName("stepTitle");
+					detailsbox.removeAllComponents();
+					detailsbox.addComponent(error);
 				}
 			}
 		});
@@ -460,10 +474,10 @@ public abstract class AbstractActivityView extends AbstractView {
 				if(isValid && !validatedSteps.contains(nextStep)){
 					validatedSteps.add(nextStep);
 					currentComponent.setValidated(isValid);
-					currentComponent.process(hmRequiredSteps);
+					//currentComponent.process(hmRequiredSteps);
 				}
-
-				menu.select(nextStep);	
+				menu.select(nextStep);
+				detailspanel.setCaption(propertyManager.getLabelDtl(nextStep));
 			}
 		});
 
@@ -491,6 +505,7 @@ public abstract class AbstractActivityView extends AbstractView {
 				CustomComponent prevComponent = requiredSteps[prevStepPosition];
 				prevComponent.setComponentError(null);
 				menu.select(prevStep);
+				detailspanel.setCaption(propertyManager.getLabelDtl(prevStep));
 			}
 		});
 
@@ -504,11 +519,14 @@ public abstract class AbstractActivityView extends AbstractView {
 				boolean validated = false;
 				Transaction trans = getDao().getTransaction();
 				try{
-					validated = AbstractActivityView.this.validate(hmRequiredSteps, hmOptionalSteps);
+					validated = AbstractActivityView.this.validate(steps);
 					trans.commit();
-				}catch(Exception e){
+				}catch(Exception ex){
+					ex.printStackTrace();
 					System.out.println("Error in validation method.");
+					validated = false;
 					trans.rollback();
+					dao.clear();
 				}
 				String validationResult = "not_validated";
 
@@ -527,8 +545,10 @@ public abstract class AbstractActivityView extends AbstractView {
 				menu.setReadOnly(true);
 				detailsbox.removeAllComponents();
 				Label result = new Label(propertyManager.getLabelDtl(validationResult));
+				result.setSizeUndefined();
 				result.addStyleName("stepTitle");
 				detailsbox.addComponent(result);
+				detailsbox.setComponentAlignment(result, Alignment.MIDDLE_CENTER);
 
 				buttonsLayout.removeAllComponents();
 				buttonsLayout.addComponent(domainSelectionButton);
@@ -558,7 +578,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			}
 		});
 
-		homeEm.addClickListener(new MouseEvents.ClickListener() {
+		Header.getImage().addClickListener(new MouseEvents.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -578,7 +598,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		return root;
 
 	}
+
 	//validation method
-	protected abstract boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps);
+	protected abstract boolean validate(HashMap<String, Form> steps);
 
 }

@@ -49,10 +49,14 @@ public class ContactForm extends Form implements StepIntrfc{
 
 	}
 
+	public Layout viewLayout(String mode){
+		return buildLayout(mode);
+	}
+
 	public Layout buildLayout(String mode) {
 
 		//get main web.components.table.generated.layout
-		FormLayout formLayout = (FormLayout)getLayout();
+		FormLayout formLayout = new FormLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
@@ -62,7 +66,7 @@ public class ContactForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the web.components.table.generated.components
 		final Contacts contact;
-		if((mode.equals("update") && getData() != null) || getData() !=null) {
+		if(getData() != null) {
 			contact = (Contacts)getData();
 		}else{
 			//set initial values
@@ -168,17 +172,15 @@ public class ContactForm extends Form implements StepIntrfc{
 		final Map<Enumerations, String> contactActiveEnum = dao.getEnumeration("yes no");
 		final Map<Enumerations, String> contactPreferedEnum = dao.getEnumeration("yes no");
 
-		List<Country> Countries=getCountries((DaoImpl) dao);
+		List<Country> countries = getCountries(dao);
 
 		//add values in combo box
 		final BeanItemContainer<Country> container = new BeanItemContainer<Country>(Country.class);
-		container.addAll(Countries);
+		container.addAll(countries);
 		countryCB.setContainerDataSource(container);
-		String lang=dao.getLanguage();
-		if (lang.equals("en"))
-			countryCB.setItemCaptionPropertyId("nameEn");
-		if (lang.equals("bg"))
-			countryCB.setItemCaptionPropertyId("nameBg");
+		String language = dao.getLanguage();
+		String formatedLanguage = language.substring(0, 1).toUpperCase() + language.substring(1, 2);
+		countryCB.setItemCaptionPropertyId("name" + formatedLanguage);
 
 		//add values in combo boxes
 		//countryCB.addItems(countryEnum.values().toArray());		
@@ -354,11 +356,19 @@ public class ContactForm extends Form implements StepIntrfc{
 			activeCB.setValue(contact.getEnumerationsByActive());
 		}
 
+		setLayout(formLayout);
+
+		if(!mode.equals("validation"))
+			setCompositionRoot(formLayout);
+		else
+			//this.setEnabled(false);
+			this.setReadOnly(true);
+
 		return formLayout;
 	}
 
 	public static List<Country> getCountries(DaoIntrfc dao){
-		
+
 		List<Country> outCountries = new ArrayList<Country>(0);
 		Country country = new Country();		
 		List<Object> ls = dao.findByExample(country);
@@ -370,8 +380,8 @@ public class ContactForm extends Form implements StepIntrfc{
 		return outCountries;		
 	}
 
-	public static Country getCountry(DaoIntrfc dao,String countryCode){
-		return (Country) dao.findById("Country",countryCode);	
+	public static Country getCountry(DaoIntrfc dao, String countryCode){
+		return (Country) dao.findById("Country", countryCode);	
 	}
 
 	@Override

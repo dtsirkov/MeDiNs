@@ -1,20 +1,13 @@
-package web.components.table.paged;
+package web.classes;
 
-
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.Sizeable;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.AbstractOrderedLayout;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.UI;
@@ -23,6 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 public class Header extends Panel{
 
 	private static final long serialVersionUID = 1L;
+	static Image image = new Image(null, new ThemeResource("images/medins_logo.jpg"));
 	private UI ui;
 
 	public Header(final UI ui) {
@@ -56,13 +50,16 @@ public class Header extends Panel{
 
 				// "Logout" the user
 				ui.getSession().setAttribute("user", null);
+				ui.getSession().setAttribute("userName", null);
+
+				//Transaction transaction = dao.getTransaction();
 
 				// Refresh this view, should redirect to login view
 				ui.getNavigator().navigateTo("loginView");
 			}
 		});
 		// Get the user name from the session
-		String username = String.valueOf(ui.getSession().getAttribute("user"));
+		String username = String.valueOf(ui.getSession().getAttribute("userName"));
 		if (!username.equals("null")){
 			// And show the username
 			text.setValue("You are logged in as: " + username+" ! ");
@@ -75,19 +72,19 @@ public class Header extends Panel{
 		header.addComponent(userLoggedInfo);
 		header.setComponentAlignment(userLoggedInfo,Alignment.BOTTOM_RIGHT);
 
-/*		//menu web.components.table.generated.layout
+		/*		//menu web.components.table.generated.layout
 		VerticalLayout menuLayout = new VerticalLayout();
 
 		MenuBar mainMenu = new MenuBar();
 		mainMenu.addStyleName("mainmenu");
 		MenuItem home = mainMenu.addItem("Home", null,null);
 		MenuItem domain = mainMenu.addItem("Domain", null,null);
-		
+
 		MenuItem cases=domain.addItem("Case", null, null);
 		cases.addItem("New case", null, null);
 		cases.addItem("New case 2", null, null);
 		domain.addSeparator();
-		
+
 		MenuItem personOrganization=domain.addItem("Person&Organization", null, null);
 		personOrganization.addItem("New Person", null, null);
 		personOrganization.addItem("New Organization", null, null);
@@ -103,12 +100,39 @@ public class Header extends Panel{
 		this.setContent(root);
 	}
 
+	public static HorizontalLayout create(){
+
+		HorizontalLayout titleBar = new HorizontalLayout();
+		titleBar.setWidth("100%");
+		titleBar.setHeight("60px");
+		titleBar.setSpacing(true);
+		titleBar.setStyleName("header");
+
+		image.setHeight("60px");
+		titleBar.addComponent(image);
+
+		HorizontalLayout titleBarLayout = new HorizontalLayout();
+		titleBarLayout.setWidth("100%");
+		titleBarLayout.setHeight("65px");
+		titleBarLayout.addComponent(titleBar);
+
+		return titleBarLayout;
+	}
+
 	public UI getUi() {
 		return ui;
 	}
 
 	public void setUi(UI ui) {
 		this.ui = ui;
+	}
+
+	public static Image getImage() {
+		return image;
+	}
+
+	public static void setImage(Image image) {
+		Header.image = image;
 	}
 
 }

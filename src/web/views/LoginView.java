@@ -1,7 +1,7 @@
 package web.views;
 
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.components.table.paged.Header;
 import web.forms.LoginForm;
 
 import com.vaadin.navigator.View;
@@ -67,6 +67,12 @@ public class LoginView extends AbstractView implements View{
 		layout.setExpandRatio(loginFormIndividial, 1);
 
 		return layout;
+	}
+
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

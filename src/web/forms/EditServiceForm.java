@@ -23,6 +23,7 @@ import com.vaadin.ui.TextField;
 
 import database.dao.DaoIntrfc;
 import database.pojo.Enumerations;
+import database.pojo.Users;
 
 public class EditServiceForm extends Form {
 
@@ -111,14 +112,17 @@ public class EditServiceForm extends Form {
 		//get access to DB
 		DaoIntrfc dao = getDao();	
 
-		//get main web.components.table.generated.layout
+		//get main layout of the form
 		Layout absoluteLayout = buildMainLayout();
 		setLayout(absoluteLayout);
 		setCompositionRoot(absoluteLayout);
 
-		//get object that will be bind to the web.components.table.generated.components
+		//get logged in user
+		Users user = (Users)getView().getUi().getSession().getAttribute("user");
+
+		//get object that will be bind to the form
 		final ServiceBean serviceBean;
-		if(mode.equals("update") && getData() != null){
+		if(getData() != null && !mode.equals("create")){
 			serviceBean = (ServiceBean)getData();
 		}else{
 			//set initial values
@@ -134,9 +138,8 @@ public class EditServiceForm extends Form {
 		}
 
 		//manage administrator rights
-		boolean administrator = true;
 		boolean isVisible = false;
-		if(administrator){
+		if(user.getUserRole().equals("admin")){
 			isVisible = true;
 		}
 		priceDueLB.setVisible(isVisible);
@@ -299,7 +302,7 @@ public class EditServiceForm extends Form {
 		serviceNameLB.setImmediate(true);
 		serviceNameLB.setWidth("120px");
 		serviceNameLB.setHeight("-1px");
-		serviceNameLB.setValue("serviceName");
+		serviceNameLB.setValue("name");
 		mainLayout.addComponent(serviceNameLB, "top:20.0px;left:40.0px;");
 
 		// serviceDescriptionLB
@@ -324,7 +327,7 @@ public class EditServiceForm extends Form {
 		serviceTypeLB.setImmediate(true);
 		serviceTypeLB.setWidth("-1px");
 		serviceTypeLB.setHeight("-1px");
-		serviceTypeLB.setValue("serviceType");
+		serviceTypeLB.setValue("type");
 		mainLayout.addComponent(serviceTypeLB, "top:82.0px;left:40.0px;");
 
 		// typeCB

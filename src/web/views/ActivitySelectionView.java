@@ -3,8 +3,8 @@ package web.views;
 import web.MedinsUI;
 import web.classes.ComponentValidator;
 import web.classes.Domain;
+import web.classes.Header;
 import web.classes.PropertyManager;
-import web.components.table.paged.Header;
 import web.forms.ActivitySelectionForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -79,6 +79,12 @@ public class ActivitySelectionView extends AbstractView{
 
 	public void setDomain(Domain domain) {
 		this.domain = domain;
+	}
+
+	@Override
+	public Layout viewLayout(String mode) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

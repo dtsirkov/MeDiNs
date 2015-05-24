@@ -13,12 +13,12 @@ import database.pojo.Enumerations;
 import database.pojo.Services;
 
 
-@MyTable(caption = "", popupCaption = "service", isColumnCollapsingAllowed = true, height = 300)
+@MyTable(caption = "", popupCaption = "Service", isColumnCollapsingAllowed = true, height = 300)
 public class ServiceBean { 
 
 	private static Map<Enumerations, String> typeEnum;
 
-	private int id;
+	private Integer id;
 
 	@NotNull
 	@MyColumn(name = "name", isVisible = true, width = 150)
@@ -80,11 +80,11 @@ public class ServiceBean {
 		ServiceBean.typeEnum = typeEnum;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -158,7 +158,8 @@ public class ServiceBean {
 
 		Map<String, String> displayCodeMap = ComboxBean.getDisplayCodeMap(typeEnum);
 
-		service.setId(id);
+		if(id != null)
+			service.setId(id);
 		service.setName(name);
 		service.setType(displayCodeMap.get(type));
 		service.setDescription(description);

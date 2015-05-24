@@ -6,8 +6,8 @@ import java.util.Set;
 
 import web.forms.ContactForm;
 import web.forms.Form;
+import web.forms.NewValidationForm;
 import web.forms.PersonForm;
-import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
 
 
@@ -41,7 +41,8 @@ public class CreatePerson extends AbstractActivityView{
 		Form[] requiredSteps = {
 				new PersonForm(this, "stepCreatePerson"), 
 				new ContactForm(this, "stepCreateContact"), 
-				new ValidationForm(this, "stepValidate")
+				new NewValidationForm(this, "stepValidate")
+				//new ValidationForm(this, "stepValidate")
 		};
 		setRequiredSteps(requiredSteps);
 
@@ -54,10 +55,10 @@ public class CreatePerson extends AbstractActivityView{
 		return super.buildLayout();
 	}
 
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){		
+	protected boolean validate(HashMap<String, Form> steps){		
 
-		Persons person = (Persons)hmRequiredSteps.get("stepCreatePerson").getData();
-		Contacts contact = (Contacts)hmRequiredSteps.get("stepCreateContact").getData();
+		Persons person = (Persons)steps.get("stepCreatePerson").getData();
+		Contacts contact = (Contacts)steps.get("stepCreateContact").getData();
 		Set<Contacts> contactses=person.getContactses();
 		//load children
 		contactses.size();

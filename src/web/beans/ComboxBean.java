@@ -17,7 +17,7 @@ public class ComboxBean {
 	public ComboxBean() {
 	}
 
-	public ComboxBean(String value,String label) {
+	public ComboxBean(String value, String label) {
 		setValue(value);
 		setLabel(label);
 	}
@@ -44,7 +44,7 @@ public class ComboxBean {
 		while (it.hasNext()) {
 			Enumerations key = it.next();
 			String value = enumMap.get(key);
-			outList.add(new ComboxBean(key.getCode(),value));
+			outList.add(new ComboxBean(key.getCode(), value));
 		}
 		return outList;		
 	}
@@ -68,16 +68,28 @@ public class ComboxBean {
 		}
 		return displayCodeMap;
 	}
-	
+
 	public static ComboxBean getComboxBean(Map<Enumerations, String> enumMap,String value){
-		List<ComboxBean> comboxBeanList=getComboxBeanList(enumMap);
-		ComboxBean out=new ComboxBean(value,"");
-		for(ComboxBean bean:comboxBeanList){
+		List<ComboxBean> comboxBeanList = getComboxBeanList(enumMap);
+		ComboxBean out = new ComboxBean(value, "");
+		for(ComboxBean bean : comboxBeanList){
 			if (value.equals(bean.getValue())){
-				out=bean;
+				out = bean;
 			}	
 		}
 		return out;
+	}
+	
+	public static Enumerations getEnum(Map<Enumerations, String> enumMap,String value){
+		Enumerations enumeration = null;
+		Iterator<Enumerations> it = enumMap.keySet().iterator();
+		while (it.hasNext()) {
+			Enumerations key = it.next();
+			if (key.getCode().equals(value)){
+				enumeration = key;
+			}
+		}
+		return enumeration;
 	}
 
 }

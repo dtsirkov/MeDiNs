@@ -131,7 +131,7 @@ public abstract class MyTable extends CustomComponent {
 
 		mainLayout = new VerticalLayout();
 		mainLayout.setSizeFull();
-		mainLayout.setMargin(true);
+		mainLayout.setMargin(false);
 
 		setSizeFull();
 
@@ -298,6 +298,7 @@ public abstract class MyTable extends CustomComponent {
 		Form editForm = tableInfo.getEditForm();
 		if(editForm == null){
 			table.setReadOnly(true);
+			table.setPageLength(tableInfo.getBeanItemContainer().size());
 		}
 
 		if (tableInfo.getNestedProperties().length > 0) {
@@ -366,7 +367,11 @@ public abstract class MyTable extends CustomComponent {
 				editCell.addClickListener(new Button.ClickListener() {
 					private static final long serialVersionUID = -7781579576610805407L;
 					public void buttonClick(final ClickEvent event) {
-						((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, itemId, Type.EDIT));
+						try{
+							((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, itemId, Type.EDIT));
+						}catch(Exception ex){
+							ex.printStackTrace();
+						}
 					}
 				});
 				editCell.setIcon(new ThemeResource("myVaadin/icons/edit.png"));
@@ -392,7 +397,11 @@ public abstract class MyTable extends CustomComponent {
 				deleteCell.addClickListener(new Button.ClickListener() {
 					private static final long serialVersionUID = 7853224328437899372L;
 					public void buttonClick(final ClickEvent event) {
-						DeleteConfirmation.show(table, itemId);
+						try{
+							DeleteConfirmation.show(table, itemId);
+						}catch(Exception ex){
+							ex.printStackTrace();
+						}
 					}
 				});
 				deleteCell.setIcon(new ThemeResource("myVaadin/icons/delete.png"));
@@ -537,7 +546,11 @@ public abstract class MyTable extends CustomComponent {
 			private static final long serialVersionUID = -5000801077096604587L;
 			@Override
 			public void buttonClick(final ClickEvent event) {
-				((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.NEW));
+				try{
+					((MedinsUI) UI.getCurrent()).showEditPopup(new EditPopupWindow(tableInfo, Type.NEW));
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 		};
 	}

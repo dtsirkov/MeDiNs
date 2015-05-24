@@ -39,10 +39,15 @@ public class PersonForm extends Form implements StepIntrfc{
 
 	}
 
+	public Layout viewLayout(String mode){
+		return buildLayout(mode);
+	}
+
 	public Layout buildLayout(String mode) {	
 
 		//get main web.components.table.generated.layout
-		FormLayout formLayout = (FormLayout)getLayout();
+		//FormLayout formLayout = (FormLayout)getLayout();
+		FormLayout formLayout = new FormLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
@@ -52,7 +57,7 @@ public class PersonForm extends Form implements StepIntrfc{
 
 		//get object that will be bind to the web.components.table.generated.components
 		final Persons person;
-		if(mode.equals("update") && getData() != null){
+		if(getData() != null){
 			person = (Persons)getData();
 		}else{
 			//set initial values
@@ -65,7 +70,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		}
 
 		//remove all current web.components.table.generated.components
-		formLayout.removeAllComponents();
+		//formLayout.removeAllComponents();
 
 		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
@@ -73,7 +78,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		// personTitleCB
 		personTitleCB = new ComboBox(propertyManager.getLabelDtl("personTitle"));
 		personTitleCB.setImmediate(true);
-		personTitleCB.setRequired(true);
+		personTitleCB.setRequired(false);
 		personTitleCB.setWidth(width);
 		personTitleCB.setHeight(height);
 		formLayout.addComponent(personTitleCB);
@@ -116,7 +121,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		personBirthDatePDF = new PopupDateField(propertyManager.getLabelDtl("personBirthDate"));
 		personBirthDatePDF.setImmediate(true);
 		personBirthDatePDF.setInvalidAllowed(false);
-		personBirthDatePDF.setRequired(true);
+		personBirthDatePDF.setRequired(false);
 		personBirthDatePDF.setWidth(width);
 		personBirthDatePDF.setHeight(height);
 		formLayout.addComponent(personBirthDatePDF);
@@ -134,7 +139,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		personJobTitleCB = new ComboBox(propertyManager.getLabelDtl("personJobTitle"));
 		personJobTitleCB.setImmediate(true);
 		personJobTitleCB.setInvalidAllowed(false);
-		personJobTitleCB.setRequired(true);
+		personJobTitleCB.setRequired(false);
 		personJobTitleCB.setWidth(width);
 		personJobTitleCB.setHeight(height);
 		formLayout.addComponent(personJobTitleCB);
@@ -312,6 +317,14 @@ public class PersonForm extends Form implements StepIntrfc{
 			personSocialNumberTF.addValidator(componentValidator.getOnlyDigitsValidator("IncorrectSocialNumber"));
 			personSocialNumberTF.addValidator(componentValidator.getSocialNumberExistValidator(dao, "SocialNumberExist"));
 		}
+
+		setLayout(formLayout);
+
+		if(!mode.equals("validation"))
+			setCompositionRoot(formLayout);
+		else
+			//this.setEnabled(false);
+			this.setReadOnly(true);
 
 		return formLayout;
 	}

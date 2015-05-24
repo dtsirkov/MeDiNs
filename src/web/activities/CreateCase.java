@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import web.forms.ContactForm;
+import web.forms.DiagnosisForm;
+import web.forms.CaseAddInfoForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
@@ -13,7 +16,6 @@ import web.forms.PersonForm;
 import web.forms.PersonTouristVisitForm;
 import web.forms.PolicyForm;
 import web.forms.SearchPersonForm;
-import web.forms.ServicesForm;
 import web.forms.ServicesForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
@@ -25,7 +27,12 @@ import com.vaadin.ui.UI;
 
 import database.dao.DaoIntrfc;
 import database.pojo.CaseInfo;
+import database.pojo.Diagnosis;
+import database.pojo.MedicalReport;
+import database.pojo.Persons;
+import database.pojo.Policies;
 import database.pojo.Services;
+import database.pojo.TouristVisit;
 
 public class CreateCase extends AbstractActivityView{
 
@@ -45,29 +52,15 @@ public class CreateCase extends AbstractActivityView{
 
 	public Layout buildLayout(){
 
-		DaoIntrfc dao = this.getDao();
-		CaseInfo caseInfo = (CaseInfo)dao.findById("CaseInfo", 1);
-
-		Set<Services> services = caseInfo.getServiceses();
-
-		Form serviceForm = new ServicesForm(this, "stepServices");
-		services.size();
-		serviceForm.setData(services);
-
-		Form validationForm = new NewValidationForm(this, "stepValidate");
-		validationForm.setData(caseInfo);
-
 		Form[] requiredSteps = {
-				//new SearchPersonForm(this, "stepCreatePerson"),
-				//new PersonTouristVisitForm(this,"stepTouristVisit"),
-				//new PolicyForm(this,"stepPolicy"),
-				//new MedicalReportForm(this,"stepMedicalReport"),
-				//new ServicesForm(this,"stepServices"),
-				new PersonForm(this, "stepCreatePerson"), 
-				serviceForm,
-				//new DiagnosisForm(this,"stepDiagnosis"),
-				//new ValidationForm(this, "stepValidate")
-				validationForm
+				new SearchPersonForm(this, "stepCreatePerson"),
+				new CaseAddInfoForm(this,"stepCaseGeneralInfo"),
+				new PersonTouristVisitForm(this,"stepTouristVisit"),
+				new PolicyForm(this,"stepPolicy"),
+				new ServicesForm(this,"stepServices"),
+				new MedicalReportForm(this, "stepMedicalReport"),
+				new DiagnosisForm(this, "stepDiagnosis"),
+				new NewValidationForm(this,"stepValidate")
 		};
 		setRequiredSteps(requiredSteps);
 
@@ -75,16 +68,28 @@ public class CreateCase extends AbstractActivityView{
 		setOptionalSteps(optionalSteps);
 
 		setValidationMethod("validateCase");
-		setMode("update");
+		setMode("create");
 
 		return super.buildLayout();
 	}
 
-	protected boolean validate(HashMap<String, Form> hmRequiredSteps, HashMap<String, Form> hmOptionalSteps){
+	protected boolean validate(HashMap<String, Form> steps){
+		//get  Patien info (person)
+		Persons patient = (Persons) steps.get("stepCreatePerson").getData();
 
-		CaseInfo caseInfo = (CaseInfo)hmRequiredSteps.get("stepValidate").getData();
+		//get case general info
+		CaseInfo caseInfo = (CaseInfo) steps.get("stepCaseGeneralInfo").getData();
+
+		//get Temp address info
+		TouristVisit touristVisit = (TouristVisit) steps.get("stepTouristVisit").getData();
+		touristVisit.setPersons(patient);
+
+		//get Policy info
+		Policies policy = (Policies) steps.get("stepPolicy").getData();
+
+		//get case services
 		@SuppressWarnings("unchecked")
-		Set<Services> updatedServices = (Set<Services>)hmRequiredSteps.get("stepServices").getData();
+		Set<Services> updatedServices = (Set<Services>)steps.get("stepServices").getData();
 
 		Set<Integer> updatedServiceIds = new HashSet<Integer>(); 
 		Iterator<Services> updatedServicesIterator = updatedServices.iterator();
@@ -106,9 +111,16 @@ public class CreateCase extends AbstractActivityView{
 
 		caseInfo.setServiceses(updatedServices);
 
-		Set<Object> objectSet = new HashSet<Object>(updatedServices);
-		objectSet.add(caseInfo);
+		//get medical report (it contains Diagnosis list)
+		MedicalReport medicalReport = (MedicalReport)steps.get("stepDiagnosis").getData();
+		caseInfo.setMedicalReport(medicalReport);
 
+		Set<Object> objectSet = new HashSet<Object>(updatedServices);
+
+		caseInfo.setPersonsByPatientInfo(patient);
+		caseInfo.setPolicies(policy);
+		caseInfo.setReferanceNumber1(patient.getSocialNumber());
+		
 		Iterator<Object> iterator = objectSet.iterator();
 		Object object;
 		while(iterator.hasNext()){
@@ -116,6 +128,19 @@ public class CreateCase extends AbstractActivityView{
 			System.out.println(object);
 			if(object != null){
 				getDao().saveOrUpdate(object);
+			}
+		}
+
+		Object[] objects  = {
+				touristVisit,
+				policy,
+				medicalReport,
+				caseInfo
+		};
+
+		for(int i = 0; i < objects.length; i++){
+			if (objects[i] != null) {
+				getDao().saveOrUpdate(objects[i]);
 			}
 		}
 
