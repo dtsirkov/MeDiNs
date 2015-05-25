@@ -79,5 +79,17 @@ public class ComboxBean {
 		}
 		return out;
 	}
+	
+	public static Enumerations getEnum(Map<Enumerations, String> enumMap,String value){
+		Enumerations enumeration = null;
+		Iterator<Enumerations> it = enumMap.keySet().iterator();
+		while (it.hasNext()) {
+			Enumerations key = it.next();
+			if (key.getCode().equals(value)){
+				enumeration = key;
+			}
+		}
+		return enumeration;
+	}
 
 }

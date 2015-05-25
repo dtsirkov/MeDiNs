@@ -78,7 +78,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		// personTitleCB
 		personTitleCB = new ComboBox(propertyManager.getLabelDtl("personTitle"));
 		personTitleCB.setImmediate(true);
-		personTitleCB.setRequired(true);
+		personTitleCB.setRequired(false);
 		personTitleCB.setWidth(width);
 		personTitleCB.setHeight(height);
 		formLayout.addComponent(personTitleCB);
@@ -121,7 +121,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		personBirthDatePDF = new PopupDateField(propertyManager.getLabelDtl("personBirthDate"));
 		personBirthDatePDF.setImmediate(true);
 		personBirthDatePDF.setInvalidAllowed(false);
-		personBirthDatePDF.setRequired(true);
+		personBirthDatePDF.setRequired(false);
 		personBirthDatePDF.setWidth(width);
 		personBirthDatePDF.setHeight(height);
 		formLayout.addComponent(personBirthDatePDF);
@@ -139,7 +139,7 @@ public class PersonForm extends Form implements StepIntrfc{
 		personJobTitleCB = new ComboBox(propertyManager.getLabelDtl("personJobTitle"));
 		personJobTitleCB.setImmediate(true);
 		personJobTitleCB.setInvalidAllowed(false);
-		personJobTitleCB.setRequired(true);
+		personJobTitleCB.setRequired(false);
 		personJobTitleCB.setWidth(width);
 		personJobTitleCB.setHeight(height);
 		formLayout.addComponent(personJobTitleCB);
