@@ -29,11 +29,12 @@ public class Header extends Panel{
 		//header web.components.table.generated.layout
 		HorizontalLayout header = new HorizontalLayout();
 		header.setWidth("100%");
+		header.setHeight("-1px");		
 
-		Embedded medinsLogo = new Embedded("", new ThemeResource("images/medins_logo.jpg"));		
+		Image image = new Image(null, new ThemeResource("images/medins_logo.jpg"));
 
-		header.addComponent(medinsLogo);
-		header.setComponentAlignment(medinsLogo,Alignment.MIDDLE_LEFT);
+		header.addComponent(image);
+		header.setComponentAlignment(image, Alignment.TOP_LEFT);
 
 		//logged user info
 		VerticalLayout userLoggedInfo = new VerticalLayout();
@@ -70,7 +71,7 @@ public class Header extends Panel{
 			userLoggedInfo.setVisible(false);
 		}
 		header.addComponent(userLoggedInfo);
-		header.setComponentAlignment(userLoggedInfo,Alignment.BOTTOM_RIGHT);
+		header.setComponentAlignment(userLoggedInfo, Alignment.MIDDLE_RIGHT);
 
 		/*		//menu web.components.table.generated.layout
 		VerticalLayout menuLayout = new VerticalLayout();
