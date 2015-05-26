@@ -61,9 +61,9 @@ public class DomainSelectionView extends AbstractView{
 		final VerticalLayout root = new VerticalLayout();
 		root.addStyleName("personcreate");
 		root.setSizeFull();
-		
-		HorizontalLayout header = Header.create();
-		root.addComponent(header);
+
+		Header header = new Header(getUi());
+		root.addComponent(header.getMainLayout());
 		//root.setComponentAlignment(header, Alignment.TOP_RIGHT);
 
 		Label title = new Label("Select Activity group to start an activity");
@@ -72,13 +72,13 @@ public class DomainSelectionView extends AbstractView{
 
 		VerticalLayout verticalLayout = new VerticalLayout();
 		verticalLayout.setSizeUndefined();
-		
+
 		Panel domainSelectionPanel = new Panel(propertyManager.getLabelDtl("domainSelection"));
 		Panel activitySelectionPanel = new Panel(propertyManager.getLabelDtl("notCompletedActivities"));
-		
+
 		domainSelectionPanel.setSizeUndefined();
 		activitySelectionPanel.setSizeUndefined();
-		
+
 		int rowsNumber = 0;
 		int domainListSize = domainList.size();
 		if (domainListSize % 2 == 0){
@@ -105,7 +105,7 @@ public class DomainSelectionView extends AbstractView{
 
 		//grid.setComponentAlignment(loginFormCorporate, Alignment.MIDDLE_LEFT);
 		//grid.setComponentAlignment(loginFormIndividial, Alignment.MIDDLE_RIGHT);
-		
+
 		domainSelectionPanel.setContent(grid);
 
 		String width = "180px", height = "-1px";
@@ -157,7 +157,7 @@ public class DomainSelectionView extends AbstractView{
 
 		verticalLayout.addComponent(domainSelectionPanel);
 		verticalLayout.addComponent(activitySelectionPanel);	
-		
+
 		root.addComponent(verticalLayout);
 		verticalLayout.setMargin(new MarginInfo(true, false, false, false));
 		root.setComponentAlignment(verticalLayout, Alignment.TOP_CENTER);
