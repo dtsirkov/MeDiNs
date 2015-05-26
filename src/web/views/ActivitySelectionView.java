@@ -35,7 +35,7 @@ public class ActivitySelectionView extends AbstractView{
 	}
 
 	public Layout buildLayout(){
-		
+
 		//get propertyManager
 		final PropertyManager propertyManager = getPropertyManager();
 		//get access to DB
@@ -50,9 +50,8 @@ public class ActivitySelectionView extends AbstractView{
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
-		Header header=new Header(getUI());
-		root.addComponent(header);
-		root.setComponentAlignment(header,Alignment.TOP_RIGHT);
+		Header header = new Header(getUI());
+		root.addComponent(header.getMainLayout());
 
 		Label title = new Label(domain.getLabel());
 		title.addStyleName("title");
