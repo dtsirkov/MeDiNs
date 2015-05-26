@@ -164,7 +164,7 @@
 	}
 	
 	.v-textarea-validation_textarea{
-		background-color:yellow; !important;
+		background-color: yellow;
 	}
 	
 	.v-tree-stepStyle .v-tree-node-caption-notValidated{
@@ -192,8 +192,23 @@
 	    padding-right: 100px;
 	}
 	
+	.user_label{
+		font-weight: bold;
+		font-size: 10pt;
+	    color: white;
+	}
+	
+	.user{
+		padding: 5px;
+		font-style: italic;
+		font-size: 14pt;
+	    color: blue;
+	}
+	
+	/*
 	.v-gridlayout-test{
 	    background: gray;
 	}
+	*/
 	
 }
