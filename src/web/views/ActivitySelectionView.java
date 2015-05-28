@@ -1,7 +1,5 @@
 package web.views;
 
-import web.MedinsUI;
-import web.classes.ComponentValidator;
 import web.classes.Domain;
 import web.classes.Header;
 import web.classes.PropertyManager;
@@ -9,13 +7,9 @@ import web.forms.ActivitySelectionForm;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-
-import database.dao.DaoIntrfc;
 
 public class ActivitySelectionView extends AbstractView{
 
@@ -36,30 +30,17 @@ public class ActivitySelectionView extends AbstractView{
 
 	public Layout buildLayout(){
 
-		//get propertyManager
-		final PropertyManager propertyManager = getPropertyManager();
-		//get access to DB
-		final DaoIntrfc dao = getDao();	
-
 		//create main web.components.table.generated.layout
 		final VerticalLayout root = new VerticalLayout();
-		//create component validater
-		final ComponentValidator customValidator = new ComponentValidator(getPropertyManager());
+		//get propertyManager
+		final PropertyManager propertyManager = getPropertyManager();
 
 		// Create the root web.components.table.generated.layout (VerticalLayout is actually the default).
 		root.addStyleName("personcreate");
 		root.setSizeFull();
 
-		Header header = new Header(getUI());
+		Header header = new Header(getUI(), true, propertyManager.getButtonDtl(domain.getLabel()));
 		root.addComponent(header.getMainLayout());
-
-		Label title = new Label(domain.getLabel());
-		title.addStyleName("title");
-		root.addComponent(title);
-
-
-		//grid.setComponentAlignment(loginFormCorporate, Alignment.MIDDLE_LEFT);
-		//grid.setComponentAlignment(loginFormIndividial, Alignment.MIDDLE_RIGHT);
 
 		ActivitySelectionForm activitySelectionForm = new ActivitySelectionForm(this, domain);
 		activitySelectionForm.buildLayout("");

@@ -1,7 +1,11 @@
 package web.classes;
 
+import org.hibernate.TransactionException;
+
 import web.MedinsUI;
 
+import com.vaadin.event.MouseEvents;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 
@@ -12,40 +16,87 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
 public class Header extends HorizontalLayout{
 
 	private static final long serialVersionUID = 1L;
 	private Image image = new Image(null, new ThemeResource("images/medins_logo.jpg"));
-	private HorizontalLayout mainLayout;
-	private HorizontalLayout titleBarLayout;
+	private VerticalLayout mainLayout;
+	private HorizontalLayout homeBarLayout;
+	private HorizontalLayout labelBarLayout;
+	private Label title;
 	private UI ui;
 
 	public Header() {
-		buildLayout();
+		buildLayout(null);
+	}
+
+	public Header(String titleStr) {
+		buildLayout(titleStr);
 	}
 
 	public Header(final UI ui) {
 		this.ui = ui;
-		buildLayout();
+		buildLayout(null);
 		addUserLoggedInfo(ui);
 	}
 
-	public HorizontalLayout buildLayout(){
+	public Header(final UI ui, String titleStr) {
+		this.ui = ui;
+		buildLayout(titleStr);
+		addUserLoggedInfo(ui);
+	}
 
-		titleBarLayout = new HorizontalLayout();
-		titleBarLayout.setWidth("100%");
-		titleBarLayout.setHeight("60px");
-		titleBarLayout.setSpacing(true);
-		titleBarLayout.setStyleName("header");
+	public Header(final UI ui, boolean addHomeBttn) {
+		this(ui, null);
+		if(addHomeBttn)
+			addHomeBttn(ui);
+	}
+
+	public Header(final UI ui, boolean addHomeBttn, String titleStr) {
+		this(ui, titleStr);
+		if(addHomeBttn)
+			addHomeBttn(ui);
+	}
+
+	public VerticalLayout buildLayout(String titleStr){
+
+		homeBarLayout = new HorizontalLayout();
+		homeBarLayout.setWidth("100%");
+		homeBarLayout.setHeight("60px");
+		homeBarLayout.setSpacing(true);
+		homeBarLayout.setStyleName("header");
 
 		image.setHeight("60px");
-		titleBarLayout.addComponent(image);
+		homeBarLayout.addComponent(image);
 
-		mainLayout = new HorizontalLayout();
+		HorizontalLayout homeBarOuterLayout = new HorizontalLayout();
+		homeBarOuterLayout.setWidth("100%");
+		homeBarOuterLayout.setHeight("65px");
+		homeBarOuterLayout.addComponent(homeBarLayout);
+
+		mainLayout = new VerticalLayout();
+		mainLayout.addStyleName("personcreate");
 		mainLayout.setWidth("100%");
-		mainLayout.setHeight("65px");
-		mainLayout.addComponent(titleBarLayout);
+		mainLayout.addComponent(homeBarOuterLayout);
+
+		if(titleStr != null){
+
+			labelBarLayout = new HorizontalLayout();		
+			labelBarLayout.setWidth("100%");
+			labelBarLayout.setHeight("50px"); 
+			labelBarLayout.addStyleName("headerTitleLayout");
+
+			title = new Label(MedinsUI.getPropertyManager().getLabelDtl(titleStr));
+			title.addStyleName("headerTitle");
+			title.setSizeUndefined();
+			labelBarLayout.addComponent(title);
+			labelBarLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
+
+			mainLayout.addComponent(labelBarLayout);
+
+		}
 
 		return mainLayout;
 	}
@@ -119,8 +170,28 @@ public class Header extends HorizontalLayout{
 		else
 			userLoggedInfo.setVisible(false);
 
-		titleBarLayout.addComponent(userLoggedInfo);
-		titleBarLayout.setComponentAlignment(userLoggedInfo, Alignment.MIDDLE_RIGHT);
+		homeBarLayout.addComponent(userLoggedInfo);
+		homeBarLayout.setComponentAlignment(userLoggedInfo, Alignment.MIDDLE_RIGHT);
+	}
+
+	public void addHomeBttn(final UI ui){
+
+		final Navigator navigator = ui.getNavigator();
+
+		image.addClickListener(new MouseEvents.ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void click(com.vaadin.event.MouseEvents.ClickEvent event) {
+				try{
+					navigator.navigateTo("domainSelectionView");
+				}catch(TransactionException e){
+					navigator.navigateTo("domainSelectionView");
+				}
+			}
+		});
+
 	}
 
 	public UI getUi() {
@@ -139,20 +210,36 @@ public class Header extends HorizontalLayout{
 		this.image = image;
 	}
 
-	public HorizontalLayout getMainLayout() {
+	public VerticalLayout getMainLayout() {
 		return mainLayout;
 	}
 
-	public void setMainLayout(HorizontalLayout mainLayout) {
+	public void setMainLayout(VerticalLayout mainLayout) {
 		this.mainLayout = mainLayout;
 	}
 
-	public HorizontalLayout getTitleBarLayout() {
-		return titleBarLayout;
+	public HorizontalLayout getHomeBarLayout() {
+		return homeBarLayout;
 	}
 
-	public void setTitleBarLayout(HorizontalLayout titleBarLayout) {
-		this.titleBarLayout = titleBarLayout;
+	public void setHomeBarLayout(HorizontalLayout homeBarLayout) {
+		this.homeBarLayout = homeBarLayout;
+	}
+
+	public HorizontalLayout getLabelBarLayout() {
+		return labelBarLayout;
+	}
+
+	public void setLabelBarLayout(HorizontalLayout labelBarLayout) {
+		this.labelBarLayout = labelBarLayout;
+	}
+
+	public Label getTitle() {
+		return title;
+	}
+
+	public void setTitle(Label title) {
+		this.title = title;
 	}
 
 }
