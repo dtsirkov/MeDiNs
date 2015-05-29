@@ -45,16 +45,7 @@ public class LoginView extends AbstractView implements View{
 		layout.addStyleName("personcreate");
 		layout.setSizeFull();
 
-		/*	// Title bar
-		HorizontalLayout titleBar = new HorizontalLayout();
-		titleBar.setWidth("100%");
-		web.components.table.generated.layout.addComponent(titleBar);
-
-		Label title = new Label("MeDiNs");
-		title.addStyleName("title");
-		titleBar.addComponent(title);*/
-
-		Header header = new Header(getUI());
+		Header header = new Header(getUI(), false, "welcome");
 		layout.addComponent(header.getMainLayout());
 
 		LoginForm loginFormIndividial = new LoginForm(this, "individualClients");

@@ -14,8 +14,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.ListSelect;
 
-import database.dao.DaoIntrfc;
-
 public class ActivitySelectionForm extends Form{
 
 	private static final long serialVersionUID = 1L;
@@ -39,11 +37,13 @@ public class ActivitySelectionForm extends Form{
 		PropertyManager propertyManager = getPropertyManager();
 		//get activities by domain
 		final ArrayList<Activity> activities = getDomain().getActivities();
-		//get naviagator
+		//get navigator
 		final Navigator navigator = getNavigator();
 
 		// Create the selection component
-		activityList = new ListSelect(propertyManager.getButtonDtl(domain.getLabel()));
+		activityList = new ListSelect();
+		//activityList = new ListSelect(propertyManager.getButtonDtl(domain.getLabel()));
+		activityList.setWidth("300px");
 		// Show 10 items and a scrollbar if there are more
 		activityList.setRows(10);
 		activityList.setNullSelectionAllowed(false);
