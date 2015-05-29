@@ -308,10 +308,11 @@ public class MedicalReportForm extends Form {
 	public boolean process(HashMap<String, Form> steps) {
 
 		MedicalReport medicalReport = (MedicalReport) getData();
-		getDao().evict(medicalReport);
 
 		steps.get("stepMedicalReport").setData(medicalReport);
 		steps.get("stepDiagnosis").setData(medicalReport);
+		
+		getDao().evict(medicalReport);
 
 		return true;
 	}

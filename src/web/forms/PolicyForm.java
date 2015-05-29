@@ -72,9 +72,6 @@ public class PolicyForm extends Form implements StepIntrfc {
 
 	public Layout buildLayout(String mode) {	
 
-		//get main web.components.table.generated.layout
-
-		//Layout formLayout = (FormLayout)getLayout();
 		//get component validator
 		ComponentValidator componentValidator = getComponentValidator();
 		//get propertyManager
@@ -95,7 +92,7 @@ public class PolicyForm extends Form implements StepIntrfc {
 
 		//get object that will be bind to the web.components.table.generated.components
 		final Policies policy;
-		if(mode.equals("update") || getData() != null){
+		if(getData() != null){
 			policy = (Policies)getData();
 		}else{
 			//set initial values
