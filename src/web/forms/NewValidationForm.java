@@ -37,7 +37,7 @@ public class NewValidationForm extends Form implements StepIntrfc{
 		getLayout().setSizeUndefined();
 		Form[] requiredSteps = (Form[])getData();
 		for(int i = 0; i < requiredSteps.length - 1; i++){
-			if(! (requiredSteps[i] instanceof SearchForm))
+			if(! (requiredSteps[i] instanceof SearchForm) && ! (requiredSteps[i] instanceof SearchCaseForm))
 				addValidationComponent(requiredSteps[i]);
 		}	
 		return getLayout();

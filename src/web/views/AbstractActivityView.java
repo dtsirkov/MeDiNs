@@ -129,8 +129,8 @@ public abstract class AbstractActivityView extends AbstractView {
 		root.setSizeFull();
 
 		//add header
-		HorizontalLayout header = Header.create();
-		root.addComponent(header);
+		Header header = new Header();
+		root.addComponent(header.getMainLayout());
 
 		// Horizontal web.components.table.generated.layout with selection tree on the left and 
 		// a details panel on the right.
@@ -578,7 +578,7 @@ public abstract class AbstractActivityView extends AbstractView {
 			}
 		});
 
-		Header.getImage().addClickListener(new MouseEvents.ClickListener() {
+		header.getImage().addClickListener(new MouseEvents.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 

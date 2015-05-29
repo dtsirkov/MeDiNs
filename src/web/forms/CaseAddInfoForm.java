@@ -13,6 +13,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 
 import database.dao.DaoImpl;
@@ -32,6 +33,7 @@ public class CaseAddInfoForm extends Form{
 
 	private static final long serialVersionUID = 1L;
 	private FormLayout formLayout;
+	private PopupDateField caseDate;
 	private TextField franchiseTF;
 	private ComboBox doctorAssignedCB;
 	private ComboBox statusOpenClosed;
@@ -67,6 +69,7 @@ public class CaseAddInfoForm extends Form{
 		setLayout(formLayout);
 
 		//set captions
+		caseDate.setCaption(propertyManager.getLabelDtl("case date"));
 		franchiseTF.setCaption(propertyManager.getLabelDtl("franchise"));
 		doctorAssignedCB.setCaption(propertyManager.getLabelDtl("assigned_to_doctor"));
 		statusOpenClosed.setCaption(propertyManager.getLabelDtl("status_open"));
@@ -115,6 +118,7 @@ public class CaseAddInfoForm extends Form{
 
 		if (getData() != null){
 			//bind data
+			caseDate.setValue(caseInfo.getCaseDate());
 			franchiseTF.setValue(caseInfo.getFranchise().toString());
 			doctorAssignedCB.select(PersonBean.getPersonBean(beanpersons, caseInfo.getPersonsByResponsiblePerson()));
 			for (ComboxBean bean : yes_nocontainer.getItemIds()) {		
@@ -137,8 +141,17 @@ public class CaseAddInfoForm extends Form{
 			//statusPaidByInsComp.setNullSelectionItemId(yes_nocontainer.getIdByIndex(1).getValue());
 		}
 
-
 		//add listeners
+		caseDate.addValueChangeListener(
+				new Property.ValueChangeListener() {
+					private static final long serialVersionUID = 1L;
+					public void valueChange(ValueChangeEvent event) {
+						caseInfo.setCaseDate((Date)event.getProperty().getValue());
+						caseDate.setData((Date)event.getProperty().getValue());
+						caseDate.setComponentError(null);
+					}
+				});
+
 		franchiseTF.addValueChangeListener(
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
@@ -221,6 +234,14 @@ public class CaseAddInfoForm extends Form{
 		//define measurements of the web.components.table.generated.components 
 		String width = "180px", height = "-1px";
 
+		//case date
+		caseDate=new PopupDateField();
+		caseDate.setImmediate(true);
+		caseDate.setRequired(false);
+		caseDate.setWidth(width);
+		caseDate.setHeight(height);
+		formLayout.addComponent(caseDate);
+
 		// franchiseTF
 		franchiseTF = new TextField();
 		franchiseTF.setImmediate(true);
@@ -262,7 +283,6 @@ public class CaseAddInfoForm extends Form{
 		DaoIntrfc dao = getDao();
 
 		CaseInfo caseInfo = (CaseInfo) getData();
-		caseInfo.setCaseDate(new Date());
 		dao.evict(caseInfo);
 
 		steps.get("stepCaseGeneralInfo").setData(caseInfo);

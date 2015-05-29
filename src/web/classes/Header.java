@@ -1,47 +1,90 @@
 package web.classes;
 
+import web.MedinsUI;
+
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
-public class Header extends Panel{
+public class Header extends HorizontalLayout{
 
 	private static final long serialVersionUID = 1L;
-	static Image image = new Image(null, new ThemeResource("images/medins_logo.jpg"));
+	private Image image = new Image(null, new ThemeResource("images/medins_logo.jpg"));
+	private HorizontalLayout mainLayout;
+	private HorizontalLayout titleBarLayout;
 	private UI ui;
+
+	public Header() {
+		buildLayout();
+	}
 
 	public Header(final UI ui) {
 		this.ui = ui;
+		buildLayout();
+		addUserLoggedInfo(ui);
+	}
 
-		this.setWidth("100%");
+	public HorizontalLayout buildLayout(){
 
-		VerticalLayout root = new VerticalLayout();
+		titleBarLayout = new HorizontalLayout();
+		titleBarLayout.setWidth("100%");
+		titleBarLayout.setHeight("60px");
+		titleBarLayout.setSpacing(true);
+		titleBarLayout.setStyleName("header");
 
-		//header web.components.table.generated.layout
-		HorizontalLayout header = new HorizontalLayout();
-		header.setWidth("100%");
+		image.setHeight("60px");
+		titleBarLayout.addComponent(image);
 
-		Embedded medinsLogo = new Embedded("", new ThemeResource("images/medins_logo.jpg"));		
+		mainLayout = new HorizontalLayout();
+		mainLayout.setWidth("100%");
+		mainLayout.setHeight("65px");
+		mainLayout.addComponent(titleBarLayout);
 
-		header.addComponent(medinsLogo);
-		header.setComponentAlignment(medinsLogo,Alignment.MIDDLE_LEFT);
+		return mainLayout;
+	}
+
+	public void addUserLoggedInfo(final UI ui){
+
+		PropertyManager propertyManager = MedinsUI.getPropertyManager();
 
 		//logged user info
-		VerticalLayout userLoggedInfo = new VerticalLayout();
-		userLoggedInfo.setStyleName("userlogged");
-		userLoggedInfo.setWidth("200px");
+		HorizontalLayout userLoggedInfo = new HorizontalLayout();
+		userLoggedInfo.setSizeUndefined();
 
-		Label text = new Label();
-		Button logout = new Button("Logout", new Button.ClickListener() {
+		HorizontalLayout bttnLayout = new HorizontalLayout();
+		bttnLayout.setSizeUndefined();
+
+		HorizontalLayout labelLayout = new HorizontalLayout();
+		labelLayout.setSizeUndefined();
+
+		HorizontalLayout userLayout = new HorizontalLayout();
+		userLayout.setSizeUndefined();
+
+		userLoggedInfo.addComponent(labelLayout);
+		userLoggedInfo.setComponentAlignment(labelLayout, Alignment.MIDDLE_RIGHT);
+
+		userLoggedInfo.addComponent(userLayout);
+		userLoggedInfo.setComponentAlignment(userLayout, Alignment.MIDDLE_RIGHT);
+
+		userLoggedInfo.addComponent(bttnLayout);
+		userLoggedInfo.setComponentAlignment(bttnLayout, Alignment.MIDDLE_RIGHT);
+
+		Label label = new Label();
+		label.addStyleName("user_label");
+		label.setSizeUndefined();
+
+		Label userLabel = new Label();
+		userLabel.addStyleName("user");
+		userLabel.setSizeUndefined();
+
+		Button logoutBttn = new Button(propertyManager.getButtonDtl("logout"), new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -52,71 +95,32 @@ public class Header extends Panel{
 				ui.getSession().setAttribute("user", null);
 				ui.getSession().setAttribute("userName", null);
 
-				//Transaction transaction = dao.getTransaction();
-
 				// Refresh this view, should redirect to login view
 				ui.getNavigator().navigateTo("loginView");
 			}
 		});
+
 		// Get the user name from the session
 		String username = String.valueOf(ui.getSession().getAttribute("userName"));
 		if (!username.equals("null")){
-			// And show the username
-			text.setValue("You are logged in as: " + username+" ! ");
-			userLoggedInfo.addComponent(text);
-			userLoggedInfo.addComponent(logout);
+
+			label.setValue(propertyManager.getLabelDtl("userLoggedIn"));
+			labelLayout.addComponent(label);
+			labelLayout.setMargin(new MarginInfo(true, false, true, false));
+
+			userLabel.setValue(username);
+			userLayout.addComponent(userLabel);		
+			userLayout.setMargin(new MarginInfo(true, false, true, false));
+
+			bttnLayout.addComponent(logoutBttn);
+			bttnLayout.setMargin(new MarginInfo(true, true, true, true));
+
 		}
-		else {
+		else
 			userLoggedInfo.setVisible(false);
-		}
-		header.addComponent(userLoggedInfo);
-		header.setComponentAlignment(userLoggedInfo,Alignment.BOTTOM_RIGHT);
 
-		/*		//menu web.components.table.generated.layout
-		VerticalLayout menuLayout = new VerticalLayout();
-
-		MenuBar mainMenu = new MenuBar();
-		mainMenu.addStyleName("mainmenu");
-		MenuItem home = mainMenu.addItem("Home", null,null);
-		MenuItem domain = mainMenu.addItem("Domain", null,null);
-
-		MenuItem cases=domain.addItem("Case", null, null);
-		cases.addItem("New case", null, null);
-		cases.addItem("New case 2", null, null);
-		domain.addSeparator();
-
-		MenuItem personOrganization=domain.addItem("Person&Organization", null, null);
-		personOrganization.addItem("New Person", null, null);
-		personOrganization.addItem("New Organization", null, null);
-		personOrganization.addItem("New User", null, null);
-
-
-		menuLayout.addComponent((Component) mainMenu);*/
-
-		//adding header and menu to root web.components.table.generated.layout
-		root.addComponent(header);
-		//root.addComponent(menuLayout);
-
-		this.setContent(root);
-	}
-
-	public static HorizontalLayout create(){
-
-		HorizontalLayout titleBar = new HorizontalLayout();
-		titleBar.setWidth("100%");
-		titleBar.setHeight("60px");
-		titleBar.setSpacing(true);
-		titleBar.setStyleName("header");
-
-		image.setHeight("60px");
-		titleBar.addComponent(image);
-
-		HorizontalLayout titleBarLayout = new HorizontalLayout();
-		titleBarLayout.setWidth("100%");
-		titleBarLayout.setHeight("65px");
-		titleBarLayout.addComponent(titleBar);
-
-		return titleBarLayout;
+		titleBarLayout.addComponent(userLoggedInfo);
+		titleBarLayout.setComponentAlignment(userLoggedInfo, Alignment.MIDDLE_RIGHT);
 	}
 
 	public UI getUi() {
@@ -127,12 +131,28 @@ public class Header extends Panel{
 		this.ui = ui;
 	}
 
-	public static Image getImage() {
+	public Image getImage() {
 		return image;
 	}
 
-	public static void setImage(Image image) {
-		Header.image = image;
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public HorizontalLayout getMainLayout() {
+		return mainLayout;
+	}
+
+	public void setMainLayout(HorizontalLayout mainLayout) {
+		this.mainLayout = mainLayout;
+	}
+
+	public HorizontalLayout getTitleBarLayout() {
+		return titleBarLayout;
+	}
+
+	public void setTitleBarLayout(HorizontalLayout titleBarLayout) {
+		this.titleBarLayout = titleBarLayout;
 	}
 
 }
