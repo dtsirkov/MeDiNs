@@ -79,6 +79,7 @@ public class Header extends HorizontalLayout{
 		mainLayout = new VerticalLayout();
 		mainLayout.addStyleName("personcreate");
 		mainLayout.setWidth("100%");
+		mainLayout.setHeight("-1px");
 		mainLayout.addComponent(homeBarOuterLayout);
 
 		if(titleStr != null){

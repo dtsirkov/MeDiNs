@@ -1,5 +1,6 @@
 package database.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,8 @@ public interface DaoIntrfc {
 	public Map<Enumerations, String> getEnumeration(String type);
 
 	public List<?> searchByConstaint(String dBTableName, Map<String, String> constraint);
+
+	public List<?> searchByConstraintsWithOp(String dBTableName, Map<String, ArrayList<Object>> constraint);
 
 	public String toString(Object pojoObject);
 

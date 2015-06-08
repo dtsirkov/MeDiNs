@@ -20,7 +20,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -30,11 +29,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 import database.dao.DaoIntrfc;
 import database.pojo.CaseInfo;
-import database.pojo.Persons;
 
 //@Theme("medins")
 public class DomainSelectionView extends AbstractView{
@@ -66,16 +63,40 @@ public class DomainSelectionView extends AbstractView{
 		final ComponentValidator customValidator = new ComponentValidator(getPropertyManager());
 
 
-		// Create the root layout
+		//create the root layout
 		final VerticalLayout root = new VerticalLayout();
 		root.addStyleName("personcreate");
-		root.setWidth("100%");
-		root.setHeight("-1px");
+		root.setSizeFull();
 
+		//create main layout
+		VerticalLayout mainLayout = new VerticalLayout();
+
+		//create and add header
 		Header header = new Header(getUi(), "domainSelection");
-		root.addComponent(header.getMainLayout());
+		mainLayout.addComponent(header.getMainLayout());
 
-		//damain selection panel
+		//build domain selection layout
+		VerticalLayout domainLayout = buildDomainSelectionLayout();
+		mainLayout.addComponent(domainLayout);	
+		domainLayout.setMargin(new MarginInfo(true, false, true, false));
+		mainLayout.setComponentAlignment(domainLayout, Alignment.TOP_CENTER);
+
+		//build activity selection layout
+		VerticalLayout activityPanelLayout = buildActivitySelectionLayout();
+		mainLayout.addComponent(activityPanelLayout);
+		activityPanelLayout.setMargin(new MarginInfo(true, false, true, false));
+		mainLayout.setComponentAlignment(activityPanelLayout, Alignment.TOP_CENTER);
+
+		root.addComponent(mainLayout);
+		root.setComponentAlignment(mainLayout, Alignment.TOP_CENTER);
+
+		return root;
+
+	}
+
+	public VerticalLayout buildDomainSelectionLayout(){
+
+		//damain selection layout
 		VerticalLayout domainLayout = new VerticalLayout();
 		domainLayout.setSizeUndefined();
 
@@ -100,21 +121,25 @@ public class DomainSelectionView extends AbstractView{
 
 			ActivitySelectionView activitySelectionView = new ActivitySelectionView(getUi());
 			activitySelectionView.setDomain(domainList.get(i));
-			navigator.addView(domainList.get(i).getLabel(), activitySelectionView);
+			getNavigator().addView(domainList.get(i).getLabel(), activitySelectionView);
 		}
 		domainLayout.addComponent(grid);
-		
-		root.addComponent(domainLayout);	
-		domainLayout.setMargin(new MarginInfo(true, false, true, false));
-		root.setComponentAlignment(domainLayout, Alignment.TOP_CENTER);
 
+		return domainLayout;
+	}
 
+	public VerticalLayout buildActivitySelectionLayout(){
+
+		//get propertyManager
+		final PropertyManager propertyManager = getPropertyManager();
+
+		//build panel layout
+		VerticalLayout activityPanelLayout = new VerticalLayout();
+		activityPanelLayout.setSizeUndefined();
 
 		//activity selection panel
 		Panel activitySelectionPanel = new Panel(propertyManager.getLabelDtl("notCompletedActivities"));
 		activitySelectionPanel.setSizeUndefined();
-		VerticalLayout activityPanelLayout = new VerticalLayout();
-		activityPanelLayout.setSizeUndefined();
 
 		HorizontalLayout searchLayout = new HorizontalLayout();
 		VerticalLayout activityLayout = new VerticalLayout();
@@ -128,44 +153,49 @@ public class DomainSelectionView extends AbstractView{
 
 		String width = "180px", height = "-1px";
 
+		//reference number text field
 		TextField referenceNumberTF = new TextField(propertyManager.getLabelDtl("referenceNumber"));
 		referenceNumberTF.setImmediate(true);
 		referenceNumberTF.setWidth(width);
 		referenceNumberTF.setHeight(height);
 		formLayout1.addComponent(referenceNumberTF);
 
+		//createdBy text field
 		TextField createdByTF = new TextField(propertyManager.getLabelDtl("createdBy"));
 		createdByTF.setImmediate(true);
 		createdByTF.setWidth(width);
 		createdByTF.setHeight(height);
 		formLayout1.addComponent(createdByTF);
 
+		//updatedBy text field
 		TextField updatedByTF = new TextField(propertyManager.getLabelDtl("updatedBy"));
 		updatedByTF.setImmediate(true);
 		updatedByTF.setWidth(width);
 		updatedByTF.setHeight(height);
 		formLayout1.addComponent(updatedByTF);
 
+		//from date
 		PopupDateField fromPDF = new PopupDateField(propertyManager.getLabelDtl("from"));
 		fromPDF.setImmediate(true);
 		fromPDF.setWidth(width);
 		fromPDF.setHeight(height);
 		formLayout2.addComponent(fromPDF);
 
+		//to date
 		PopupDateField toPDF = new PopupDateField(propertyManager.getLabelDtl("to"));
 		toPDF.setImmediate(true);
 		toPDF.setWidth(width);
 		toPDF.setHeight(height);
 		formLayout2.addComponent(toPDF);
 
+		//add search layout
 		searchLayout.addComponent(formLayout1);
 		searchLayout.addComponent(formLayout2);
-
 		activityLayout.addComponent(searchLayout);
 
+		//create activity table
 		final PagedTable resultTable = new PagedTable(); 
 		resultTable.setContainerDataSource(createContainer());
-		//pagedTable.setRowHeaderMode(Table.RowHeaderMode.ICON_ONLY);
 		resultTable.setWidth("800px");
 		resultTable.setPageLength(10);
 		resultTable.setImmediate(true);
@@ -177,13 +207,9 @@ public class DomainSelectionView extends AbstractView{
 		activityLayout.setComponentAlignment(resultTable, Alignment.MIDDLE_CENTER);
 
 		activitySelectionPanel.setContent(activityLayout);
-
 		activityPanelLayout.addComponent(activitySelectionPanel);
-		root.addComponent(activityPanelLayout);	
-		activityPanelLayout.setMargin(new MarginInfo(true, false, true, false));
-		root.setComponentAlignment(activityPanelLayout, Alignment.MIDDLE_CENTER);
 
-		return root;
+		return activityPanelLayout;
 
 	}
 

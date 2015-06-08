@@ -67,7 +67,7 @@ public abstract class AbstractView extends CustomComponent implements CustomComp
 	}
 	
 	public PropertyManager getPropertyManager() {
-		return ((MedinsUI)getUi()).getPropertyManager();
+		return MedinsUI.getPropertyManager();
 	}
 
 	public DaoIntrfc getDao() {

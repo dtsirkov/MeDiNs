@@ -1,16 +1,11 @@
 package database.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import database.pojo.Contacts;
 import database.pojo.Enumerations;
 import database.pojo.Organizations;
-import database.pojo.Persons;
 
 
 public class DaoTest {

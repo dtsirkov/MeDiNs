@@ -96,13 +96,14 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 
 		//get object that will be bind to the web.components.table.generated.components
 		final TouristVisit touristVisit;
-		if(mode.equals("update") || getData() != null){
+		//mode.equals("update") || 
+		if(getData() != null){
 			touristVisit = (TouristVisit)getData();
 		}else{
 			//set initial values
 			touristVisit = new TouristVisit();
-			touristVisit.setStartDate(null);
-			touristVisit.setEndDate(null);
+			touristVisit.setStartDate(new Date());
+			touristVisit.setEndDate(new Date());
 			touristVisit.setHotel("");
 			touristVisit.setPersons(new Persons());
 			touristVisit.setResort("");
@@ -147,9 +148,12 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {
+						Object value=popupDateFieldStart.getValue();
+						if (value != null){
 						touristVisit.setStartDate((Date)event.getProperty().getValue());
 						popupDateFieldStart.setData((Date)event.getProperty().getValue());
 						popupDateFieldStart.setComponentError(null);
+						}
 					}
 				});
 
@@ -157,9 +161,12 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				new Property.ValueChangeListener() {
 					private static final long serialVersionUID = 1L;
 					public void valueChange(ValueChangeEvent event) {
-						touristVisit.setEndDate((Date)event.getProperty().getValue());
+						Object value=popupDateFieldEnd.getValue();
+						if (value != null){
+						touristVisit.setEndDate((Date) value);
 						popupDateFieldEnd.setData((Date)event.getProperty().getValue());
 						popupDateFieldEnd.setComponentError(null);
+						}
 					}
 				});
 
@@ -220,7 +227,8 @@ public class PersonTouristVisitForm extends Form implements StepIntrfc {
 				});
 
 		//retrieve and bind data to fields
-		if(mode.equals("update") || getData() != null){
+		//mode.equals("update") ||
+		if( getData() != null){
 			popupDateFieldStart.setValue(touristVisit.getStartDate());
 			popupDateFieldEnd.setValue(touristVisit.getEndDate());
 

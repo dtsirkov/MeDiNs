@@ -23,12 +23,6 @@ import org.hibernate.criterion.Restrictions;
 import database.pojo.EnumerationLabels;
 import database.pojo.EnumerationTypes;
 import database.pojo.Enumerations;
-import database.pojo.Persons;
-
-
-
-
-
 
 /**
  * Home object for domain model classes in package database.pojo.
@@ -276,6 +270,42 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 		return result;
 	}
 
+	public List<?> searchByConstraintsWithOp(String dBTableName, Map<String, ArrayList<Object>> constraint){
+		List<?> result = new ArrayList<Object>();
+		try{
+			if(!constraint.isEmpty()){
+
+				String key, concat;
+				String searchQuery = "from " + dBTableName + " where ";
+				Iterator<String> queryIterator = constraint.keySet().iterator();
+				Iterator<String> constrIterator = constraint.keySet().iterator();
+
+				while (queryIterator.hasNext()) {
+					key = queryIterator.next();	
+					ArrayList<Object> arrayConstr = constraint.get(key);
+					String op = (String)arrayConstr.get(0);
+					concat = key + " " + op + " :" + key;
+					searchQuery += concat;
+					if (queryIterator.hasNext())
+						searchQuery += " and ";		
+				}  
+				Query query = session.createQuery(searchQuery);
+				while (constrIterator.hasNext()) {
+					key = constrIterator.next();
+					ArrayList<Object> arrayConstr = constraint.get(key);
+					Object obj = arrayConstr.get(1);
+					query.setParameter(key, obj);
+				}
+				result =  query.list();	
+			}
+
+		} catch (RuntimeException re) {
+			re.printStackTrace();	
+		}
+
+		return result;
+	}
+
 	public String toString(Object pojoObject) {
 		StringBuilder stringBuilder = new StringBuilder();
 		try {
@@ -304,13 +334,16 @@ public class DaoImpl implements DaoIntrfc, java.io.Serializable{
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException{
 
 		Date birthDate = new Date();
+		System.out.println(birthDate);
 		DaoImpl daoImpl = new DaoImpl();
 
 		Enumerations jobTitle = (Enumerations) daoImpl.findById("Enumerations", "md");
+		System.out.println(jobTitle);
 
 		Random rand = new Random();
 		Integer number = Math.abs(rand.nextInt());
 		String numberStr = number.toString();
+		System.out.println(numberStr);
 
 	}
 

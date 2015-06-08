@@ -7,12 +7,16 @@ import java.util.Set;
 
 
 import web.forms.ContactForm;
+import web.forms.CaseAddInfoForm;
+import web.forms.DiagnosisForm;
 //import web.forms.DiagnosisForm;
 import web.forms.Form;
 import web.forms.MedicalReportForm;
+import web.forms.NewValidationForm;
 import web.forms.PersonForm;
 import web.forms.PersonTouristVisitForm;
 import web.forms.PolicyForm;
+import web.forms.ServicesForm;
 import web.forms.ValidationForm;
 import web.views.AbstractActivityView;
 
@@ -40,13 +44,15 @@ public class CreateCase2 extends AbstractActivityView{
 	public Layout buildLayout(){
 
 		Form[] requiredSteps = {
-				new PersonForm(this, "stepCreatePerson"), 
+/*				new PersonForm(this, "stepCreatePerson"), 
 				new ContactForm(this, "stepCreateContact"),
+				new CaseAddInfoForm(this,"stepCaseGeneralInfo"),
 				new PersonTouristVisitForm(this,"stepTouristVisit"),
 				new PolicyForm(this,"stepPolicy"),
-				new MedicalReportForm(this,"stepMedicalReport"),
-				//new DiagnosisForm(this,"stepDiagnosis"),
-				new ValidationForm(this, "stepValidate")
+				new ServicesForm(this,"stepServices"),
+				new MedicalReportForm(this, "stepMedicalReport"),*/
+				new DiagnosisForm(this, "stepDiagnosis"),
+				new NewValidationForm(this,"stepValidate")
 		};
 		setRequiredSteps(requiredSteps);
 
